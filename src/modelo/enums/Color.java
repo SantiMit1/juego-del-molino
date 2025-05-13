@@ -1,6 +1,6 @@
 package modelo.enums;
 
-public enum ColorFicha {
+public enum Color {
     BLANCO,
     NEGRO
 }
