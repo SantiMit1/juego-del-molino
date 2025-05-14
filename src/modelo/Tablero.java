@@ -106,7 +106,7 @@ public class Tablero {
         tablero[fila][columna] = null;
     }
 
-    public void hayMolino(int fila, int columna) {
+    public boolean hayMolino(int fila, int columna) {
         if (!posicionValida(fila, columna)) {
             throw new IllegalArgumentException("Posición fuera de los límites del tablero");
         }
@@ -115,12 +115,43 @@ public class Tablero {
         }
 
         Ficha ficha = tablero[fila][columna];
-        Color colorFicha = ficha.getColor();
-        int contador = 1;
-        // obtener fichas de las posiciones adyacentes
-        List<String> adyacentes = adyacencias.get(fila + "," + columna);
+        Color color = ficha.getColor();
 
-        //TODO buscar molinos en filas o columna
+        String pos = fila + "," + columna;
+        List<String> adyacentes = adyacencias.get(pos);
+
+        //busca una ficha adyacente deñ mismo color
+        for (String adyacente : adyacentes) {
+            String[] partes = adyacente.split(",");
+            int filaAdyacente = Integer.parseInt(partes[0]);
+            int columnaAdyacente = Integer.parseInt(partes[1]);
+
+            if (posicionOcupada(filaAdyacente, columnaAdyacente)) {
+                Ficha fichaAdyacente = tablero[filaAdyacente][columnaAdyacente];
+                if (fichaAdyacente.getColor() == color) {
+                    //si encuentra una ficha adyacente del mismo color entonces
+                    //busca que haya otra ficha del mismo color siguiendo por el mismo camino o por el camino opuesto
+                    int diferenciaFilas = Math.abs(fila - filaAdyacente);
+                    int diferenciaColumnas = Math.abs(columna - columnaAdyacente);
+
+                    int filaPosibleAdyacente1 = fila + diferenciaFilas;
+                    int columnaPosibleAdyacente1 = columna + diferenciaColumnas;
+
+                    int filaPosibleAdyacente2 = fila - diferenciaFilas;
+                    int columnaPosibleAdyacente2 = columna - diferenciaColumnas;
+
+                    if(posicionValida(filaPosibleAdyacente1, columnaPosibleAdyacente1)) {
+                        Ficha posibleAdyacente1 = tablero[filaPosibleAdyacente1][columnaPosibleAdyacente1];
+                        return posibleAdyacente1 != null && posibleAdyacente1.getColor() == color;
+                    } else if(posicionValida(filaPosibleAdyacente2, columnaPosibleAdyacente2)) {
+                        Ficha posibleAdyacente2 = tablero[filaPosibleAdyacente2][columnaPosibleAdyacente2];
+                        return posibleAdyacente2 != null && posibleAdyacente2.getColor() == color;
+                    }
+                }
+            }
+        }
+
+        return false;
     }
 
     public boolean sonAdyacentes(int fila1, int columna1, int fila2, int columna2) {
@@ -139,19 +170,19 @@ public class Tablero {
 
     public void imprimirTablero() {
         // si estas corrigiendo esto te pido perdon, no se me ocurrio una forma mejor de hacerlo
-        System.out.println(" " + imprimirFicha(0,0) + "-----------" + imprimirFicha(0,3) + "-----------" + imprimirFicha(0,6));
+        System.out.println(" " + imprimirFicha(0, 0) + "-----------" + imprimirFicha(0, 3) + "-----------" + imprimirFicha(0, 6));
         System.out.println(" |           |           |");
-        System.out.println(" |   " + imprimirFicha(1,1) + "-------" + imprimirFicha(1,3) + "-------" + imprimirFicha(1,5) + "   |");
+        System.out.println(" |   " + imprimirFicha(1, 1) + "-------" + imprimirFicha(1, 3) + "-------" + imprimirFicha(1, 5) + "   |");
         System.out.println(" |   |       |       |   |");
-        System.out.println(" |   |   " + imprimirFicha(2,2) + "---" + imprimirFicha(2,3) + "---" + imprimirFicha(2,4) + "   |   |");
+        System.out.println(" |   |   " + imprimirFicha(2, 2) + "---" + imprimirFicha(2, 3) + "---" + imprimirFicha(2, 4) + "   |   |");
         System.out.println(" |   |   |       |   |   |");
-        System.out.println(imprimirFicha(3,0) + "---" + imprimirFicha(3,1) + "---" + imprimirFicha(3,2) + "       " + imprimirFicha(3,4) + "---" + imprimirFicha(3,5) + "---" + imprimirFicha(3,6));
+        System.out.println(imprimirFicha(3, 0) + "---" + imprimirFicha(3, 1) + "---" + imprimirFicha(3, 2) + "       " + imprimirFicha(3, 4) + "---" + imprimirFicha(3, 5) + "---" + imprimirFicha(3, 6));
         System.out.println(" |   |   |       |   |   |");
-        System.out.println(" |   |   " + imprimirFicha(4,2) + "---" + imprimirFicha(4,3) + "---" + imprimirFicha(4,4) + "   |   |");
+        System.out.println(" |   |   " + imprimirFicha(4, 2) + "---" + imprimirFicha(4, 3) + "---" + imprimirFicha(4, 4) + "   |   |");
         System.out.println(" |   |       |       |   |");
-        System.out.println(" |   " + imprimirFicha(5,1) + "-------" + imprimirFicha(5,3) + "-------" + imprimirFicha(5,5) + "   |");
+        System.out.println(" |   " + imprimirFicha(5, 1) + "-------" + imprimirFicha(5, 3) + "-------" + imprimirFicha(5, 5) + "   |");
         System.out.println(" |           |           |");
-        System.out.println(" " + imprimirFicha(6,0) + "-----------" + imprimirFicha(6,3) + "-----------" + imprimirFicha(6,6));
+        System.out.println(" " + imprimirFicha(6, 0) + "-----------" + imprimirFicha(6, 3) + "-----------" + imprimirFicha(6, 6));
     }
 
     public void limpiarTablero() {
