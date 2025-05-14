@@ -9,8 +9,8 @@ import modelo.enums.EstadoFicha;
 
 public class Jugador {
     private String nombre;
-    private Color color;
-    private List<Ficha> fichas;
+    private final Color color;
+    private final List<Ficha> fichas;
 
     public Jugador(String nombre, Color color) {
         this.nombre = nombre;
