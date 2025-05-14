@@ -1,15 +1,19 @@
 package modelo;
 
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import modelo.enums.Color;
+
+import java.util.*;
 
 public class Tablero {
     private final Ficha[][] tablero;
     private static final int FILAS = 7;
     private static final int COLUMNAS = 7;
     private static final Map<String, List<String>> adyacencias = new HashMap<>();
+    private static final Set<String> posicionesInvalidas = new HashSet<>(Arrays.asList(
+            "0,1", "0,2", "0,4", "0,5", "1.0", "1,2", "1,4", "1,6",
+            "2,0", "2,1", "2,5", "2,6", "3,3", "4,0", "4,1", "4,5",
+            "4,6", "5,0", "5,2", "5,4", "5,6", "6,1", "6,2", "6,4", "6,5"
+    ));
 
     static {
         // Definición de adyacencias
@@ -44,7 +48,7 @@ public class Tablero {
     }
 
     public boolean posicionValida(int fila, int columna) {
-        return fila >= 0 && fila < FILAS && columna >= 0 && columna < COLUMNAS;
+        return (fila >= 0 && fila < FILAS) && (columna >= 0 && columna < COLUMNAS) && !posicionesInvalidas.contains(fila + "," + columna);
     }
 
     public boolean posicionOcupada(int fila, int columna) {
@@ -90,6 +94,35 @@ public class Tablero {
         tablero[filaOrigen][columnaOrigen] = null;
     }
 
+    public void eliminarFicha(int fila, int columna) {
+        if (!posicionValida(fila, columna)) {
+            throw new IllegalArgumentException("Posición fuera de los límites del tablero");
+        }
+        if (!posicionOcupada(fila, columna)) {
+            throw new IllegalStateException("No hay ficha en la posición");
+        }
+        Ficha ficha = tablero[fila][columna];
+        ficha.eliminarFicha();
+        tablero[fila][columna] = null;
+    }
+
+    public void hayMolino(int fila, int columna) {
+        if (!posicionValida(fila, columna)) {
+            throw new IllegalArgumentException("Posición fuera de los límites del tablero");
+        }
+        if (!posicionOcupada(fila, columna)) {
+            throw new IllegalStateException("No hay ficha en la posición");
+        }
+
+        Ficha ficha = tablero[fila][columna];
+        Color colorFicha = ficha.getColor();
+        int contador = 1;
+        // obtener fichas de las posiciones adyacentes
+        List<String> adyacentes = adyacencias.get(fila + "," + columna);
+
+        //TODO buscar molinos en filas o columna
+    }
+
     public boolean sonAdyacentes(int fila1, int columna1, int fila2, int columna2) {
         String pos1 = fila1 + "," + columna1;
         String pos2 = fila2 + "," + columna2;
@@ -97,7 +130,7 @@ public class Tablero {
     }
 
     public void imprimirTablero() {
-        //TODO algoritmo para imprimir el tablero que tiene una forma toda rara
+        //TODO implementar método para imprimir el tablero
     }
 
     public void limpiarTablero() {
