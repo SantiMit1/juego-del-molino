@@ -134,18 +134,23 @@ public class Tablero {
                     int diferenciaFilas = Math.abs(fila - filaAdyacente);
                     int diferenciaColumnas = Math.abs(columna - columnaAdyacente);
 
-                    int filaPosibleAdyacente1 = fila + diferenciaFilas;
-                    int columnaPosibleAdyacente1 = columna + diferenciaColumnas;
+                    int filaPosibleAdyacente1 = filaAdyacente + diferenciaFilas;
+                    int columnaPosibleAdyacente1 = columnaAdyacente + diferenciaColumnas;
 
-                    int filaPosibleAdyacente2 = fila - diferenciaFilas;
-                    int columnaPosibleAdyacente2 = columna - diferenciaColumnas;
+                    int filaPosibleAdyacente2 = filaAdyacente - diferenciaFilas;
+                    int columnaPosibleAdyacente2 = columnaAdyacente - diferenciaColumnas;
 
+                    System.out.println("Posible adyacente 1: " + filaPosibleAdyacente1 + "," + columnaPosibleAdyacente1);
+                    System.out.println("Posible adyacente 2: " + filaPosibleAdyacente2 + "," + columnaPosibleAdyacente2);
+
+                    // Verifica si la posición es válida y si hay una ficha del mismo color
+                    // en la posición adyacente, y esta ficha no es la misma que la ficha original (que se recibe por parametros)
                     if(posicionValida(filaPosibleAdyacente1, columnaPosibleAdyacente1)) {
                         Ficha posibleAdyacente1 = tablero[filaPosibleAdyacente1][columnaPosibleAdyacente1];
-                        return posibleAdyacente1 != null && posibleAdyacente1.getColor() == color;
+                        return !ficha.equals(posibleAdyacente1) && posibleAdyacente1 != null && posibleAdyacente1.getColor() == color;
                     } else if(posicionValida(filaPosibleAdyacente2, columnaPosibleAdyacente2)) {
                         Ficha posibleAdyacente2 = tablero[filaPosibleAdyacente2][columnaPosibleAdyacente2];
-                        return posibleAdyacente2 != null && posibleAdyacente2.getColor() == color;
+                        return !ficha.equals(posibleAdyacente2) && posibleAdyacente2 != null && posibleAdyacente2.getColor() == color;
                     }
                 }
             }
