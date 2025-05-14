@@ -22,7 +22,7 @@ public class Main {
         tablero.colocarFicha(0,0,ficha6);
 
         tablero.imprimirTablero();
-        System.out.println(tablero.hayMolino(6,0));
+        System.out.println(tablero.hayMolino(0,0));
 
     }
 }
