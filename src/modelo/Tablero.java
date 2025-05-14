@@ -120,7 +120,7 @@ public class Tablero {
         String pos = fila + "," + columna;
         List<String> adyacentes = adyacencias.get(pos);
 
-        //busca una ficha adyacente deñ mismo color
+        //busca una ficha adyacente del mismo color
         for (String adyacente : adyacentes) {
             String[] partes = adyacente.split(",");
             int filaAdyacente = Integer.parseInt(partes[0]);
@@ -129,8 +129,10 @@ public class Tablero {
             if (posicionOcupada(filaAdyacente, columnaAdyacente)) {
                 Ficha fichaAdyacente = tablero[filaAdyacente][columnaAdyacente];
                 if (fichaAdyacente.getColor() == color) {
-                    //si encuentra una ficha adyacente del mismo color entonces
-                    //busca que haya otra ficha del mismo color siguiendo por el mismo camino o por el camino opuesto
+                    System.out.println("ficha adyacente: " + filaAdyacente + "," + columnaAdyacente);
+                    //si encuentra una ficha adyacente del mismo color, busca en 2 posibles posiciones para completar el molino
+                    //para saber si buscar de forma vertical u horizontal se saca el valor absoluto de la diferencia entre
+                    //las filas y las columnas de la ficha original y la ficha adyacente
                     int diferenciaFilas = Math.abs(fila - filaAdyacente);
                     int diferenciaColumnas = Math.abs(columna - columnaAdyacente);
 
@@ -140,17 +142,52 @@ public class Tablero {
                     int filaPosibleAdyacente2 = filaAdyacente - diferenciaFilas;
                     int columnaPosibleAdyacente2 = columnaAdyacente - diferenciaColumnas;
 
-                    System.out.println("Posible adyacente 1: " + filaPosibleAdyacente1 + "," + columnaPosibleAdyacente1);
-                    System.out.println("Posible adyacente 2: " + filaPosibleAdyacente2 + "," + columnaPosibleAdyacente2);
+                    int filaPosibleAdyacente3 = fila + diferenciaFilas;
+                    int columnaPosibleAdyacente3 = columna + diferenciaColumnas;
 
-                    // Verifica si la posición es válida y si hay una ficha del mismo color
-                    // en la posición adyacente, y esta ficha no es la misma que la ficha original (que se recibe por parametros)
+                    int filaPosibleAdyacente4 = fila - diferenciaFilas;
+                    int columnaPosibleAdyacente4 = columna - diferenciaColumnas;
+
+                    //eso nos deja con cuatro posibles posiciones en el tablero donde puede haber una 3er ficha del mismo color alineada
+                    //pero dos posiciones se descartan porque es donde estan o la ficha original o la primer adyacente
                     if(posicionValida(filaPosibleAdyacente1, columnaPosibleAdyacente1)) {
                         Ficha posibleAdyacente1 = tablero[filaPosibleAdyacente1][columnaPosibleAdyacente1];
-                        return !ficha.equals(posibleAdyacente1) && posibleAdyacente1 != null && posibleAdyacente1.getColor() == color;
-                    } else if(posicionValida(filaPosibleAdyacente2, columnaPosibleAdyacente2)) {
+                        System.out.println("posible molino 1: " + filaPosibleAdyacente1 + "," + columnaPosibleAdyacente1);
+                        if(!ficha.equals(posibleAdyacente1) && !adyacente.equals(posibleAdyacente1) && posibleAdyacente1 != null && posibleAdyacente1.getColor() == color) {
+                            System.out.println("sirve");
+                            return true;
+                        }
+                        System.out.println("no sirve");
+                    }
+
+                    if(posicionValida(filaPosibleAdyacente2, columnaPosibleAdyacente2)) {
                         Ficha posibleAdyacente2 = tablero[filaPosibleAdyacente2][columnaPosibleAdyacente2];
-                        return !ficha.equals(posibleAdyacente2) && posibleAdyacente2 != null && posibleAdyacente2.getColor() == color;
+                        System.out.println("posible molino 2: " + filaPosibleAdyacente2 + "," + columnaPosibleAdyacente2);
+                        if(!ficha.equals(posibleAdyacente2) && !adyacente.equals(posibleAdyacente2) && posibleAdyacente2 != null && posibleAdyacente2.getColor() == color) {
+                            System.out.println("sirve");
+                            return true;
+                        }
+                        System.out.println("no sirve");
+                    }
+
+                    if(posicionValida(filaPosibleAdyacente3, columnaPosibleAdyacente3)) {
+                        Ficha posibleAdyacente3 = tablero[filaPosibleAdyacente3][columnaPosibleAdyacente3];
+                        System.out.println("posible molino 3: " + filaPosibleAdyacente3 + "," + columnaPosibleAdyacente3);
+                        if(!ficha.equals(posibleAdyacente3) && !adyacente.equals(posibleAdyacente3) && posibleAdyacente3 != null && posibleAdyacente3.getColor() == color) {
+                            System.out.println("sirve");
+                            return true;
+                        }
+                        System.out.println("no sirve");
+                    }
+
+                    if(posicionValida(filaPosibleAdyacente4, columnaPosibleAdyacente4)) {
+                        Ficha posibleAdyacente4 = tablero[filaPosibleAdyacente4][columnaPosibleAdyacente4];
+                        System.out.println("posible molino 4: " + filaPosibleAdyacente4 + "," + columnaPosibleAdyacente4);
+                        if(!ficha.equals(posibleAdyacente4) && !adyacente.equals(posibleAdyacente4) && posibleAdyacente4 != null && posibleAdyacente4.getColor() == color) {
+                            System.out.println("sirve");
+                            return true;
+                        }
+                        System.out.println("no sirve");
                     }
                 }
             }

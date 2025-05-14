@@ -17,12 +17,12 @@ public class Main {
         tablero.colocarFicha(2,2, ficha1);
         tablero.colocarFicha(2,3, ficha2);
         tablero.colocarFicha(2,4, ficha3);
-        tablero.colocarFicha(6,3,ficha4);
+        tablero.colocarFicha(6,0,ficha4);
         tablero.colocarFicha(3,0,ficha5);
         tablero.colocarFicha(0,0,ficha6);
 
         tablero.imprimirTablero();
-        System.out.println(tablero.hayMolino(2,2));
-        System.out.println(tablero.hayMolino(0,0));
+        System.out.println(tablero.hayMolino(6,0));
+
     }
 }
