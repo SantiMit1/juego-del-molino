@@ -12,7 +12,7 @@ public class Ficha {
         this.estado = EstadoFicha.EN_MANO;
     }
 
-    public void colocarFicha(int fila, int columna) {
+    public void colocarFicha() {
         if (this.estado == EstadoFicha.ELIMINADA) throw new IllegalStateException("No se puede colocar una ficha eliminada");
         if (this.estado == EstadoFicha.EN_TABLERO) throw new IllegalStateException("La ficha ya está en el tablero");
 

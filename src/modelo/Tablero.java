@@ -65,7 +65,7 @@ public class Tablero {
             throw new IllegalStateException("La posición ya está ocupada por otra ficha");
         }
         tablero[fila][columna] = ficha;
-        ficha.colocarFicha(fila, columna);
+        ficha.colocarFicha();
     }
 
     public Ficha obtenerFicha(int fila, int columna) {
