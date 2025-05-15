@@ -145,7 +145,6 @@ public class Tablero {
                         int columnaPosible = posMolino[1];
                         if (posicionValida(filaPosible, columnaPosible)) {
                             Ficha posibleMolino = tablero[filaPosible][columnaPosible];
-                            System.out.println("posible molino: " + filaPosible + "," + columnaPosible);
                             if (posibleMolino != null && posibleMolino.getColor() == color &&
                                 !ficha.equals(posibleMolino) && !adyacente.equals(posibleMolino)) {
                                 //si encuentra una tercer ficha del mismo color, verifica que no sea la adyacente o la original
