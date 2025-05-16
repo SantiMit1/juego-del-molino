@@ -165,7 +165,8 @@ public class Tablero {
         return adyacencias.containsKey(pos1) && adyacencias.get(pos1).contains(pos2);
     }
 
-    public String imprimirFicha(int fila, int columna) {
+    //TODO crear una interfaz y dos clases para imprimir el tablero en la terminal o en una GUI
+    private String imprimirFicha(int fila, int columna) {
         if (!posicionValida(fila, columna)) {
             throw new IllegalArgumentException("Posición invalida");
         }
