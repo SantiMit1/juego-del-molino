@@ -56,6 +56,10 @@ public class Juego extends Observable {
         }
     }
 
+    public Jugador getJugadorActual() {
+        return jugadores.get(turnoActual % 2);
+    }
+
     public void iniciarJuego() {
         fase = FaseJuego.COLOCANDO;
         tablero.imprimirTablero();
@@ -127,6 +131,7 @@ public class Juego extends Observable {
         }
     }
 
+    //TODO FIX
     private boolean hayMolino(int fila, int columna) {
         if (!tablero.posicionValida(fila, columna)) {
             throw new IllegalArgumentException("Posición fuera de los límites del tablero");

@@ -8,7 +8,6 @@ import observer.Observer;
 
 public class Controlador {
     private final Juego juego;
-    private Jugador jugador;
 
     public Controlador() {
         this.juego = new Juego(new Tablero());
@@ -19,7 +18,6 @@ public class Controlador {
     }
 
     public void agregarJugador(Jugador jugador) {
-        this.jugador = jugador;
         juego.agregarJugador(jugador);
     }
 
@@ -28,7 +26,7 @@ public class Controlador {
     }
 
     public void colocarFicha(int fila, int columna) {
-        juego.colocarFicha(fila, columna, jugador.obtenerFichasPorEstado(EstadoFicha.EN_MANO).getFirst());
+        juego.colocarFicha(fila, columna, juego.getJugadorActual().obtenerFichasPorEstado(EstadoFicha.EN_MANO).getFirst());
     }
 
     public void moverFicha(int filaOrigen, int columnaOrigen, int filaDestino, int columnaDestino) {
