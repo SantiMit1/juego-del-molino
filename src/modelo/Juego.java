@@ -4,13 +4,13 @@ import modelo.enums.Color;
 import modelo.enums.FaseJuego;
 import observer.Notificaciones;
 import observer.Observable;
-import observer.Observer;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class Juego extends Observable {
     private final Tablero tablero;
-    private static List<Jugador> jugadores;
+    private static final List<Jugador> jugadores = new ArrayList<Jugador>();
     private static int turnoActual;
     private static FaseJuego fase;
 
@@ -25,9 +25,9 @@ public class Juego extends Observable {
     private void cambiarTurno() {
         turnoActual++;
         if(fase == FaseJuego.MOVIENDO) {
-            notificarObservador(Notificaciones.MOVER, observers.get(turnoActual % 2));
+            observers.get(turnoActual % 2).notificar(Notificaciones.MOVER);
         } else if(fase == FaseJuego.COLOCANDO) {
-            notificarObservador(Notificaciones.COLOCAR, observers.get(turnoActual % 2));
+            observers.get(turnoActual % 2).notificar(Notificaciones.COLOCAR);
         }
     }
 
@@ -59,6 +59,8 @@ public class Juego extends Observable {
     public void iniciarJuego() {
         fase = FaseJuego.COLOCANDO;
         tablero.imprimirTablero();
+        observers.get(turnoActual % 2).notificar(Notificaciones.INICIO);
+        observers.get(turnoActual % 2).notificar(Notificaciones.COLOCAR);
     }
 
     public void colocarFicha(int fila, int columna, Ficha ficha) {
@@ -76,13 +78,14 @@ public class Juego extends Observable {
         tablero.imprimirTablero();
 
         if (hayMolino(fila, columna)) {
-            notificarObservador(Notificaciones.MOLINO, observers.get(turnoActual % 2));
+            observers.get(turnoActual % 2).notificar(Notificaciones.MOLINO);
         }
 
         if (jugadores.get(0).contarFichasEnMano() == 0 && jugadores.get(1).contarFichasEnMano() == 0) {
             fase = FaseJuego.MOVIENDO;
         }
-        turnoActual++;
+
+        cambiarTurno();
     }
 
     public void moverFicha(int filaOrigen, int columnaOrigen, int filaDestino, int columnaDestino) {
@@ -105,10 +108,10 @@ public class Juego extends Observable {
         tablero.moverFicha(filaOrigen, columnaOrigen, filaDestino, columnaDestino);
 
         if (hayMolino(filaDestino, columnaDestino)) {
-            notificarObservador(Notificaciones.MOLINO, observers.get(turnoActual % 2));
+            observers.get(turnoActual % 2).notificar(Notificaciones.MOLINO);
         }
 
-        turnoActual++;
+        cambiarTurno();
     }
 
     public void eliminarFicha(int fila, int columna) {

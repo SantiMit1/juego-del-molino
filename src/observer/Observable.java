@@ -19,8 +19,4 @@ public abstract class Observable {
             observer.notificar(notificacion);
         }
     };
-
-    public void notificarObservador(Notificaciones notificacion, Observer observer) {
-        observer.notificar(notificacion);
-    };
 }

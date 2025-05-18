@@ -8,16 +8,19 @@ import observer.Observer;
 
 public class Controlador {
     private final Juego juego;
-    private final Jugador jugador;
+    private Jugador jugador;
 
-    public Controlador(Jugador jugador) {
-        this.jugador = jugador;
+    public Controlador() {
         this.juego = new Juego(new Tablero());
-        juego.agregarJugador(jugador);
     }
 
     public void agregarObserver(Observer vista) {
         juego.agregarObservador(vista);
+    }
+
+    public void agregarJugador(Jugador jugador) {
+        this.jugador = jugador;
+        juego.agregarJugador(jugador);
     }
 
     public void eliminarObserver(Observer vista) {
