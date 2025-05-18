@@ -28,7 +28,7 @@ public class Jugador {
         fichas.add(ficha);
     }
 
-    public List<Ficha> obtenerFichasPorEstado(EstadoFicha estado) {
+    private List<Ficha> obtenerFichasPorEstado(EstadoFicha estado) {
         List<Ficha> fichasPorEstado = new ArrayList<>();
         for (Ficha ficha : fichas) {
             if (ficha.getEstado() == estado) {

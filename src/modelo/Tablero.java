@@ -1,7 +1,5 @@
 package modelo;
 
-import modelo.enums.Color;
-
 import java.util.*;
 
 public class Tablero {
@@ -85,9 +83,6 @@ public class Tablero {
         if (posicionOcupada(filaDestino, columnaDestino)) {
             throw new IllegalStateException("La posición de destino ya está ocupada por otra ficha");
         }
-        if (!sonAdyacentes(filaOrigen, columnaOrigen, filaDestino, columnaDestino)) {
-            throw new IllegalStateException("Las posiciones no son adyacentes");
-        }
 
         Ficha ficha = tablero[filaOrigen][columnaOrigen];
         tablero[filaDestino][columnaDestino] = ficha;
@@ -104,59 +99,6 @@ public class Tablero {
         Ficha ficha = tablero[fila][columna];
         ficha.eliminarFicha();
         tablero[fila][columna] = null;
-    }
-
-    public boolean hayMolino(int fila, int columna) {
-        if (!posicionValida(fila, columna)) {
-            throw new IllegalArgumentException("Posición fuera de los límites del tablero");
-        }
-        if (!posicionOcupada(fila, columna)) {
-            throw new IllegalStateException("No hay ficha en la posición");
-        }
-
-        Ficha ficha = tablero[fila][columna];
-        Color color = ficha.getColor();
-
-        String pos = fila + "," + columna;
-        List<String> adyacentes = adyacencias.get(pos);
-
-        //busca una ficha adyacente del mismo color
-        for (String adyacente : adyacentes) {
-            String[] partes = adyacente.split(",");
-            int filaAdyacente = Integer.parseInt(partes[0]);
-            int columnaAdyacente = Integer.parseInt(partes[1]);
-
-            if (posicionOcupada(filaAdyacente, columnaAdyacente)) {
-                Ficha fichaAdyacente = tablero[filaAdyacente][columnaAdyacente];
-                if (fichaAdyacente.getColor() == color) {
-
-                    //si encuentra una ficha adyacente del mismo color se busca una ficha mas para formar el molino en la misma fila o columna
-                    //las coordenadas de esta ficha se obtienen restando o sumando la diferencia entre las filas y columnas de la ficha adyacente
-                    int[][] posiblesMolinos = {
-                        {filaAdyacente + Math.abs(fila - filaAdyacente), columnaAdyacente + Math.abs(columna - columnaAdyacente)},
-                        {filaAdyacente - Math.abs(fila - filaAdyacente), columnaAdyacente - Math.abs(columna - columnaAdyacente)},
-                        {fila + Math.abs(fila - filaAdyacente), columna + Math.abs(columna - columnaAdyacente)},
-                        {fila - Math.abs(fila - filaAdyacente), columna - Math.abs(columna - columnaAdyacente)}
-                    };
-
-                    //se itera sobre las posibles posiciones de la ficha que completa el molino
-                    for (int[] posMolino : posiblesMolinos) {
-                        int filaPosible = posMolino[0];
-                        int columnaPosible = posMolino[1];
-                        if (posicionValida(filaPosible, columnaPosible)) {
-                            Ficha posibleMolino = tablero[filaPosible][columnaPosible];
-                            if (posibleMolino != null && posibleMolino.getColor() == color &&
-                                !ficha.equals(posibleMolino) && !adyacente.equals(posibleMolino)) {
-                                //si encuentra una tercer ficha del mismo color, verifica que no sea la adyacente o la original
-                                return true;
-                            }
-                        }
-                    }
-                }
-            }
-        }
-
-        return false;
     }
 
     public boolean sonAdyacentes(int fila1, int columna1, int fila2, int columna2) {
@@ -197,5 +139,13 @@ public class Tablero {
                 tablero[i][j] = null;
             }
         }
+    }
+
+    public Map<String, List<String>> getAdyacencias() {
+        return adyacencias;
+    }
+
+    public static Set<String> getPosicionesInvalidas() {
+        return posicionesInvalidas;
     }
 }

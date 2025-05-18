@@ -2,11 +2,13 @@ package main;
 
 import modelo.Ficha;
 import modelo.Tablero;
+import modelo.Juego;
 import modelo.enums.Color;
 
 public class Main {
     public static void main(String[] args) {
         Tablero tablero = new Tablero();
+        Juego juego = new Juego(tablero);
         Ficha ficha1 = new Ficha(Color.BLANCO);
         Ficha ficha2 = new Ficha(Color.BLANCO);
         Ficha ficha3 = new Ficha(Color.BLANCO);
@@ -22,7 +24,7 @@ public class Main {
         tablero.colocarFicha(0,0,ficha6);
 
         tablero.imprimirTablero();
-        System.out.println(tablero.hayMolino(0,0));
+        System.out.println(juego.hayMolino(0,0));
 
     }
 }
