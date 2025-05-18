@@ -12,9 +12,6 @@ public class Controlador {
     public Controlador(Jugador jugador) {
         this.jugador = jugador;
         this.juego = new Juego(new Tablero());
-    }
-
-    public void agregarJugador(Jugador jugador) {
         juego.agregarJugador(jugador);
     }
 
