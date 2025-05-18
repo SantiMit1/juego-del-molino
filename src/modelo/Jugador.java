@@ -9,12 +9,11 @@ import modelo.enums.EstadoFicha;
 
 public class Jugador {
     private String nombre;
-    private final Color color;
+    private Color color;
     private final List<Ficha> fichas;
 
-    public Jugador(String nombre, Color color) {
+    public Jugador(String nombre) {
         this.nombre = nombre;
-        this.color = color;
         this.fichas = new ArrayList<>();
     }
 
@@ -28,7 +27,7 @@ public class Jugador {
         fichas.add(ficha);
     }
 
-    private List<Ficha> obtenerFichasPorEstado(EstadoFicha estado) {
+    public List<Ficha> obtenerFichasPorEstado(EstadoFicha estado) {
         List<Ficha> fichasPorEstado = new ArrayList<>();
         for (Ficha ficha : fichas) {
             if (ficha.getEstado() == estado) {
@@ -68,6 +67,10 @@ public class Jugador {
 
     public Color getColor() {
         return color;
+    }
+
+    public void setColor(Color color) {
+        this.color = color;
     }
 
     public List<Ficha> getFichas() {

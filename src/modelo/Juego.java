@@ -7,19 +7,43 @@ import java.util.List;
 
 public class Juego {
     private final Tablero tablero;
-    private List<Jugador> jugadores;
-    int turnoActual;
-    private FaseJuego fase;
+    private static List<Jugador> jugadores;
+    private static int turnoActual;
+    private static FaseJuego fase;
 
     public Juego(Tablero tablero) {
         this.tablero = tablero;
-        this.turnoActual = 0;
-        this.fase = FaseJuego.INICIO;
+        turnoActual = 0;
+        fase = FaseJuego.INICIO;
     }
 
-    public void iniciarJuego(Jugador jugador1, Jugador jugador2) {
-        this.jugadores = List.of(jugador1, jugador2);
-        this.fase = FaseJuego.COLOCANDO;
+    public void agregarJugador(Jugador jugador) {
+        if (jugadores.size() >= 2) {
+            throw new IllegalStateException("Ya hay dos jugadores en el juego");
+        }
+        if (jugadores.contains(jugador)) {
+            throw new IllegalArgumentException("El jugador ya está en la lista");
+        }
+
+        if(jugadores.isEmpty()) {
+            jugador.setColor(Color.BLANCO);
+        } else {
+            jugador.setColor(Color.NEGRO);
+        }
+
+        for(int i = 0; i < 9; i++) {
+            jugador.agregarFicha(new Ficha(jugador.getColor()));
+        }
+
+        jugadores.add(jugador);
+
+        if (jugadores.size() == 2) {
+            iniciarJuego();
+        }
+    }
+
+    public void iniciarJuego() {
+        fase = FaseJuego.COLOCANDO;
     }
 
     public void colocarFicha(int fila, int columna, Ficha ficha) {
@@ -86,7 +110,7 @@ public class Juego {
         }
     }
 
-    public boolean hayMolino(int fila, int columna) {
+    private boolean hayMolino(int fila, int columna) {
         if (!tablero.posicionValida(fila, columna)) {
             throw new IllegalArgumentException("Posición fuera de los límites del tablero");
         }
@@ -139,7 +163,7 @@ public class Juego {
         return false;
     }
 
-    public Jugador hayGanador() {
+    private Jugador hayGanador() {
         Jugador jugador1 = jugadores.get(0);
         Jugador jugador2 = jugadores.get(1);
         if (jugador1.contarFichasEnMano() == 0 && jugador1.contarFichasEnTablero() < 3) {

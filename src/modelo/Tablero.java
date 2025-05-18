@@ -3,9 +3,9 @@ package modelo;
 import java.util.*;
 
 public class Tablero {
-    private final Ficha[][] tablero;
     private static final int FILAS = 7;
     private static final int COLUMNAS = 7;
+    private static final Ficha[][] tablero = new Ficha[FILAS][COLUMNAS];
     private static final Map<String, List<String>> adyacencias = new HashMap<>();
     private static final Set<String> posicionesInvalidas = new HashSet<>(Arrays.asList(
             "0,1", "0,2", "0,4", "0,5", "1.0", "1,2", "1,4", "1,6",
@@ -39,10 +39,6 @@ public class Tablero {
         adyacencias.put("6,0", Arrays.asList("3,0", "6,3"));
         adyacencias.put("6,3", Arrays.asList("6,0", "5,3", "6,6"));
         adyacencias.put("6,6", Arrays.asList("3,6", "6,3"));
-    }
-
-    public Tablero() {
-        this.tablero = new Ficha[FILAS][COLUMNAS];
     }
 
     public boolean posicionValida(int fila, int columna) {
@@ -107,7 +103,6 @@ public class Tablero {
         return adyacencias.containsKey(pos1) && adyacencias.get(pos1).contains(pos2);
     }
 
-    //TODO crear una interfaz y dos clases para imprimir el tablero en la terminal o en una GUI
     private String imprimirFicha(int fila, int columna) {
         if (!posicionValida(fila, columna)) {
             throw new IllegalArgumentException("Posición invalida");
