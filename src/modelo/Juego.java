@@ -125,13 +125,13 @@ public class Juego extends Observable {
         }
 
         tablero.eliminarFicha(fila, columna);
+        tablero.imprimirTablero();
 
         if (hayGanador() != null) {
             notificarObservadores(Notificaciones.FIN);
         }
     }
 
-    //TODO FIX
     private boolean hayMolino(int fila, int columna) {
         if (!tablero.posicionValida(fila, columna)) {
             throw new IllegalArgumentException("Posición fuera de los límites del tablero");
@@ -172,7 +172,7 @@ public class Juego extends Observable {
                         if (tablero.posicionValida(filaPosible, columnaPosible)) {
                             Ficha posibleMolino = tablero.obtenerFicha(filaPosible, columnaPosible);
                             if (posibleMolino != null && posibleMolino.getColor() == color &&
-                                    !ficha.equals(posibleMolino) && !adyacente.equals(posibleMolino)) {
+                                    !ficha.equals(posibleMolino) && !fichaAdyacente.equals(posibleMolino)) {
                                 //si encuentra una tercer ficha del mismo color, verifica que no sea la adyacente o la original
                                 return true;
                             }
