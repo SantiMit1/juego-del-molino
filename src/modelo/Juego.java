@@ -2,19 +2,33 @@ package modelo;
 
 import modelo.enums.Color;
 import modelo.enums.FaseJuego;
+import observer.Notificaciones;
+import observer.Observable;
+import observer.Observer;
 
 import java.util.List;
 
-public class Juego {
+public class Juego extends Observable {
     private final Tablero tablero;
     private static List<Jugador> jugadores;
     private static int turnoActual;
     private static FaseJuego fase;
 
     public Juego(Tablero tablero) {
+        super();
         this.tablero = tablero;
         turnoActual = 0;
         fase = FaseJuego.INICIO;
+        notificarObservadores(Notificaciones.INICIO);
+    }
+
+    private void cambiarTurno() {
+        turnoActual++;
+        if(fase == FaseJuego.MOVIENDO) {
+            notificarObservador(Notificaciones.MOVER, observers.get(turnoActual % 2));
+        } else if(fase == FaseJuego.COLOCANDO) {
+            notificarObservador(Notificaciones.COLOCAR, observers.get(turnoActual % 2));
+        }
     }
 
     public void agregarJugador(Jugador jugador) {
@@ -25,13 +39,13 @@ public class Juego {
             throw new IllegalArgumentException("El jugador ya está en la lista");
         }
 
-        if(jugadores.isEmpty()) {
+        if (jugadores.isEmpty()) {
             jugador.setColor(Color.BLANCO);
         } else {
             jugador.setColor(Color.NEGRO);
         }
 
-        for(int i = 0; i < 9; i++) {
+        for (int i = 0; i < 9; i++) {
             jugador.agregarFicha(new Ficha(jugador.getColor()));
         }
 
@@ -44,6 +58,7 @@ public class Juego {
 
     public void iniciarJuego() {
         fase = FaseJuego.COLOCANDO;
+        tablero.imprimirTablero();
     }
 
     public void colocarFicha(int fila, int columna, Ficha ficha) {
@@ -58,13 +73,13 @@ public class Juego {
         }
 
         tablero.colocarFicha(fila, columna, ficha);
+        tablero.imprimirTablero();
 
-        if(hayMolino(fila, columna)) {
-            //TODO Si se forma un molino, el jugador puede eliminar una ficha del oponente
-            //hay que notificar al observer del cotrolador que formó un molino para que pueda eliminar una ficha
+        if (hayMolino(fila, columna)) {
+            notificarObservador(Notificaciones.MOLINO, observers.get(turnoActual % 2));
         }
 
-        if(jugadores.get(0).contarFichasEnMano() == 0 && jugadores.get(1).contarFichasEnMano() == 0) {
+        if (jugadores.get(0).contarFichasEnMano() == 0 && jugadores.get(1).contarFichasEnMano() == 0) {
             fase = FaseJuego.MOVIENDO;
         }
         turnoActual++;
@@ -83,15 +98,14 @@ public class Juego {
         if (jugador.getColor() != ficha.getColor()) {
             throw new IllegalArgumentException("El jugador debe mover una ficha de su color");
         }
-        if(!jugador.puedeSaltarFicha() && !tablero.sonAdyacentes(filaOrigen, columnaOrigen, filaDestino, columnaDestino)) {
+        if (!jugador.puedeSaltarFicha() && !tablero.sonAdyacentes(filaOrigen, columnaOrigen, filaDestino, columnaDestino)) {
             throw new IllegalArgumentException("El jugador solo puede mover a una posición adyacente");
         }
 
         tablero.moverFicha(filaOrigen, columnaOrigen, filaDestino, columnaDestino);
 
-        if(hayMolino(filaDestino, columnaDestino)) {
-            //TODO Si se forma un molino, el jugador puede eliminar una ficha del oponente
-            //hay que notificar al observer del cotrolador que formó un molino para que pueda eliminar una ficha
+        if (hayMolino(filaDestino, columnaDestino)) {
+            notificarObservador(Notificaciones.MOLINO, observers.get(turnoActual % 2));
         }
 
         turnoActual++;
@@ -106,7 +120,7 @@ public class Juego {
         tablero.eliminarFicha(fila, columna);
 
         if (hayGanador() != null) {
-            //TODO Notificar a los observers que terminó el juego
+            notificarObservadores(Notificaciones.FIN);
         }
     }
 

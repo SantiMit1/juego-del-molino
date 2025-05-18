@@ -4,6 +4,7 @@ import modelo.Juego;
 import modelo.Jugador;
 import modelo.Tablero;
 import modelo.enums.EstadoFicha;
+import observer.Observer;
 
 public class Controlador {
     private final Juego juego;
@@ -13,6 +14,14 @@ public class Controlador {
         this.jugador = jugador;
         this.juego = new Juego(new Tablero());
         juego.agregarJugador(jugador);
+    }
+
+    public void agregarObserver(Observer vista) {
+        juego.agregarObservador(vista);
+    }
+
+    public void eliminarObserver(Observer vista) {
+        juego.eliminarObservador(vista);
     }
 
     public void colocarFicha(int fila, int columna) {
