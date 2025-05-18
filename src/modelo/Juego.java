@@ -110,6 +110,7 @@ public class Juego extends Observable {
         }
 
         tablero.moverFicha(filaOrigen, columnaOrigen, filaDestino, columnaDestino);
+        tablero.imprimirTablero();
 
         if (hayMolino(filaDestino, columnaDestino)) {
             observers.get(turnoActual % 2).notificar(Notificaciones.MOLINO);

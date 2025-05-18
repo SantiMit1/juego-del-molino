@@ -25,15 +25,33 @@ public class Controlador {
         juego.eliminarObservador(vista);
     }
 
-    public void colocarFicha(int fila, int columna) {
-        juego.colocarFicha(fila, columna, juego.getJugadorActual().obtenerFichasPorEstado(EstadoFicha.EN_MANO).getFirst());
+    public boolean colocarFicha(int fila, int columna) {
+        try {
+            juego.colocarFicha(fila, columna, juego.getJugadorActual().obtenerFichasPorEstado(EstadoFicha.EN_MANO).getFirst());
+            return true;
+        } catch (Exception e) {
+            System.out.println("Error al colocar ficha: " + e.getMessage());
+            return false;
+        }
     }
 
-    public void moverFicha(int filaOrigen, int columnaOrigen, int filaDestino, int columnaDestino) {
-        juego.moverFicha(filaOrigen, columnaOrigen, filaDestino, columnaDestino);
+    public boolean moverFicha(int filaOrigen, int columnaOrigen, int filaDestino, int columnaDestino) {
+        try {
+            juego.moverFicha(filaOrigen, columnaOrigen, filaDestino, columnaDestino);
+            return true;
+        } catch (Exception e) {
+            System.out.println("Error al mover ficha: " + e.getMessage());
+            return false;
+        }
     }
 
-    public void eliminarFicha(int fila, int columna) {
-        juego.eliminarFicha(fila, columna);
+    public boolean eliminarFicha(int fila, int columna) {
+        try {
+            juego.eliminarFicha(fila, columna);
+            return true;
+        } catch (Exception e) {
+            System.out.println("Error al eliminar ficha: " + e.getMessage());
+            return false;
+        }
     }
 }

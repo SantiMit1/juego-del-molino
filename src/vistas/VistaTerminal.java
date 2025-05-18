@@ -20,26 +20,35 @@ public class VistaTerminal implements Observer {
     }
 
     public void colocarFicha() {
-        System.out.println(jugador.getNombre() + ": Colocar ficha (fila columna): ");
-        int fila = sc.nextInt();
-        int columna = sc.nextInt();
-        controlador.colocarFicha(fila, columna);
+        boolean flag = false;
+        while (!flag) {
+            System.out.println(jugador.getNombre() + ": Colocar ficha (fila columna): ");
+            int fila = sc.nextInt();
+            int columna = sc.nextInt();
+            flag = controlador.colocarFicha(fila, columna);
+        }
     }
 
     public void moverFicha() {
-        System.out.println(jugador.getNombre() + ": Mover ficha (filaOrigen columnaOrigen filaDestino columnaDestino): ");
-        int filaOrigen = sc.nextInt();
-        int columnaOrigen = sc.nextInt();
-        int filaDestino = sc.nextInt();
-        int columnaDestino = sc.nextInt();
-        controlador.moverFicha(filaOrigen, columnaOrigen, filaDestino, columnaDestino);
+        boolean flag = false;
+        while(!flag) {
+            System.out.println(jugador.getNombre() + ": Mover ficha (filaOrigen columnaOrigen filaDestino columnaDestino): ");
+            int filaOrigen = sc.nextInt();
+            int columnaOrigen = sc.nextInt();
+            int filaDestino = sc.nextInt();
+            int columnaDestino = sc.nextInt();
+            flag = controlador.moverFicha(filaOrigen, columnaOrigen, filaDestino, columnaDestino);
+        }
     }
 
     public void eliminarFicha() {
-        System.out.println(jugador.getNombre() + ": Eliminar ficha (fila columna): ");
-        int fila = sc.nextInt();
-        int columna = sc.nextInt();
-        controlador.eliminarFicha(fila, columna);
+        boolean flag = false;
+        while(!flag) {
+            System.out.println(jugador.getNombre() + ": Eliminar ficha (fila columna): ");
+            int fila = sc.nextInt();
+            int columna = sc.nextInt();
+            flag = controlador.eliminarFicha(fila, columna);
+        }
     }
 
     @Override
