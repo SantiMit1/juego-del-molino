@@ -1,7 +1,7 @@
 package modelo.enums;
 
 public enum FaseJuego {
-    INICIO,
+    ESPERA,
     COLOCANDO,
     MOVIENDO,
     FINALIZADO

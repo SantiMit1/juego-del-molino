@@ -18,15 +18,15 @@ public class Juego extends Observable {
         super();
         this.tablero = tablero;
         turnoActual = 0;
-        fase = FaseJuego.INICIO;
-        notificarObservadores(Notificaciones.INICIO);
+        fase = FaseJuego.ESPERA;
+        notificarObservadores(Notificaciones.ESPERA);
     }
 
     private void cambiarTurno() {
         turnoActual++;
-        if(fase == FaseJuego.MOVIENDO) {
+        if (fase == FaseJuego.MOVIENDO) {
             observers.get(turnoActual % 2).notificar(Notificaciones.MOVER);
-        } else if(fase == FaseJuego.COLOCANDO) {
+        } else if (fase == FaseJuego.COLOCANDO) {
             observers.get(turnoActual % 2).notificar(Notificaciones.COLOCAR);
         }
     }
@@ -63,7 +63,6 @@ public class Juego extends Observable {
     public void iniciarJuego() {
         fase = FaseJuego.COLOCANDO;
         tablero.imprimirTablero();
-        observers.get(turnoActual % 2).notificar(Notificaciones.INICIO);
         observers.get(turnoActual % 2).notificar(Notificaciones.COLOCAR);
     }
 
@@ -121,8 +120,16 @@ public class Juego extends Observable {
 
     public void eliminarFicha(int fila, int columna) {
         Ficha ficha = tablero.obtenerFicha(fila, columna);
+        if (ficha == null) {
+            throw new IllegalArgumentException("No hay ficha en la posición elegida");
+        }
+
         if (jugadores.get(turnoActual % 2).getColor() == ficha.getColor()) {
             throw new IllegalArgumentException("El jugador no puede eliminar su propia ficha");
+        }
+
+        if (existenFichasOponenteFueraDeMolino(ficha.getColor()) && hayMolino(fila, columna)) {
+            throw new IllegalArgumentException("El jugador no puede eliminar una ficha en molino porque hay fichas que no forman un molino");
         }
 
         tablero.eliminarFicha(fila, columna);
@@ -131,6 +138,20 @@ public class Juego extends Observable {
         if (hayGanador() != null) {
             notificarObservadores(Notificaciones.FIN);
         }
+    }
+
+    private boolean existenFichasOponenteFueraDeMolino(Color colorOponente) {
+        for (int fila = 0; fila < tablero.getFilas(); fila++) {
+            for (int columna = 0; columna < tablero.getColumnas(); columna++) {
+                Ficha ficha = tablero.obtenerFicha(fila, columna);
+                if (ficha != null && ficha.getColor() == colorOponente) {
+                    if (!hayMolino(fila, columna)) {
+                        return true;
+                    }
+                }
+            }
+        }
+        return false;
     }
 
     private boolean hayMolino(int fila, int columna) {
@@ -187,18 +208,16 @@ public class Juego extends Observable {
     }
 
     private Jugador hayGanador() {
-        Jugador jugador1 = jugadores.get(0);
-        Jugador jugador2 = jugadores.get(1);
-        if (jugador1.contarFichasEnMano() == 0 && jugador1.contarFichasEnTablero() < 3) {
-            fase = FaseJuego.FINALIZADO;
-            turnoActual = 0;
-            return jugador2;
-        } else if (jugador2.contarFichasEnMano() == 0 && jugador2.contarFichasEnTablero() < 3) {
-            fase = FaseJuego.FINALIZADO;
-            turnoActual = 0;
-            return jugador1;
+        for (Jugador jugador : jugadores) {
+            if (jugador.contarFichasEnMano() == 0 && jugador.contarFichasEnTablero() < 3) {
+                Jugador ganador = jugadores.get((jugadores.indexOf(jugador) + 1) % 2);
+                System.out.println("Ganador: " + ganador.getNombre());
+                fase = FaseJuego.FINALIZADO;
+                turnoActual = 0;
+                tablero.limpiarTablero();
+                return ganador;
+            }
         }
-
         return null;
     }
 }

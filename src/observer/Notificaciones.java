@@ -1,7 +1,7 @@
 package observer;
 
 public enum Notificaciones {
-    INICIO,
+    ESPERA,
     COLOCAR,
     MOVER,
     MOLINO,

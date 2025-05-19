@@ -63,9 +63,6 @@ public class Tablero {
     }
 
     public Ficha obtenerFicha(int fila, int columna) {
-        if (!posicionValida(fila, columna)) {
-            throw new IllegalArgumentException("Posición fuera de los límites del tablero");
-        }
         return tablero[fila][columna];
     }
 
@@ -142,5 +139,13 @@ public class Tablero {
 
     public static Set<String> getPosicionesInvalidas() {
         return posicionesInvalidas;
+    }
+
+    public int getFilas() {
+        return FILAS;
+    }
+
+    public int getColumnas() {
+        return COLUMNAS;
     }
 }

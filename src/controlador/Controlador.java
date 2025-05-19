@@ -4,6 +4,7 @@ import modelo.Juego;
 import modelo.Jugador;
 import modelo.Tablero;
 import modelo.enums.EstadoFicha;
+import observer.Notificaciones;
 import observer.Observer;
 
 public class Controlador {
@@ -15,6 +16,7 @@ public class Controlador {
 
     public void agregarObserver(Observer vista) {
         juego.agregarObservador(vista);
+        vista.notificar(Notificaciones.ESPERA);
     }
 
     public void agregarJugador(Jugador jugador) {

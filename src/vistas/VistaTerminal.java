@@ -4,6 +4,7 @@ import controlador.Controlador;
 import modelo.Jugador;
 import observer.Notificaciones;
 import observer.Observer;
+
 import java.util.Scanner;
 
 public class VistaTerminal implements Observer {
@@ -31,7 +32,7 @@ public class VistaTerminal implements Observer {
 
     public void moverFicha() {
         boolean flag = false;
-        while(!flag) {
+        while (!flag) {
             System.out.println(jugador.getNombre() + ": Mover ficha (filaOrigen columnaOrigen filaDestino columnaDestino): ");
             int filaOrigen = sc.nextInt();
             int columnaOrigen = sc.nextInt();
@@ -43,7 +44,7 @@ public class VistaTerminal implements Observer {
 
     public void eliminarFicha() {
         boolean flag = false;
-        while(!flag) {
+        while (!flag) {
             System.out.println(jugador.getNombre() + ": Eliminar ficha (fila columna): ");
             int fila = sc.nextInt();
             int columna = sc.nextInt();
@@ -53,10 +54,9 @@ public class VistaTerminal implements Observer {
 
     @Override
     public void notificar(Notificaciones notificacion) {
-        System.out.println("Notificación recibida");
-        switch(notificacion) {
-            case INICIO:
-                System.out.println("El juego ha comenzado.");
+        switch (notificacion) {
+            case ESPERA:
+                System.out.println("Esperando otro jugador...");
                 break;
             case COLOCAR:
                 System.out.println("Es tu turno de colocar una ficha.");
