@@ -23,8 +23,10 @@ public class VistaTerminal implements Observer {
     public void colocarFicha() {
         boolean flag = false;
         while (!flag) {
-            System.out.println(jugador.getNombre() + ": Colocar ficha (fila columna): ");
+            System.out.println(jugador.getNombre() + ": Colocar ficha: ");
+            System.out.println("Ingrese la fila donde quiere colocar la ficha: ");
             int fila = sc.nextInt();
+            System.out.println("Ingrese la columna donde quiere colocar la ficha: ");
             int columna = sc.nextInt();
             flag = controlador.colocarFicha(fila, columna);
         }
@@ -33,10 +35,14 @@ public class VistaTerminal implements Observer {
     public void moverFicha() {
         boolean flag = false;
         while (!flag) {
-            System.out.println(jugador.getNombre() + ": Mover ficha (filaOrigen columnaOrigen filaDestino columnaDestino): ");
+            System.out.println(jugador.getNombre() + ": Mover ficha: ");
+            System.out.println("Ingrese la fila de la ficha a mover: ");
             int filaOrigen = sc.nextInt();
+            System.out.println("Ingrese la columna de la ficha a mover: ");
             int columnaOrigen = sc.nextInt();
+            System.out.println("Ingrese la fila de destino: ");
             int filaDestino = sc.nextInt();
+            System.out.println("Ingrese la columna de destino: ");
             int columnaDestino = sc.nextInt();
             flag = controlador.moverFicha(filaOrigen, columnaOrigen, filaDestino, columnaDestino);
         }
@@ -45,8 +51,10 @@ public class VistaTerminal implements Observer {
     public void eliminarFicha() {
         boolean flag = false;
         while (!flag) {
-            System.out.println(jugador.getNombre() + ": Eliminar ficha (fila columna): ");
+            System.out.println(jugador.getNombre() + ": Eliminar ficha: ");
+            System.out.println("Ingrese la fila de la ficha a eliminar: ");
             int fila = sc.nextInt();
+            System.out.println("Ingrese la columna de la ficha a eliminar: ");
             int columna = sc.nextInt();
             flag = controlador.eliminarFicha(fila, columna);
         }
