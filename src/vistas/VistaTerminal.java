@@ -7,7 +7,7 @@ import observer.Observer;
 
 import java.util.Scanner;
 
-public class VistaTerminal implements Observer {
+public class VistaTerminal implements Observer, IVista {
     private final Scanner sc = new Scanner(System.in);
     private final Controlador controlador;
     private final Jugador jugador;
@@ -20,6 +20,7 @@ public class VistaTerminal implements Observer {
         controlador.agregarJugador(jugador);
     }
 
+    @Override
     public void colocarFicha() {
         boolean flag = false;
         while (!flag) {
@@ -32,6 +33,7 @@ public class VistaTerminal implements Observer {
         }
     }
 
+    @Override
     public void moverFicha() {
         boolean flag = false;
         while (!flag) {
@@ -48,6 +50,7 @@ public class VistaTerminal implements Observer {
         }
     }
 
+    @Override
     public void eliminarFicha() {
         boolean flag = false;
         while (!flag) {

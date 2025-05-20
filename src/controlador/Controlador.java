@@ -8,11 +8,7 @@ import observer.Notificaciones;
 import observer.Observer;
 
 public class Controlador {
-    private final Juego juego;
-
-    public Controlador() {
-        this.juego = new Juego(new Tablero());
-    }
+    private static final Juego juego = new Juego(new Tablero());
 
     public void agregarObserver(Observer vista) {
         juego.agregarObservador(vista);
