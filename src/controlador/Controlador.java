@@ -2,13 +2,16 @@ package controlador;
 
 import modelo.Juego;
 import modelo.Jugador;
-import modelo.Tablero;
 import modelo.enums.EstadoFicha;
 import observer.Notificaciones;
 import observer.Observer;
 
 public class Controlador {
-    private static final Juego juego = new Juego(new Tablero());
+    private final Juego juego;
+
+    public Controlador(Juego juego) {
+        this.juego = juego;
+    }
 
     public void agregarObserver(Observer vista) {
         juego.agregarObservador(vista);
