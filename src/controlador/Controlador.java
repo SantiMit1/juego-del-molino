@@ -33,7 +33,7 @@ public class Controlador implements Observer {
             juego.colocarFicha(fila, columna, juego.getJugadorActual().obtenerFichasPorEstado(EstadoFicha.EN_MANO).getFirst());
             return true;
         } catch (Exception e) {
-            System.out.println("Error al colocar ficha: " + e.getMessage());
+            vista.mostrarMensaje("Error al colocar ficha: " + e.getMessage());
             return false;
         }
     }
@@ -43,7 +43,7 @@ public class Controlador implements Observer {
             juego.moverFicha(filaOrigen, columnaOrigen, filaDestino, columnaDestino);
             return true;
         } catch (Exception e) {
-            System.out.println("Error al mover ficha: " + e.getMessage());
+            vista.mostrarMensaje("Error al mover ficha: " + e.getMessage());
             return false;
         }
     }
@@ -53,7 +53,7 @@ public class Controlador implements Observer {
             juego.eliminarFicha(fila, columna);
             return true;
         } catch (Exception e) {
-            System.out.println("Error al eliminar ficha: " + e.getMessage());
+            vista.mostrarMensaje("Error al eliminar ficha: " + e.getMessage());
             return false;
         }
     }
@@ -62,7 +62,7 @@ public class Controlador implements Observer {
     public void notificar(Notificaciones notificacion) {
         switch (notificacion) {
             case ESPERA:
-                System.out.println("Esperando otro jugador...");
+                vista.mostrarMensaje("Esperando otro jugador...");
                 break;
             case COLOCAR:
                 vista.colocarFicha();
@@ -74,7 +74,7 @@ public class Controlador implements Observer {
                 vista.eliminarFicha();
                 break;
             case FIN:
-                System.out.println("El juego ha terminado.");
+                System.out.println("El ganador es: " + juego.getGanador().getNombre());
                 break;
         }
     }

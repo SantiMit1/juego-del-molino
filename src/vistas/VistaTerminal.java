@@ -60,4 +60,9 @@ public class VistaTerminal implements IVista {
             flag = controlador.eliminarFicha(fila, columna);
         }
     }
+
+    @Override
+    public void mostrarMensaje(String mensaje) {
+        System.out.println(mensaje);
+    }
 }
