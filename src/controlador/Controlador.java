@@ -5,17 +5,19 @@ import modelo.Jugador;
 import modelo.enums.EstadoFicha;
 import observer.Notificaciones;
 import observer.Observer;
+import vistas.IVista;
 
-public class Controlador {
+public class Controlador implements Observer {
     private final Juego juego;
+    private IVista vista;
 
     public Controlador(Juego juego) {
         this.juego = juego;
+        juego.agregarObservador(this);
     }
 
-    public void agregarObserver(Observer vista) {
-        juego.agregarObservador(vista);
-        vista.notificar(Notificaciones.ESPERA);
+    public void setVista(IVista vista) {
+        this.vista = vista;
     }
 
     public void agregarJugador(Jugador jugador) {
@@ -53,6 +55,27 @@ public class Controlador {
         } catch (Exception e) {
             System.out.println("Error al eliminar ficha: " + e.getMessage());
             return false;
+        }
+    }
+
+    @Override
+    public void notificar(Notificaciones notificacion) {
+        switch (notificacion) {
+            case ESPERA:
+                System.out.println("Esperando otro jugador...");
+                break;
+            case COLOCAR:
+                vista.colocarFicha();
+                break;
+            case MOVER:
+                vista.moverFicha();
+                break;
+            case MOLINO:
+                vista.eliminarFicha();
+                break;
+            case FIN:
+                System.out.println("El juego ha terminado.");
+                break;
         }
     }
 }
