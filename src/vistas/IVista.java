@@ -6,4 +6,6 @@ public interface IVista {
     public void moverFicha();
 
     public void eliminarFicha();
+
+    public void mostrarMensaje(String mensaje);
 }

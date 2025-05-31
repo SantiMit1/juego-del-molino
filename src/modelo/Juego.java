@@ -13,13 +13,13 @@ public class Juego extends Observable {
     private static final List<Jugador> jugadores = new ArrayList<Jugador>();
     private static int turnoActual;
     private static FaseJuego fase;
+    private static Jugador ganador = null;
 
     public Juego(Tablero tablero) {
         super();
         this.tablero = tablero;
         turnoActual = 0;
         fase = FaseJuego.ESPERA;
-        notificarObservadores(Notificaciones.ESPERA);
     }
 
     private void cambiarTurno() {
@@ -53,6 +53,8 @@ public class Juego extends Observable {
 
         if (jugadores.size() == 2) {
             iniciarJuego();
+        } else {
+            observers.getFirst().notificar(Notificaciones.ESPERA);
         }
     }
 
@@ -157,14 +159,18 @@ public class Juego extends Observable {
     private Jugador hayGanador() {
         for (Jugador jugador : jugadores) {
             if (jugador.contarFichasEnMano() == 0 && jugador.contarFichasEnTablero() < 3) {
-                Jugador ganador = jugadores.get((jugadores.indexOf(jugador) + 1) % 2);
-                System.out.println("Ganador: " + ganador.getNombre());
+                Jugador nuevoGanador = jugadores.get((jugadores.indexOf(jugador) + 1) % 2);
                 fase = FaseJuego.FINALIZADO;
                 turnoActual = 0;
                 tablero.limpiarTablero();
+                ganador = nuevoGanador;
                 return ganador;
             }
         }
         return null;
+    }
+
+    public Jugador getGanador() {
+        return ganador;
     }
 }
