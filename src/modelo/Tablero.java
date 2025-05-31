@@ -1,110 +1,172 @@
 package modelo;
 
+import modelo.enums.Color;
+
 import java.util.*;
 
 public class Tablero {
     private static final int FILAS = 7;
     private static final int COLUMNAS = 7;
-    private static final Ficha[][] tablero = new Ficha[FILAS][COLUMNAS];
-    private static final Map<String, List<String>> adyacencias = new HashMap<>();
-    private static final Set<String> posicionesInvalidas = new HashSet<>(Arrays.asList(
-            "0,1", "0,2", "0,4", "0,5", "1.0", "1,2", "1,4", "1,6",
-            "2,0", "2,1", "2,5", "2,6", "3,3", "4,0", "4,1", "4,5",
-            "4,6", "5,0", "5,2", "5,4", "5,6", "6,1", "6,2", "6,4", "6,5"
-    ));
+    private final Nodo[][] nodos = new Nodo[FILAS][COLUMNAS];
 
-    static {
-        // Definición de adyacencias
-        adyacencias.put("0,0", Arrays.asList("0,3", "3,0"));
-        adyacencias.put("0,3", Arrays.asList("0,0", "1,3", "0,6"));
-        adyacencias.put("0,6", Arrays.asList("0,3", "3,6"));
-        adyacencias.put("1,1", Arrays.asList("3,1", "1,3"));
-        adyacencias.put("1,3", Arrays.asList("1,1", "0,3", "1,5", "2,3"));
-        adyacencias.put("1,5", Arrays.asList("1,3", "3,5"));
-        adyacencias.put("2,2", Arrays.asList("3,2", "2,3"));
-        adyacencias.put("2,3", Arrays.asList("2,2", "1,3", "2,4"));
-        adyacencias.put("2,4", Arrays.asList("2,3", "3,4"));
-        adyacencias.put("3,0", Arrays.asList("0,0", "6,0", "3,1"));
-        adyacencias.put("3,1", Arrays.asList("3,0", "1,1", "3,2", "5,1"));
-        adyacencias.put("3,2", Arrays.asList("3,1", "4,2", "2,2"));
-        adyacencias.put("3,4", Arrays.asList("4,4", "2,4", "3,5"));
-        adyacencias.put("3,5", Arrays.asList("3,4", "5,5", "1,5", "3,6"));
-        adyacencias.put("3,6", Arrays.asList("0,6", "3,5", "6,6"));
-        adyacencias.put("4,2", Arrays.asList("4,3", "3,2"));
-        adyacencias.put("4,3", Arrays.asList("4,2", "4,4", "5,3"));
-        adyacencias.put("4,4", Arrays.asList("4,3", "3,4"));
-        adyacencias.put("5,1", Arrays.asList("3,1", "5,3"));
-        adyacencias.put("5,3", Arrays.asList("5,5", "5,1", "4,3", "6,3"));
-        adyacencias.put("5,5", Arrays.asList("5,3", "3,5"));
-        adyacencias.put("6,0", Arrays.asList("3,0", "6,3"));
-        adyacencias.put("6,3", Arrays.asList("6,0", "5,3", "6,6"));
-        adyacencias.put("6,6", Arrays.asList("3,6", "6,3"));
+    public Tablero() {
+        inicializarNodos();
+        conectarAdyacencias();
     }
 
-    public boolean posicionValida(int fila, int columna) {
-        return (fila >= 0 && fila < FILAS) && (columna >= 0 && columna < COLUMNAS) && !posicionesInvalidas.contains(fila + "," + columna);
+    private void inicializarNodos() {
+        for (int i = 0; i < FILAS; i++) {
+            for (int j = 0; j < COLUMNAS; j++) {
+                if (esPosicionValida(i, j)) {
+                    nodos[i][j] = new Nodo(i, j);
+                }
+            }
+        }
+    }
+
+    private void conectarAdyacencias() {
+        // Definición de adyacencias
+        conectarNodos(0,0, 0,3); conectarNodos(0,0, 3,0);
+        conectarNodos(0,3, 1,3); conectarNodos(0,3, 0,6);
+        conectarNodos(0,6, 3,6);
+        conectarNodos(1,1, 3,1); conectarNodos(1,1, 1,3);
+        conectarNodos(1,3, 1,5); conectarNodos(1,3, 2,3);
+        conectarNodos(1,5, 3,5);
+        conectarNodos(2,2, 3,2); conectarNodos(2,2, 2,3);
+        conectarNodos(2,3, 2,4);
+        conectarNodos(2,4, 3,4);
+        conectarNodos(3,0, 6,0); conectarNodos(3,0, 3,1);
+        conectarNodos(3,1, 3,2); conectarNodos(3,1, 5,1);
+        conectarNodos(3,2, 4,2); conectarNodos(3,2, 2,2);
+        conectarNodos(3,4, 4,4); conectarNodos(3,4, 2,4); conectarNodos(3,4, 3,5);
+        conectarNodos(3,5, 5,5); conectarNodos(3,5, 3,6);
+        conectarNodos(3,6, 6,6);
+        conectarNodos(4,2, 4,3); conectarNodos(4,2, 3,2);
+        conectarNodos(4,3, 4,4); conectarNodos(4,3, 5,3);
+        conectarNodos(4,4, 3,4);
+        conectarNodos(5,1, 5,3); conectarNodos(5,1, 3,1);
+        conectarNodos(5,3, 5,5); conectarNodos(5,3, 4,3); conectarNodos(5,3, 6,3);
+        conectarNodos(5,5, 3,5);
+        conectarNodos(6,0, 6,3);
+        conectarNodos(6,3, 6,6);
+    }
+
+    private void conectarNodos(int f1, int c1, int f2, int c2) {
+        Nodo n1 = getNodo(f1, c1);
+        Nodo n2 = getNodo(f2, c2);
+        if (n1 != null && n2 != null) {
+            n1.agregarAdyacente(n2);
+            n2.agregarAdyacente(n1);
+        }
+    }
+
+    public boolean esPosicionValida(int fila, int columna) {
+        // Lista de posiciones inválidas
+        String[] invalidas = {"0,1","0,2","0,4","0,5","1,0","1,2","1,4","1,6","2,0","2,1","2,5","2,6","3,3","4,0","4,1","4,5","4,6","5,0","5,2","5,4","5,6","6,1","6,2","6,4","6,5"};
+        String pos = fila + "," + columna;
+        for (String invalida : invalidas) {
+            if (invalida.equals(pos)) return false;
+        }
+        return (fila >= 0 && fila < FILAS) && (columna >= 0 && columna < COLUMNAS);
     }
 
     public boolean posicionOcupada(int fila, int columna) {
-        if (!posicionValida(fila, columna))
+        Nodo nodo = getNodo(fila, columna);
+        if (nodo == null)
             throw new IllegalArgumentException("Posición fuera de los límites del tablero");
-        return tablero[fila][columna] != null;
+        return nodo.getFicha() != null;
     }
 
     public void colocarFicha(int fila, int columna, Ficha ficha) {
-        if (!posicionValida(fila, columna)) {
+        Nodo nodo = getNodo(fila, columna);
+        if (nodo == null) {
             throw new IllegalArgumentException("Posición fuera de los límites del tablero");
         }
-        if (posicionOcupada(fila, columna)) {
+        if (nodo.getFicha() != null) {
             throw new IllegalStateException("La posición ya está ocupada por otra ficha");
         }
-        tablero[fila][columna] = ficha;
+        nodo.setFicha(ficha);
         ficha.colocarFicha();
     }
 
     public Ficha obtenerFicha(int fila, int columna) {
-        return tablero[fila][columna];
+        Nodo nodo = getNodo(fila, columna);
+        return nodo != null ? nodo.getFicha() : null;
     }
 
     public void moverFicha(int filaOrigen, int columnaOrigen, int filaDestino, int columnaDestino) {
-        if (!posicionValida(filaOrigen, columnaOrigen) || !posicionValida(filaDestino, columnaDestino)) {
+        Nodo origen = getNodo(filaOrigen, columnaOrigen);
+        Nodo destino = getNodo(filaDestino, columnaDestino);
+        if (origen == null || destino == null) {
             throw new IllegalArgumentException("Posición fuera de los límites del tablero");
         }
-        if (!posicionOcupada(filaOrigen, columnaOrigen)) {
+        if (origen.getFicha() == null) {
             throw new IllegalStateException("No hay ficha en la posición de origen");
         }
-        if (posicionOcupada(filaDestino, columnaDestino)) {
+        if (destino.getFicha() != null) {
             throw new IllegalStateException("La posición de destino ya está ocupada por otra ficha");
         }
-
-        Ficha ficha = tablero[filaOrigen][columnaOrigen];
-        tablero[filaDestino][columnaDestino] = ficha;
-        tablero[filaOrigen][columnaOrigen] = null;
+        Ficha ficha = origen.getFicha();
+        destino.setFicha(ficha);
+        origen.setFicha(null);
     }
 
     public void eliminarFicha(int fila, int columna) {
-        if (!posicionValida(fila, columna)) {
+        Nodo nodo = getNodo(fila, columna);
+        if (nodo == null) {
+            throw new IllegalArgumentException("Posición fuera de los límites del tablero");
+        }
+        if (nodo.getFicha() == null) {
+            throw new IllegalStateException("No hay ficha en la posición");
+        }
+        Ficha ficha = nodo.getFicha();
+        ficha.eliminarFicha();
+        nodo.setFicha(null);
+    }
+
+    public boolean sonAdyacentes(int fila1, int columna1, int fila2, int columna2) {
+        Nodo n1 = getNodo(fila1, columna1);
+        Nodo n2 = getNodo(fila2, columna2);
+        return n1 != null && n2 != null && n1.getAdyacentes().contains(n2);
+    }
+
+    public boolean hayMolino(int fila, int columna) {
+        if (!esPosicionValida(fila, columna)) {
             throw new IllegalArgumentException("Posición fuera de los límites del tablero");
         }
         if (!posicionOcupada(fila, columna)) {
             throw new IllegalStateException("No hay ficha en la posición");
         }
-        Ficha ficha = tablero[fila][columna];
-        ficha.eliminarFicha();
-        tablero[fila][columna] = null;
-    }
-
-    public boolean sonAdyacentes(int fila1, int columna1, int fila2, int columna2) {
-        String pos1 = fila1 + "," + columna1;
-        String pos2 = fila2 + "," + columna2;
-        return adyacencias.containsKey(pos1) && adyacencias.get(pos1).contains(pos2);
+        Ficha ficha = obtenerFicha(fila, columna);
+        if (ficha == null) return false;
+        Color color = ficha.getColor();
+        Nodo nodo = getNodo(fila, columna);
+        List<Nodo> adyacentes = nodo.getAdyacentes();
+        for (Nodo ady : adyacentes) {
+            Ficha fichaAdy = ady.getFicha();
+            if (fichaAdy != null && fichaAdy.getColor() == color) {
+                int diferenciaFila = ady.getFila() - fila;
+                int diferenciaColumna = ady.getColumna() - columna;
+                int filaTercera = ady.getFila() + diferenciaFila;
+                int columnaTercera = ady.getColumna() + diferenciaColumna;
+                Nodo tercerNodo = getNodo(filaTercera, columnaTercera);
+                if (tercerNodo != null) {
+                    Ficha fichaTercera = tercerNodo.getFicha();
+                    if (fichaTercera != null && fichaTercera.getColor() == color) {
+                        return true;
+                    }
+                }
+            }
+        }
+        return false;
     }
 
     private String imprimirFicha(int fila, int columna) {
-        if (!posicionValida(fila, columna)) {
-            throw new IllegalArgumentException("Posición invalida");
+        Nodo nodo = getNodo(fila, columna);
+        if (nodo == null) {
+            return " ";
         }
-        Ficha ficha = tablero[fila][columna];
+        Ficha ficha = nodo.getFicha();
         return ficha != null ? ficha.getColor().toString().substring(0, 1) : "@";
     }
 
@@ -128,17 +190,17 @@ public class Tablero {
     public void limpiarTablero() {
         for (int i = 0; i < FILAS; i++) {
             for (int j = 0; j < COLUMNAS; j++) {
-                tablero[i][j] = null;
+                Nodo nodo = nodos[i][j];
+                if (nodo != null) {
+                    nodo.setFicha(null);
+                }
             }
         }
     }
 
-    public Map<String, List<String>> getAdyacencias() {
-        return adyacencias;
-    }
-
-    public static Set<String> getPosicionesInvalidas() {
-        return posicionesInvalidas;
+    public Nodo getNodo(int fila, int columna) {
+        if (fila < 0 || fila >= FILAS || columna < 0 || columna >= COLUMNAS) return null;
+        return nodos[fila][columna];
     }
 
     public int getFilas() {

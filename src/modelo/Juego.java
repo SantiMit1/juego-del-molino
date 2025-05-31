@@ -80,7 +80,7 @@ public class Juego extends Observable {
         tablero.colocarFicha(fila, columna, ficha);
         tablero.imprimirTablero();
 
-        if (hayMolino(fila, columna)) {
+        if (tablero.hayMolino(fila, columna)) {
             observers.get(turnoActual % 2).notificar(Notificaciones.MOLINO);
         }
 
@@ -111,7 +111,7 @@ public class Juego extends Observable {
         tablero.moverFicha(filaOrigen, columnaOrigen, filaDestino, columnaDestino);
         tablero.imprimirTablero();
 
-        if (hayMolino(filaDestino, columnaDestino)) {
+        if (tablero.hayMolino(filaDestino, columnaDestino)) {
             observers.get(turnoActual % 2).notificar(Notificaciones.MOLINO);
         }
 
@@ -128,7 +128,7 @@ public class Juego extends Observable {
             throw new IllegalArgumentException("El jugador no puede eliminar su propia ficha");
         }
 
-        if (existenFichasOponenteFueraDeMolino(ficha.getColor()) && hayMolino(fila, columna)) {
+        if (existenFichasOponenteFueraDeMolino(ficha.getColor()) && tablero.hayMolino(fila, columna)) {
             throw new IllegalArgumentException("El jugador no puede eliminar una ficha en molino porque hay fichas que no forman un molino");
         }
 
@@ -145,65 +145,12 @@ public class Juego extends Observable {
             for (int columna = 0; columna < tablero.getColumnas(); columna++) {
                 Ficha ficha = tablero.obtenerFicha(fila, columna);
                 if (ficha != null && ficha.getColor() == colorOponente) {
-                    if (!hayMolino(fila, columna)) {
+                    if (!tablero.hayMolino(fila, columna)) {
                         return true;
                     }
                 }
             }
         }
-        return false;
-    }
-
-    private boolean hayMolino(int fila, int columna) {
-        if (!tablero.posicionValida(fila, columna)) {
-            throw new IllegalArgumentException("Posición fuera de los límites del tablero");
-        }
-        if (!tablero.posicionOcupada(fila, columna)) {
-            throw new IllegalStateException("No hay ficha en la posición");
-        }
-
-        Ficha ficha = tablero.obtenerFicha(fila, columna);
-        Color color = ficha.getColor();
-
-        String pos = fila + "," + columna;
-        List<String> adyacentes = tablero.getAdyacencias().get(pos);
-
-        //busca una ficha adyacente del mismo color
-        for (String adyacente : adyacentes) {
-            String[] partes = adyacente.split(",");
-            int filaAdyacente = Integer.parseInt(partes[0]);
-            int columnaAdyacente = Integer.parseInt(partes[1]);
-
-            if (tablero.posicionOcupada(filaAdyacente, columnaAdyacente)) {
-                Ficha fichaAdyacente = tablero.obtenerFicha(filaAdyacente, columnaAdyacente);
-                if (fichaAdyacente.getColor() == color) {
-
-                    //si encuentra una ficha adyacente del mismo color se busca una ficha mas para formar el molino en la misma fila o columna
-                    //las coordenadas de esta ficha se obtienen restando o sumando la diferencia entre las filas y columnas de la ficha adyacente
-                    int[][] posiblesMolinos = {
-                            {filaAdyacente + Math.abs(fila - filaAdyacente), columnaAdyacente + Math.abs(columna - columnaAdyacente)},
-                            {filaAdyacente - Math.abs(fila - filaAdyacente), columnaAdyacente - Math.abs(columna - columnaAdyacente)},
-                            {fila + Math.abs(fila - filaAdyacente), columna + Math.abs(columna - columnaAdyacente)},
-                            {fila - Math.abs(fila - filaAdyacente), columna - Math.abs(columna - columnaAdyacente)}
-                    };
-
-                    //se itera sobre las posibles posiciones de la ficha que completa el molino
-                    for (int[] posMolino : posiblesMolinos) {
-                        int filaPosible = posMolino[0];
-                        int columnaPosible = posMolino[1];
-                        if (tablero.posicionValida(filaPosible, columnaPosible)) {
-                            Ficha posibleMolino = tablero.obtenerFicha(filaPosible, columnaPosible);
-                            if (posibleMolino != null && posibleMolino.getColor() == color &&
-                                    !ficha.equals(posibleMolino) && !fichaAdyacente.equals(posibleMolino)) {
-                                //si encuentra una tercer ficha del mismo color, verifica que no sea la adyacente o la original
-                                return true;
-                            }
-                        }
-                    }
-                }
-            }
-        }
-
         return false;
     }
 
