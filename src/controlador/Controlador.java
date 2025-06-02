@@ -2,6 +2,7 @@ package controlador;
 
 import modelo.Juego;
 import modelo.Jugador;
+import modelo.Tablero;
 import modelo.enums.EstadoFicha;
 import observer.Notificaciones;
 import observer.Observer;
@@ -9,10 +10,12 @@ import vistas.IVista;
 
 public class Controlador implements Observer {
     private final Juego juego;
+    private final Tablero tablero;
     private IVista vista;
 
     public Controlador(Juego juego) {
         this.juego = juego;
+        this.tablero = juego.getTablero();
         juego.agregarObservador(this);
     }
 
@@ -56,6 +59,12 @@ public class Controlador implements Observer {
             vista.mostrarMensaje("Error al eliminar ficha: " + e.getMessage());
             return false;
         }
+    }
+
+    public void imprimirTablero() {
+        //TODO pasar el tablero a un string estandarizado para mostrarlos en la vista
+        String tableroString = tablero.generarRepresentacionDelTablero();
+        vista.mostrarTablero(tableroString);
     }
 
     @Override

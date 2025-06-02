@@ -173,4 +173,8 @@ public class Juego extends Observable {
     public Jugador getGanador() {
         return ganador;
     }
+
+    public Tablero getTablero() {
+        return tablero;
+    }
 }

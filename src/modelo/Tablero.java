@@ -187,6 +187,11 @@ public class Tablero {
         System.out.println(" " + imprimirFicha(6, 0) + "-----------" + imprimirFicha(6, 3) + "-----------" + imprimirFicha(6, 6));
     }
 
+    public String generarRepresentacionDelTablero() {
+        //TODO generar representacion
+        return "todo";
+    }
+
     public void limpiarTablero() {
         for (int i = 0; i < FILAS; i++) {
             for (int j = 0; j < COLUMNAS; j++) {

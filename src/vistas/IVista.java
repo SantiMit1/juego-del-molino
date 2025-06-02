@@ -8,4 +8,6 @@ public interface IVista {
     public void eliminarFicha();
 
     public void mostrarMensaje(String mensaje);
+
+    void mostrarTablero(String tablero);
 }
