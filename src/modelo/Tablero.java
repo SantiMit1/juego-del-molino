@@ -161,6 +161,7 @@ public class Tablero {
         return false;
     }
 
+    //TODO Borrar
     private String imprimirFicha(int fila, int columna) {
         Nodo nodo = getNodo(fila, columna);
         if (nodo == null) {
@@ -170,6 +171,7 @@ public class Tablero {
         return ficha != null ? ficha.getColor().toString().substring(0, 1) : "@";
     }
 
+    //TODO Borrar
     public void imprimirTablero() {
         // si estas corrigiendo esto te pido perdon, no se me ocurrio una forma mejor de hacerlo
         System.out.println(" " + imprimirFicha(0, 0) + "-----------" + imprimirFicha(0, 3) + "-----------" + imprimirFicha(0, 6));
@@ -187,11 +189,6 @@ public class Tablero {
         System.out.println(" " + imprimirFicha(6, 0) + "-----------" + imprimirFicha(6, 3) + "-----------" + imprimirFicha(6, 6));
     }
 
-    public String generarRepresentacionDelTablero() {
-        //TODO generar representacion
-        return "todo";
-    }
-
     public void limpiarTablero() {
         for (int i = 0; i < FILAS; i++) {
             for (int j = 0; j < COLUMNAS; j++) {
@@ -206,6 +203,10 @@ public class Tablero {
     public Nodo getNodo(int fila, int columna) {
         if (fila < 0 || fila >= FILAS || columna < 0 || columna >= COLUMNAS) return null;
         return nodos[fila][columna];
+    }
+
+    public Nodo[][] getNodos() {
+        return nodos;
     }
 
     public int getFilas() {

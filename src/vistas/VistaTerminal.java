@@ -2,6 +2,7 @@ package vistas;
 
 import controlador.Controlador;
 import modelo.Jugador;
+import modelo.Nodo;
 
 import java.util.Scanner;
 
@@ -67,7 +68,7 @@ public class VistaTerminal implements IVista {
     }
 
     @Override
-    public void mostrarTablero(String tablero) {
-        // TODO pasar la informacion del tablero a un String para que pueda ser representados por las vistas
+    public void mostrarTablero(Nodo[][] nodos) {
+        // TODO
     }
 }

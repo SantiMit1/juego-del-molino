@@ -1,5 +1,7 @@
 package vistas;
 
+import modelo.Nodo;
+
 public interface IVista {
     public void colocarFicha();
 
@@ -9,5 +11,5 @@ public interface IVista {
 
     public void mostrarMensaje(String mensaje);
 
-    void mostrarTablero(String tablero);
+    void mostrarTablero(Nodo[][] nodos);
 }

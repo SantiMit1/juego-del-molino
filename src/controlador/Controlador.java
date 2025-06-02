@@ -2,6 +2,7 @@ package controlador;
 
 import modelo.Juego;
 import modelo.Jugador;
+import modelo.Nodo;
 import modelo.Tablero;
 import modelo.enums.EstadoFicha;
 import observer.Notificaciones;
@@ -62,9 +63,8 @@ public class Controlador implements Observer {
     }
 
     public void imprimirTablero() {
-        //TODO pasar el tablero a un string estandarizado para mostrarlos en la vista
-        String tableroString = tablero.generarRepresentacionDelTablero();
-        vista.mostrarTablero(tableroString);
+        Nodo[][] nodos = tablero.getNodos();
+        vista.mostrarTablero(nodos);
     }
 
     @Override
