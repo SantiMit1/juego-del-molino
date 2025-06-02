@@ -24,7 +24,9 @@ public class Controlador implements Observer {
         this.vista = vista;
     }
 
-    public void agregarJugador(Jugador jugador) {
+    public void crearJugador(String nombre) {
+        Jugador jugador = new Jugador(nombre);
+        vista.mostrarMensaje("Jugador " + nombre + " creado y agregado al juego.");
         juego.agregarJugador(jugador);
     }
 
@@ -35,6 +37,8 @@ public class Controlador implements Observer {
     public boolean colocarFicha(int fila, int columna) {
         try {
             juego.colocarFicha(fila, columna, juego.getJugadorActual().obtenerFichasPorEstado(EstadoFicha.EN_MANO).getFirst());
+            imprimirTablero();
+            vista.mostrarMensaje("Esperando movimiento del otro jugador");
             return true;
         } catch (Exception e) {
             vista.mostrarMensaje("Error al colocar ficha: " + e.getMessage());
@@ -45,6 +49,8 @@ public class Controlador implements Observer {
     public boolean moverFicha(int filaOrigen, int columnaOrigen, int filaDestino, int columnaDestino) {
         try {
             juego.moverFicha(filaOrigen, columnaOrigen, filaDestino, columnaDestino);
+            imprimirTablero();
+            vista.mostrarMensaje("Esperando movimiento del otro jugador");
             return true;
         } catch (Exception e) {
             vista.mostrarMensaje("Error al mover ficha: " + e.getMessage());
@@ -55,6 +61,8 @@ public class Controlador implements Observer {
     public boolean eliminarFicha(int fila, int columna) {
         try {
             juego.eliminarFicha(fila, columna);
+            imprimirTablero();
+            vista.mostrarMensaje("Esperando movimiento del otro jugador");
             return true;
         } catch (Exception e) {
             vista.mostrarMensaje("Error al eliminar ficha: " + e.getMessage());

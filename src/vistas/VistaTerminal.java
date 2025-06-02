@@ -2,7 +2,6 @@ package vistas;
 
 import controlador.Controlador;
 import modelo.Ficha;
-import modelo.Jugador;
 import modelo.Nodo;
 
 import java.util.Scanner;
@@ -10,21 +9,21 @@ import java.util.Scanner;
 public class VistaTerminal implements IVista {
     private final Scanner sc = new Scanner(System.in);
     private final Controlador controlador;
-    private final Jugador jugador;
+    private final String nombreJugador;
 
     public VistaTerminal(Controlador controlador) {
-        System.out.println("Nombre del jugador: ");
-        this.jugador = new Jugador(sc.nextLine());
         this.controlador = controlador;
         controlador.setVista(this);
-        controlador.agregarJugador(jugador);
+        System.out.println("Nombre del jugador: ");
+        this.nombreJugador = sc.nextLine();
+        controlador.crearJugador(nombreJugador);
     }
 
     @Override
     public void colocarFicha() {
         boolean flag = false;
         while (!flag) {
-            System.out.println(jugador.getNombre() + ": Colocar ficha: ");
+            System.out.println(nombreJugador + ": Colocar ficha: ");
             System.out.println("Ingrese la fila donde quiere colocar la ficha: ");
             int fila = sc.nextInt();
             System.out.println("Ingrese la columna donde quiere colocar la ficha: ");
@@ -37,7 +36,7 @@ public class VistaTerminal implements IVista {
     public void moverFicha() {
         boolean flag = false;
         while (!flag) {
-            System.out.println(jugador.getNombre() + ": Mover ficha: ");
+            System.out.println(nombreJugador + ": Mover ficha: ");
             System.out.println("Ingrese la fila de la ficha a mover: ");
             int filaOrigen = sc.nextInt();
             System.out.println("Ingrese la columna de la ficha a mover: ");
@@ -54,7 +53,7 @@ public class VistaTerminal implements IVista {
     public void eliminarFicha() {
         boolean flag = false;
         while (!flag) {
-            System.out.println(jugador.getNombre() + ": Eliminar ficha: ");
+            System.out.println(nombreJugador + ": Eliminar ficha: ");
             System.out.println("Ingrese la fila de la ficha a eliminar: ");
             int fila = sc.nextInt();
             System.out.println("Ingrese la columna de la ficha a eliminar: ");

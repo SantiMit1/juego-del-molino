@@ -56,6 +56,7 @@ public class Juego extends Observable {
         } else {
             observers.getFirst().notificar(Notificaciones.ESPERA);
         }
+
     }
 
     public Jugador getJugadorActual() {
