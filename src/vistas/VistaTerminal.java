@@ -1,6 +1,7 @@
 package vistas;
 
 import controlador.Controlador;
+import modelo.Ficha;
 import modelo.Jugador;
 import modelo.Nodo;
 
@@ -67,8 +68,30 @@ public class VistaTerminal implements IVista {
         System.out.println(mensaje);
     }
 
+    private String imprimirFicha(int fila, int columna, Nodo[][] nodos) {
+        Nodo nodo = nodos[fila][columna];
+        if (nodo == null) {
+            throw new IllegalArgumentException("Posición fuera de los límites del tablero");
+        }
+        Ficha ficha = nodo.getFicha();
+        return ficha != null ? ficha.getColor().toString().substring(0, 1) : "@";
+    }
+
     @Override
     public void mostrarTablero(Nodo[][] nodos) {
-        // TODO
+        // si estas corrigiendo esto te pido perdon, no se me ocurrio una forma mejor de hacerlo
+        System.out.println(" " + imprimirFicha(0, 0, nodos) + "-----------" + imprimirFicha(0, 3, nodos) + "-----------" + imprimirFicha(0, 6, nodos));
+        System.out.println(" |           |           |");
+        System.out.println(" |   " + imprimirFicha(1, 1, nodos) + "-------" + imprimirFicha(1, 3, nodos) + "-------" + imprimirFicha(1, 5, nodos) + "   |");
+        System.out.println(" |   |       |       |   |");
+        System.out.println(" |   |   " + imprimirFicha(2, 2, nodos) + "---" + imprimirFicha(2, 3, nodos) + "---" + imprimirFicha(2, 4, nodos) + "   |   |");
+        System.out.println(" |   |   |       |   |   |");
+        System.out.println(imprimirFicha(3, 0, nodos) + "---" + imprimirFicha(3, 1, nodos) + "---" + imprimirFicha(3, 2, nodos) + "       " + imprimirFicha(3, 4, nodos) + "---" + imprimirFicha(3, 5, nodos) + "---" + imprimirFicha(3, 6, nodos));
+        System.out.println(" |   |   |       |   |   |");
+        System.out.println(" |   |   " + imprimirFicha(4, 2, nodos) + "---" + imprimirFicha(4, 3, nodos) + "---" + imprimirFicha(4, 4, nodos) + "   |   |");
+        System.out.println(" |   |       |       |   |");
+        System.out.println(" |   " + imprimirFicha(5, 1, nodos) + "-------" + imprimirFicha(5, 3, nodos) + "-------" + imprimirFicha(5, 5, nodos) + "   |");
+        System.out.println(" |           |           |");
+        System.out.println(" " + imprimirFicha(6, 0, nodos) + "-----------" + imprimirFicha(6, 3, nodos) + "-----------" + imprimirFicha(6, 6, nodos));
     }
 }

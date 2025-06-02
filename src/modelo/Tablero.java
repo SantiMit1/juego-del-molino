@@ -161,34 +161,6 @@ public class Tablero {
         return false;
     }
 
-    //TODO Borrar
-    private String imprimirFicha(int fila, int columna) {
-        Nodo nodo = getNodo(fila, columna);
-        if (nodo == null) {
-            return " ";
-        }
-        Ficha ficha = nodo.getFicha();
-        return ficha != null ? ficha.getColor().toString().substring(0, 1) : "@";
-    }
-
-    //TODO Borrar
-    public void imprimirTablero() {
-        // si estas corrigiendo esto te pido perdon, no se me ocurrio una forma mejor de hacerlo
-        System.out.println(" " + imprimirFicha(0, 0) + "-----------" + imprimirFicha(0, 3) + "-----------" + imprimirFicha(0, 6));
-        System.out.println(" |           |           |");
-        System.out.println(" |   " + imprimirFicha(1, 1) + "-------" + imprimirFicha(1, 3) + "-------" + imprimirFicha(1, 5) + "   |");
-        System.out.println(" |   |       |       |   |");
-        System.out.println(" |   |   " + imprimirFicha(2, 2) + "---" + imprimirFicha(2, 3) + "---" + imprimirFicha(2, 4) + "   |   |");
-        System.out.println(" |   |   |       |   |   |");
-        System.out.println(imprimirFicha(3, 0) + "---" + imprimirFicha(3, 1) + "---" + imprimirFicha(3, 2) + "       " + imprimirFicha(3, 4) + "---" + imprimirFicha(3, 5) + "---" + imprimirFicha(3, 6));
-        System.out.println(" |   |   |       |   |   |");
-        System.out.println(" |   |   " + imprimirFicha(4, 2) + "---" + imprimirFicha(4, 3) + "---" + imprimirFicha(4, 4) + "   |   |");
-        System.out.println(" |   |       |       |   |");
-        System.out.println(" |   " + imprimirFicha(5, 1) + "-------" + imprimirFicha(5, 3) + "-------" + imprimirFicha(5, 5) + "   |");
-        System.out.println(" |           |           |");
-        System.out.println(" " + imprimirFicha(6, 0) + "-----------" + imprimirFicha(6, 3) + "-----------" + imprimirFicha(6, 6));
-    }
-
     public void limpiarTablero() {
         for (int i = 0; i < FILAS; i++) {
             for (int j = 0; j < COLUMNAS; j++) {

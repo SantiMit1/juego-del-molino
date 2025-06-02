@@ -74,16 +74,20 @@ public class Controlador implements Observer {
                 vista.mostrarMensaje("Esperando otro jugador...");
                 break;
             case COLOCAR:
+                imprimirTablero();
                 vista.colocarFicha();
                 break;
             case MOVER:
+                imprimirTablero();
                 vista.moverFicha();
                 break;
             case MOLINO:
+                imprimirTablero();
                 vista.eliminarFicha();
                 break;
             case FIN:
-                System.out.println("El ganador es: " + juego.getGanador().getNombre());
+                imprimirTablero();
+                vista.mostrarMensaje("El ganador es: " + juego.getGanador().getNombre());
                 break;
         }
     }
