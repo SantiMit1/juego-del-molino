@@ -21,6 +21,4 @@ public abstract class Observable {
             observer.notificar(notificacion);
         }
     }
-
-    ;
 }
