@@ -52,8 +52,8 @@ public class Tablero {
     }
 
     private void conectarPosiciones(int f1, int c1, int f2, int c2) {
-        Posicion n1 = getNodo(f1, c1);
-        Posicion n2 = getNodo(f2, c2);
+        Posicion n1 = getPosicion(f1, c1);
+        Posicion n2 = getPosicion(f2, c2);
         if (n1 != null && n2 != null) {
             n1.agregarAdyacente(n2);
             n2.agregarAdyacente(n1);
@@ -71,14 +71,14 @@ public class Tablero {
     }
 
     public boolean posicionOcupada(int fila, int columna) {
-        Posicion posicion = getNodo(fila, columna);
+        Posicion posicion = getPosicion(fila, columna);
         if (posicion == null)
             throw new IllegalArgumentException("Posición fuera de los límites del tablero");
         return posicion.getFicha() != null;
     }
 
     public void colocarFicha(int fila, int columna, Ficha ficha) {
-        Posicion posicion = getNodo(fila, columna);
+        Posicion posicion = getPosicion(fila, columna);
         if (posicion == null) {
             throw new IllegalArgumentException("Posición fuera de los límites del tablero");
         }
@@ -90,13 +90,13 @@ public class Tablero {
     }
 
     public Ficha obtenerFicha(int fila, int columna) {
-        Posicion posicion = getNodo(fila, columna);
+        Posicion posicion = getPosicion(fila, columna);
         return posicion != null ? posicion.getFicha() : null;
     }
 
     public void moverFicha(int filaOrigen, int columnaOrigen, int filaDestino, int columnaDestino) {
-        Posicion origen = getNodo(filaOrigen, columnaOrigen);
-        Posicion destino = getNodo(filaDestino, columnaDestino);
+        Posicion origen = getPosicion(filaOrigen, columnaOrigen);
+        Posicion destino = getPosicion(filaDestino, columnaDestino);
         if (origen == null || destino == null) {
             throw new IllegalArgumentException("Posición fuera de los límites del tablero");
         }
@@ -112,7 +112,7 @@ public class Tablero {
     }
 
     public void eliminarFicha(int fila, int columna) {
-        Posicion posicion = getNodo(fila, columna);
+        Posicion posicion = getPosicion(fila, columna);
         if (posicion == null) {
             throw new IllegalArgumentException("Posición fuera de los límites del tablero");
         }
@@ -125,11 +125,12 @@ public class Tablero {
     }
 
     public boolean sonAdyacentes(int fila1, int columna1, int fila2, int columna2) {
-        Posicion n1 = getNodo(fila1, columna1);
-        Posicion n2 = getNodo(fila2, columna2);
+        Posicion n1 = getPosicion(fila1, columna1);
+        Posicion n2 = getPosicion(fila2, columna2);
         return n1 != null && n2 != null && n1.getAdyacentes().contains(n2);
     }
 
+    //TODO FIX
     public boolean hayMolino(int fila, int columna) {
         if (!esPosicionValida(fila, columna)) {
             throw new IllegalArgumentException("Posición fuera de los límites del tablero");
@@ -140,7 +141,7 @@ public class Tablero {
         Ficha ficha = obtenerFicha(fila, columna);
         if (ficha == null) return false;
         Color color = ficha.getColor();
-        Posicion posicion = getNodo(fila, columna);
+        Posicion posicion = getPosicion(fila, columna);
         List<Posicion> adyacentes = posicion.getAdyacentes();
         for (Posicion ady : adyacentes) {
             Ficha fichaAdy = ady.getFicha();
@@ -149,7 +150,7 @@ public class Tablero {
                 int diferenciaColumna = ady.getColumna() - columna;
                 int filaTercera = ady.getFila() + diferenciaFila;
                 int columnaTercera = ady.getColumna() + diferenciaColumna;
-                Posicion tercerPosicion = getNodo(filaTercera, columnaTercera);
+                Posicion tercerPosicion = getPosicion(filaTercera, columnaTercera);
                 if (tercerPosicion != null) {
                     Ficha fichaTercera = tercerPosicion.getFicha();
                     if (fichaTercera != null && fichaTercera.getColor() == color) {
@@ -172,12 +173,12 @@ public class Tablero {
         }
     }
 
-    public Posicion getNodo(int fila, int columna) {
+    public Posicion getPosicion(int fila, int columna) {
         if (fila < 0 || fila >= FILAS || columna < 0 || columna >= COLUMNAS) return null;
         return posiciones[fila][columna];
     }
 
-    public Posicion[][] getNodos() {
+    public Posicion[][] getPosiciones() {
         return posiciones;
     }
 

@@ -71,7 +71,7 @@ public class Controlador implements Observer {
     }
 
     public void imprimirTablero() {
-        Posicion[][] posicions = tablero.getNodos();
+        Posicion[][] posicions = tablero.getPosiciones();
         vista.mostrarTablero(posicions);
     }
 
