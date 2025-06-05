@@ -5,12 +5,12 @@
 El juego del molino es un juego de mesa para dos jugadores. El objetivo es formar "molinos" (líneas de tres fichas propias en línea recta) y eliminar las fichas del oponente. El juego se desarrolla en dos fases principales:
 
 1. **Colocación de fichas:**  
-   Los jugadores colocan sus fichas por turnos en los nodos vacíos del tablero.  
+   Los jugadores colocan sus fichas por turnos en los posiciones vacíos del tablero.  
    Cada vez que un jugador forma un molino (tres fichas alineadas), puede eliminar una ficha del oponente que no forme parte de un molino.
 
 2. **Movimiento de fichas:**  
-   Cuando ambos jugadores han colocado todas sus fichas, comienzan a moverlas a nodos adyacentes vacíos.  
-   Si un jugador queda con solo tres fichas, puede moverlas a cualquier nodo vacío.  
+   Cuando ambos jugadores han colocado todas sus fichas, comienzan a moverlas a posiciones adyacentes vacíos.  
+   Si un jugador queda con solo tres fichas, puede moverlas a cualquier posicion vacío.  
    El juego termina cuando un jugador no puede mover o le quedan solo dos fichas.
 
 ## Responsabilidades de cada clase

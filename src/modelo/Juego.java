@@ -111,6 +111,7 @@ public class Juego extends Observable {
 
         tablero.moverFicha(filaOrigen, columnaOrigen, filaDestino, columnaDestino);
 
+        //TODO no detecta molino cuando se forma moviendo una ficha
         if (tablero.hayMolino(filaDestino, columnaDestino)) {
             observers.get(turnoActual % 2).notificar(Notificaciones.MOLINO);
         }

@@ -2,7 +2,7 @@ package controlador;
 
 import modelo.Juego;
 import modelo.Jugador;
-import modelo.Nodo;
+import modelo.Posicion;
 import modelo.Tablero;
 import modelo.enums.EstadoFicha;
 import observer.Notificaciones;
@@ -71,8 +71,8 @@ public class Controlador implements Observer {
     }
 
     public void imprimirTablero() {
-        Nodo[][] nodos = tablero.getNodos();
-        vista.mostrarTablero(nodos);
+        Posicion[][] posicions = tablero.getNodos();
+        vista.mostrarTablero(posicions);
     }
 
     @Override

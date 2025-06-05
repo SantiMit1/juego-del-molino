@@ -7,18 +7,18 @@ import java.util.*;
 public class Tablero {
     private static final int FILAS = 7;
     private static final int COLUMNAS = 7;
-    private final Nodo[][] nodos = new Nodo[FILAS][COLUMNAS];
+    private final Posicion[][] posiciones = new Posicion[FILAS][COLUMNAS];
 
     public Tablero() {
-        inicializarNodos();
+        inicializarPosiciones();
         conectarAdyacencias();
     }
 
-    private void inicializarNodos() {
+    private void inicializarPosiciones() {
         for (int i = 0; i < FILAS; i++) {
             for (int j = 0; j < COLUMNAS; j++) {
                 if (esPosicionValida(i, j)) {
-                    nodos[i][j] = new Nodo(i, j);
+                    posiciones[i][j] = new Posicion(i, j);
                 }
             }
         }
@@ -26,34 +26,34 @@ public class Tablero {
 
     private void conectarAdyacencias() {
         // Definición de adyacencias
-        conectarNodos(0,0, 0,3); conectarNodos(0,0, 3,0);
-        conectarNodos(0,3, 1,3); conectarNodos(0,3, 0,6);
-        conectarNodos(0,6, 3,6);
-        conectarNodos(1,1, 3,1); conectarNodos(1,1, 1,3);
-        conectarNodos(1,3, 1,5); conectarNodos(1,3, 2,3);
-        conectarNodos(1,5, 3,5);
-        conectarNodos(2,2, 3,2); conectarNodos(2,2, 2,3);
-        conectarNodos(2,3, 2,4);
-        conectarNodos(2,4, 3,4);
-        conectarNodos(3,0, 6,0); conectarNodos(3,0, 3,1);
-        conectarNodos(3,1, 3,2); conectarNodos(3,1, 5,1);
-        conectarNodos(3,2, 4,2); conectarNodos(3,2, 2,2);
-        conectarNodos(3,4, 4,4); conectarNodos(3,4, 2,4); conectarNodos(3,4, 3,5);
-        conectarNodos(3,5, 5,5); conectarNodos(3,5, 3,6);
-        conectarNodos(3,6, 6,6);
-        conectarNodos(4,2, 4,3); conectarNodos(4,2, 3,2);
-        conectarNodos(4,3, 4,4); conectarNodos(4,3, 5,3);
-        conectarNodos(4,4, 3,4);
-        conectarNodos(5,1, 5,3); conectarNodos(5,1, 3,1);
-        conectarNodos(5,3, 5,5); conectarNodos(5,3, 4,3); conectarNodos(5,3, 6,3);
-        conectarNodos(5,5, 3,5);
-        conectarNodos(6,0, 6,3);
-        conectarNodos(6,3, 6,6);
+        conectarPosiciones(0,0, 0,3); conectarPosiciones(0,0, 3,0);
+        conectarPosiciones(0,3, 1,3); conectarPosiciones(0,3, 0,6);
+        conectarPosiciones(0,6, 3,6);
+        conectarPosiciones(1,1, 3,1); conectarPosiciones(1,1, 1,3);
+        conectarPosiciones(1,3, 1,5); conectarPosiciones(1,3, 2,3);
+        conectarPosiciones(1,5, 3,5);
+        conectarPosiciones(2,2, 3,2); conectarPosiciones(2,2, 2,3);
+        conectarPosiciones(2,3, 2,4);
+        conectarPosiciones(2,4, 3,4);
+        conectarPosiciones(3,0, 6,0); conectarPosiciones(3,0, 3,1);
+        conectarPosiciones(3,1, 3,2); conectarPosiciones(3,1, 5,1);
+        conectarPosiciones(3,2, 4,2); conectarPosiciones(3,2, 2,2);
+        conectarPosiciones(3,4, 4,4); conectarPosiciones(3,4, 2,4); conectarPosiciones(3,4, 3,5);
+        conectarPosiciones(3,5, 5,5); conectarPosiciones(3,5, 3,6);
+        conectarPosiciones(3,6, 6,6);
+        conectarPosiciones(4,2, 4,3); conectarPosiciones(4,2, 3,2);
+        conectarPosiciones(4,3, 4,4); conectarPosiciones(4,3, 5,3);
+        conectarPosiciones(4,4, 3,4);
+        conectarPosiciones(5,1, 5,3); conectarPosiciones(5,1, 3,1);
+        conectarPosiciones(5,3, 5,5); conectarPosiciones(5,3, 4,3); conectarPosiciones(5,3, 6,3);
+        conectarPosiciones(5,5, 3,5);
+        conectarPosiciones(6,0, 6,3);
+        conectarPosiciones(6,3, 6,6);
     }
 
-    private void conectarNodos(int f1, int c1, int f2, int c2) {
-        Nodo n1 = getNodo(f1, c1);
-        Nodo n2 = getNodo(f2, c2);
+    private void conectarPosiciones(int f1, int c1, int f2, int c2) {
+        Posicion n1 = getNodo(f1, c1);
+        Posicion n2 = getNodo(f2, c2);
         if (n1 != null && n2 != null) {
             n1.agregarAdyacente(n2);
             n2.agregarAdyacente(n1);
@@ -71,32 +71,32 @@ public class Tablero {
     }
 
     public boolean posicionOcupada(int fila, int columna) {
-        Nodo nodo = getNodo(fila, columna);
-        if (nodo == null)
+        Posicion posicion = getNodo(fila, columna);
+        if (posicion == null)
             throw new IllegalArgumentException("Posición fuera de los límites del tablero");
-        return nodo.getFicha() != null;
+        return posicion.getFicha() != null;
     }
 
     public void colocarFicha(int fila, int columna, Ficha ficha) {
-        Nodo nodo = getNodo(fila, columna);
-        if (nodo == null) {
+        Posicion posicion = getNodo(fila, columna);
+        if (posicion == null) {
             throw new IllegalArgumentException("Posición fuera de los límites del tablero");
         }
-        if (nodo.getFicha() != null) {
+        if (posicion.getFicha() != null) {
             throw new IllegalStateException("La posición ya está ocupada por otra ficha");
         }
-        nodo.setFicha(ficha);
+        posicion.setFicha(ficha);
         ficha.colocarFicha();
     }
 
     public Ficha obtenerFicha(int fila, int columna) {
-        Nodo nodo = getNodo(fila, columna);
-        return nodo != null ? nodo.getFicha() : null;
+        Posicion posicion = getNodo(fila, columna);
+        return posicion != null ? posicion.getFicha() : null;
     }
 
     public void moverFicha(int filaOrigen, int columnaOrigen, int filaDestino, int columnaDestino) {
-        Nodo origen = getNodo(filaOrigen, columnaOrigen);
-        Nodo destino = getNodo(filaDestino, columnaDestino);
+        Posicion origen = getNodo(filaOrigen, columnaOrigen);
+        Posicion destino = getNodo(filaDestino, columnaDestino);
         if (origen == null || destino == null) {
             throw new IllegalArgumentException("Posición fuera de los límites del tablero");
         }
@@ -112,21 +112,21 @@ public class Tablero {
     }
 
     public void eliminarFicha(int fila, int columna) {
-        Nodo nodo = getNodo(fila, columna);
-        if (nodo == null) {
+        Posicion posicion = getNodo(fila, columna);
+        if (posicion == null) {
             throw new IllegalArgumentException("Posición fuera de los límites del tablero");
         }
-        if (nodo.getFicha() == null) {
+        if (posicion.getFicha() == null) {
             throw new IllegalStateException("No hay ficha en la posición");
         }
-        Ficha ficha = nodo.getFicha();
+        Ficha ficha = posicion.getFicha();
         ficha.eliminarFicha();
-        nodo.setFicha(null);
+        posicion.setFicha(null);
     }
 
     public boolean sonAdyacentes(int fila1, int columna1, int fila2, int columna2) {
-        Nodo n1 = getNodo(fila1, columna1);
-        Nodo n2 = getNodo(fila2, columna2);
+        Posicion n1 = getNodo(fila1, columna1);
+        Posicion n2 = getNodo(fila2, columna2);
         return n1 != null && n2 != null && n1.getAdyacentes().contains(n2);
     }
 
@@ -140,18 +140,18 @@ public class Tablero {
         Ficha ficha = obtenerFicha(fila, columna);
         if (ficha == null) return false;
         Color color = ficha.getColor();
-        Nodo nodo = getNodo(fila, columna);
-        List<Nodo> adyacentes = nodo.getAdyacentes();
-        for (Nodo ady : adyacentes) {
+        Posicion posicion = getNodo(fila, columna);
+        List<Posicion> adyacentes = posicion.getAdyacentes();
+        for (Posicion ady : adyacentes) {
             Ficha fichaAdy = ady.getFicha();
             if (fichaAdy != null && fichaAdy.getColor() == color) {
                 int diferenciaFila = ady.getFila() - fila;
                 int diferenciaColumna = ady.getColumna() - columna;
                 int filaTercera = ady.getFila() + diferenciaFila;
                 int columnaTercera = ady.getColumna() + diferenciaColumna;
-                Nodo tercerNodo = getNodo(filaTercera, columnaTercera);
-                if (tercerNodo != null) {
-                    Ficha fichaTercera = tercerNodo.getFicha();
+                Posicion tercerPosicion = getNodo(filaTercera, columnaTercera);
+                if (tercerPosicion != null) {
+                    Ficha fichaTercera = tercerPosicion.getFicha();
                     if (fichaTercera != null && fichaTercera.getColor() == color) {
                         return true;
                     }
@@ -164,21 +164,21 @@ public class Tablero {
     public void limpiarTablero() {
         for (int i = 0; i < FILAS; i++) {
             for (int j = 0; j < COLUMNAS; j++) {
-                Nodo nodo = nodos[i][j];
-                if (nodo != null) {
-                    nodo.setFicha(null);
+                Posicion posicion = posiciones[i][j];
+                if (posicion != null) {
+                    posicion.setFicha(null);
                 }
             }
         }
     }
 
-    public Nodo getNodo(int fila, int columna) {
+    public Posicion getNodo(int fila, int columna) {
         if (fila < 0 || fila >= FILAS || columna < 0 || columna >= COLUMNAS) return null;
-        return nodos[fila][columna];
+        return posiciones[fila][columna];
     }
 
-    public Nodo[][] getNodos() {
-        return nodos;
+    public Posicion[][] getNodos() {
+        return posiciones;
     }
 
     public int getFilas() {

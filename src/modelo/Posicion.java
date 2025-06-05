@@ -3,13 +3,13 @@ package modelo;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Nodo {
+public class Posicion {
     private final int fila;
     private final int columna;
     private Ficha ficha;
-    private final List<Nodo> adyacentes;
+    private final List<Posicion> adyacentes;
 
-    public Nodo(int fila, int columna) {
+    public Posicion(int fila, int columna) {
         this.fila = fila;
         this.columna = columna;
         this.adyacentes = new ArrayList<>();
@@ -31,13 +31,13 @@ public class Nodo {
         this.ficha = ficha;
     }
 
-    public List<Nodo> getAdyacentes() {
+    public List<Posicion> getAdyacentes() {
         return adyacentes;
     }
 
-    public void agregarAdyacente(Nodo nodo) {
-        if (!adyacentes.contains(nodo)) {
-            adyacentes.add(nodo);
+    public void agregarAdyacente(Posicion posicion) {
+        if (!adyacentes.contains(posicion)) {
+            adyacentes.add(posicion);
         }
     }
 }
