@@ -134,7 +134,9 @@ public class Juego extends Observable {
 
         tablero.eliminarFicha(fila, columna);
 
-        if (hayGanador() != null) {
+        if (ganador == null) {
+            ganador = hayGanador();
+            finalizarJuego();
             notificarObservadores(Notificaciones.FIN);
         }
     }
@@ -156,15 +158,17 @@ public class Juego extends Observable {
     private Jugador hayGanador() {
         for (Jugador jugador : jugadores) {
             if (jugador.contarFichasEnMano() == 0 && jugador.contarFichasEnTablero() < 3) {
-                Jugador nuevoGanador = jugadores.get((jugadores.indexOf(jugador) + 1) % 2);
-                fase = FaseJuego.FINALIZADO;
-                turnoActual = 0;
-                tablero.limpiarTablero();
-                ganador = nuevoGanador;
                 return ganador;
             }
         }
         return null;
+    }
+
+    private void finalizarJuego() {
+        fase = FaseJuego.FINALIZADO;
+        turnoActual = 0;
+        tablero.limpiarTablero();
+        ganador = null;
     }
 
     public Jugador getGanador() {
