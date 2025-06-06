@@ -30,8 +30,8 @@ public class Controlador implements Observer {
         juego.agregarJugador(jugador);
     }
 
-    public void eliminarObserver(Observer vista) {
-        juego.eliminarObservador(vista);
+    private void eliminarObserver() {
+        juego.eliminarObservador(this);
     }
 
     public boolean colocarFicha(int fila, int columna) {
@@ -78,24 +78,24 @@ public class Controlador implements Observer {
     @Override
     public void notificar(Notificaciones notificacion) {
         switch (notificacion) {
+            case IMPRIMIR_TABLERO:
+                imprimirTablero();
+                break;
             case ESPERA:
                 vista.mostrarMensaje("Esperando otro jugador...");
                 break;
             case COLOCAR:
-                imprimirTablero();
                 vista.colocarFicha();
                 break;
             case MOVER:
-                imprimirTablero();
                 vista.moverFicha();
                 break;
             case MOLINO:
-                imprimirTablero();
                 vista.eliminarFicha();
                 break;
             case FIN:
-                imprimirTablero();
                 vista.mostrarMensaje("El ganador es: " + juego.getGanador().getNombre());
+                eliminarObserver();
                 break;
         }
     }

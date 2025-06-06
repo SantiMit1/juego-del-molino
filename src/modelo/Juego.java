@@ -24,6 +24,7 @@ public class Juego extends Observable {
 
     private void cambiarTurno() {
         turnoActual++;
+        notificarObservadores(Notificaciones.IMPRIMIR_TABLERO);
         if (fase == FaseJuego.MOVIENDO) {
             observers.get(turnoActual % 2).notificar(Notificaciones.MOVER);
         } else if (fase == FaseJuego.COLOCANDO) {
@@ -65,6 +66,7 @@ public class Juego extends Observable {
 
     public void iniciarJuego() {
         fase = FaseJuego.COLOCANDO;
+        notificarObservadores(Notificaciones.IMPRIMIR_TABLERO);
         observers.get(turnoActual % 2).notificar(Notificaciones.COLOCAR);
     }
 
@@ -82,6 +84,7 @@ public class Juego extends Observable {
         tablero.colocarFicha(fila, columna, ficha);
 
         if (tablero.hayMolino(fila, columna)) {
+            notificarObservadores(Notificaciones.IMPRIMIR_TABLERO);
             observers.get(turnoActual % 2).notificar(Notificaciones.MOLINO);
         }
 
@@ -112,6 +115,7 @@ public class Juego extends Observable {
         tablero.moverFicha(filaOrigen, columnaOrigen, filaDestino, columnaDestino);
 
         if (tablero.hayMolino(filaDestino, columnaDestino)) {
+            notificarObservadores(Notificaciones.IMPRIMIR_TABLERO);
             observers.get(turnoActual % 2).notificar(Notificaciones.MOLINO);
         }
 
