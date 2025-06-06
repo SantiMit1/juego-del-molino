@@ -10,7 +10,7 @@ import java.util.List;
 
 public class Juego extends Observable {
     private final Tablero tablero;
-    private static final List<Jugador> jugadores = new ArrayList<Jugador>();
+    private static final List<Jugador> jugadores = new ArrayList<>();
     private static int turnoActual;
     private static FaseJuego fase;
     private static Jugador ganador = null;
@@ -136,8 +136,10 @@ public class Juego extends Observable {
 
         if (ganador == null) {
             ganador = hayGanador();
-            finalizarJuego();
-            notificarObservadores(Notificaciones.FIN);
+            if (ganador != null) {
+                notificarObservadores(Notificaciones.FIN);
+                finalizarJuego();
+            }
         }
     }
 
