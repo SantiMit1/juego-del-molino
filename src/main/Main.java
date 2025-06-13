@@ -4,7 +4,6 @@ import controlador.Controlador;
 import modelo.Juego;
 import modelo.Tablero;
 import vistas.IVista;
-import vistas.VistaIDE;
 import vistas.terminal.VistaTerminal;
 
 public class Main {

@@ -89,6 +89,7 @@ public class VistaTerminal implements IVista {
             inputField.setText("");
 
             valoresEntrada[valorActual] = valor;
+            mostrarMensaje("Valor ingresado: " + valor);
             valorActual++;
 
             switch (tipoEntradaActual) {
@@ -97,6 +98,7 @@ public class VistaTerminal implements IVista {
                         boolean success = controlador.colocarFicha(valoresEntrada[0], valoresEntrada[1]);
                         if (success) {
                             deshabilitarEntrada();
+                            valorActual = 0;
                         } else {
                             valorActual = 0;
                             mostrarMensaje("Intente nuevamente:");
@@ -115,6 +117,7 @@ public class VistaTerminal implements IVista {
                         );
                         if (success) {
                             deshabilitarEntrada();
+                            valorActual = 0;
                         } else {
                             valorActual = 0;
                             mostrarMensaje("Intente nuevamente:");
@@ -130,12 +133,12 @@ public class VistaTerminal implements IVista {
                     }
                     break;
 
-                //TODO fix
                 case "eliminar":
                     if (valorActual == 2) {
                         boolean success = controlador.eliminarFicha(valoresEntrada[0], valoresEntrada[1]);
                         if (success) {
                             deshabilitarEntrada();
+                            valorActual = 0;
                         } else {
                             valorActual = 0;
                             mostrarMensaje("Intente nuevamente:");
@@ -188,13 +191,13 @@ public class VistaTerminal implements IVista {
 
     @Override
     public void eliminarFicha() {
-        tipoEntradaActual = "eliminar";
-        valoresEntrada = new int[2];
-        valorActual = 0;
-        mostrarMensaje(nombreJugador + ": Eliminar ficha:");
-        mostrarMensaje("Ingrese la fila de la ficha a eliminar:");
-
         SwingUtilities.invokeLater(() -> {
+            tipoEntradaActual = "eliminar";
+            valoresEntrada = new int[2];
+            valorActual = 0;
+            mostrarMensaje(nombreJugador + ": Eliminar ficha:");
+            mostrarMensaje("Ingrese la fila de la ficha a eliminar:");
+
             habilitarEntrada();
             estadoLabel.setText("Acción: Eliminar ficha");
         });
