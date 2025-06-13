@@ -83,14 +83,14 @@ public class Juego extends Observable {
 
         tablero.colocarFicha(fila, columna, ficha);
 
+        if (jugadores.get(0).contarFichasEnMano() == 0 && jugadores.get(1).contarFichasEnMano() == 0) {
+            fase = FaseJuego.MOVIENDO;
+        }
+
         if (tablero.hayMolino(fila, columna)) {
             notificarObservadores(Notificaciones.IMPRIMIR_TABLERO);
             observers.get(turnoActual % 2).notificar(Notificaciones.MOLINO);
             return;
-        }
-
-        if (jugadores.get(0).contarFichasEnMano() == 0 && jugadores.get(1).contarFichasEnMano() == 0) {
-            fase = FaseJuego.MOVIENDO;
         }
 
         cambiarTurno();
