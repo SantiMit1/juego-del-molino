@@ -169,24 +169,30 @@ public class VistaTerminal implements IVista {
 
     @Override
     public void colocarFicha() {
-        tipoEntradaActual = "colocar";
-        valoresEntrada = new int[2];
-        valorActual = 0;
-        mostrarMensaje(nombreJugador + ": Colocar ficha:");
-        mostrarMensaje("Ingrese la fila donde quiere colocar la ficha:");
-        habilitarEntrada();
-        estadoLabel.setText("Acción: Colocar ficha");
+        SwingUtilities.invokeLater(() -> {
+            tipoEntradaActual = "colocar";
+            valoresEntrada = new int[2];
+            valorActual = 0;
+            mostrarMensaje(nombreJugador + ": Colocar ficha:");
+            mostrarMensaje("Ingrese la fila donde quiere colocar la ficha:");
+
+            habilitarEntrada();
+            estadoLabel.setText("Acción: Colocar ficha");
+        });
     }
 
     @Override
     public void moverFicha() {
-        tipoEntradaActual = "mover";
-        valoresEntrada = new int[4];
-        valorActual = 0;
-        mostrarMensaje(nombreJugador + ": Mover ficha:");
-        mostrarMensaje("Ingrese la fila de la ficha a mover:");
-        habilitarEntrada();
-        estadoLabel.setText("Acción: Mover ficha");
+        SwingUtilities.invokeLater(() -> {
+            tipoEntradaActual = "mover";
+            valoresEntrada = new int[4];
+            valorActual = 0;
+            mostrarMensaje(nombreJugador + ": Mover ficha:");
+            mostrarMensaje("Ingrese la fila de la ficha a mover:");
+
+            habilitarEntrada();
+            estadoLabel.setText("Acción: Mover ficha");
+        });
     }
 
     @Override
