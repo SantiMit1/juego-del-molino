@@ -66,9 +66,21 @@ public class Controlador implements Observer {
     }
 
     public void imprimirTablero() {
-        //TODO hacer que estoy devuelva un string estandarizado y que ese string se formatee y se imprima en la vista
-        Posicion[][] posicions = tablero.getPosiciones();
-        vista.mostrarTablero(posicions);
+        Posicion[][] posiciones = tablero.getPosiciones();
+        StringBuilder tableroString = new StringBuilder();
+        for (Posicion[] fila : posiciones) {
+            for (Posicion pos : fila) {
+                if (pos != null && tablero.esPosicionValida(pos.getFila(), pos.getColumna())) {
+                    if (pos.getFicha() != null) {
+                        tableroString.append(pos.getFicha().getColor().toString().charAt(0));
+                    } else {
+                        tableroString.append("@");
+                    }
+                }
+            }
+        }
+
+        vista.mostrarTablero(tableroString.toString());
     }
 
     @Override

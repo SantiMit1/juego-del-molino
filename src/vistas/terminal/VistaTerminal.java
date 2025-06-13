@@ -112,8 +112,8 @@ public class VistaTerminal implements IVista {
                 case "mover":
                     if (valorActual == 4) {
                         boolean success = controlador.moverFicha(
-                            valoresEntrada[0], valoresEntrada[1],
-                            valoresEntrada[2], valoresEntrada[3]
+                                valoresEntrada[0], valoresEntrada[1],
+                                valoresEntrada[2], valoresEntrada[3]
                         );
                         if (success) {
                             deshabilitarEntrada();
@@ -125,9 +125,9 @@ public class VistaTerminal implements IVista {
                         }
                     } else {
                         String[] mensajes = {
-                            "Ingrese la columna de la ficha a mover:",
-                            "Ingrese la fila de destino:",
-                            "Ingrese la columna de destino:"
+                                "Ingrese la columna de la ficha a mover:",
+                                "Ingrese la fila de destino:",
+                                "Ingrese la columna de destino:"
                         };
                         mostrarMensaje(mensajes[valorActual - 1]);
                     }
@@ -212,33 +212,23 @@ public class VistaTerminal implements IVista {
         });
     }
 
-    private String imprimirFicha(int fila, int columna, Posicion[][] posiciones) {
-        Posicion posicion = posiciones[fila][columna];
-        if (posicion == null) {
-            throw new IllegalArgumentException("Posición fuera de los límites del tablero");
-        }
-        Ficha ficha = posicion.getFicha();
-        return ficha != null ? ficha.getColor().toString().substring(0, 1) : "@";
-    }
-
     @Override
-    public void mostrarTablero(Posicion[][] posiciones) {
+    public void mostrarTablero(String posiciones) {
         StringBuilder tablero = new StringBuilder();
 
-        tablero.append(" ").append(imprimirFicha(0, 0, posiciones)).append("-----------").append(imprimirFicha(0, 3, posiciones)).append("-----------").append(imprimirFicha(0, 6, posiciones)).append("\n");
+        tablero.append(" ").append(posiciones.charAt(0)).append("-----------").append(posiciones.charAt(1)).append("-----------").append(posiciones.charAt(2)).append("\n");
         tablero.append(" |           |           |\n");
-        tablero.append(" |   ").append(imprimirFicha(1, 1, posiciones)).append("-------").append(imprimirFicha(1, 3, posiciones)).append("-------").append(imprimirFicha(1, 5, posiciones)).append("   |\n");
+        tablero.append(" |   ").append(posiciones.charAt(3)).append("-------").append(posiciones.charAt(4)).append("-------").append(posiciones.charAt(5)).append("   |\n");
         tablero.append(" |   |       |       |   |\n");
-        tablero.append(" |   |   ").append(imprimirFicha(2, 2, posiciones)).append("---").append(imprimirFicha(2, 3, posiciones)).append("---").append(imprimirFicha(2, 4, posiciones)).append("   |   |\n");
+        tablero.append(" |   |   ").append(posiciones.charAt(6)).append("---").append(posiciones.charAt(7)).append("---").append(posiciones.charAt(8)).append("   |   |\n");
         tablero.append(" |   |   |       |   |   |\n");
-        tablero.append(imprimirFicha(3, 0, posiciones)).append("---").append(imprimirFicha(3, 1, posiciones)).append("---").append(imprimirFicha(3, 2, posiciones)).append("       ").append(imprimirFicha(3, 4, posiciones)).append("---").append(imprimirFicha(3, 5, posiciones)).append("---").append(imprimirFicha(3, 6, posiciones)).append("\n");
+        tablero.append(" ").append(posiciones.charAt(9)).append("---").append(posiciones.charAt(10)).append("---").append(posiciones.charAt(11)).append("       ").append(posiciones.charAt(12)).append("---").append(posiciones.charAt(13)).append("---").append(posiciones.charAt(14)).append("\n");
         tablero.append(" |   |   |       |   |   |\n");
-        tablero.append(" |   |   ").append(imprimirFicha(4, 2, posiciones)).append("---").append(imprimirFicha(4, 3, posiciones)).append("---").append(imprimirFicha(4, 4, posiciones)).append("   |   |\n");
+        tablero.append(" |   |   ").append(posiciones.charAt(15)).append("---").append(posiciones.charAt(16)).append("---").append(posiciones.charAt(17)).append("   |   |\n");
         tablero.append(" |   |       |       |   |\n");
-        tablero.append(" |   ").append(imprimirFicha(5, 1, posiciones)).append("-------").append(imprimirFicha(5, 3, posiciones)).append("-------").append(imprimirFicha(5, 5, posiciones)).append("   |\n");
+        tablero.append(" |   ").append(posiciones.charAt(18)).append("-------").append(posiciones.charAt(19)).append("-------").append(posiciones.charAt(20)).append("   |\n");
         tablero.append(" |           |           |\n");
-        tablero.append(" ").append(imprimirFicha(6, 0, posiciones)).append("-----------").append(imprimirFicha(6, 3, posiciones)).append("-----------").append(imprimirFicha(6, 6, posiciones)).append("\n");
-
+        tablero.append(" ").append(posiciones.charAt(21)).append("-----------").append(posiciones.charAt(22)).append("-----------").append(posiciones.charAt(23)).append("\n");
         mostrarMensaje("\n=== TABLERO ACTUAL ===");
         mostrarMensaje(tablero.toString());
     }
