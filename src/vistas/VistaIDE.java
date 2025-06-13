@@ -6,12 +6,12 @@ import modelo.Posicion;
 
 import java.util.Scanner;
 
-public class VistaTerminal implements IVista {
+public class VistaIDE implements IVista {
     private final Scanner sc = new Scanner(System.in);
     private final Controlador controlador;
     private final String nombreJugador;
 
-    public VistaTerminal(Controlador controlador) {
+    public VistaIDE(Controlador controlador) {
         this.controlador = controlador;
         controlador.setVista(this);
         System.out.println("Nombre del jugador: ");

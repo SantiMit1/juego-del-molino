@@ -37,8 +37,6 @@ public class Controlador implements Observer {
     public boolean colocarFicha(int fila, int columna) {
         try {
             juego.colocarFicha(fila, columna, juego.getJugadorActual().obtenerFichasPorEstado(EstadoFicha.EN_MANO).getFirst());
-            imprimirTablero();
-            vista.mostrarMensaje("Esperando movimiento del otro jugador");
             return true;
         } catch (Exception e) {
             vista.mostrarMensaje("Error al colocar ficha: " + e.getMessage());
@@ -49,8 +47,6 @@ public class Controlador implements Observer {
     public boolean moverFicha(int filaOrigen, int columnaOrigen, int filaDestino, int columnaDestino) {
         try {
             juego.moverFicha(filaOrigen, columnaOrigen, filaDestino, columnaDestino);
-            imprimirTablero();
-            vista.mostrarMensaje("Esperando movimiento del otro jugador");
             return true;
         } catch (Exception e) {
             vista.mostrarMensaje("Error al mover ficha: " + e.getMessage());
@@ -61,8 +57,6 @@ public class Controlador implements Observer {
     public boolean eliminarFicha(int fila, int columna) {
         try {
             juego.eliminarFicha(fila, columna);
-            imprimirTablero();
-            vista.mostrarMensaje("Esperando movimiento del otro jugador");
             return true;
         } catch (Exception e) {
             vista.mostrarMensaje("Error al eliminar ficha: " + e.getMessage());
@@ -71,6 +65,7 @@ public class Controlador implements Observer {
     }
 
     public void imprimirTablero() {
+        //TODO hacer que estoy devuelva un string estandarizado y que ese string se formatee y se imprima en la vista
         Posicion[][] posicions = tablero.getPosiciones();
         vista.mostrarTablero(posicions);
     }
