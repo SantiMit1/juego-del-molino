@@ -11,5 +11,5 @@ public interface IVista {
 
     public void mostrarMensaje(String mensaje);
 
-    void mostrarTablero(Posicion[][] posiciones);
+    void mostrarTablero(String posiciones);
 }

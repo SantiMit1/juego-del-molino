@@ -37,8 +37,6 @@ public class Controlador implements Observer {
     public boolean colocarFicha(int fila, int columna) {
         try {
             juego.colocarFicha(fila, columna, juego.getJugadorActual().obtenerFichasPorEstado(EstadoFicha.EN_MANO).getFirst());
-            imprimirTablero();
-            vista.mostrarMensaje("Esperando movimiento del otro jugador");
             return true;
         } catch (Exception e) {
             vista.mostrarMensaje("Error al colocar ficha: " + e.getMessage());
@@ -49,8 +47,6 @@ public class Controlador implements Observer {
     public boolean moverFicha(int filaOrigen, int columnaOrigen, int filaDestino, int columnaDestino) {
         try {
             juego.moverFicha(filaOrigen, columnaOrigen, filaDestino, columnaDestino);
-            imprimirTablero();
-            vista.mostrarMensaje("Esperando movimiento del otro jugador");
             return true;
         } catch (Exception e) {
             vista.mostrarMensaje("Error al mover ficha: " + e.getMessage());
@@ -60,9 +56,8 @@ public class Controlador implements Observer {
 
     public boolean eliminarFicha(int fila, int columna) {
         try {
+            vista.mostrarMensaje("asbdaskhgdkasds");
             juego.eliminarFicha(fila, columna);
-            imprimirTablero();
-            vista.mostrarMensaje("Esperando movimiento del otro jugador");
             return true;
         } catch (Exception e) {
             vista.mostrarMensaje("Error al eliminar ficha: " + e.getMessage());
@@ -71,8 +66,21 @@ public class Controlador implements Observer {
     }
 
     public void imprimirTablero() {
-        Posicion[][] posicions = tablero.getPosiciones();
-        vista.mostrarTablero(posicions);
+        Posicion[][] posiciones = tablero.getPosiciones();
+        StringBuilder tableroString = new StringBuilder();
+        for (Posicion[] fila : posiciones) {
+            for (Posicion pos : fila) {
+                if (pos != null && tablero.esPosicionValida(pos.getFila(), pos.getColumna())) {
+                    if (pos.getFicha() != null) {
+                        tableroString.append(pos.getFicha().getColor().toString().charAt(0));
+                    } else {
+                        tableroString.append("@");
+                    }
+                }
+            }
+        }
+
+        vista.mostrarTablero(tableroString.toString());
     }
 
     @Override

@@ -86,6 +86,7 @@ public class Juego extends Observable {
         if (tablero.hayMolino(fila, columna)) {
             notificarObservadores(Notificaciones.IMPRIMIR_TABLERO);
             observers.get(turnoActual % 2).notificar(Notificaciones.MOLINO);
+            return;
         }
 
         if (jugadores.get(0).contarFichasEnMano() == 0 && jugadores.get(1).contarFichasEnMano() == 0) {
@@ -117,6 +118,7 @@ public class Juego extends Observable {
         if (tablero.hayMolino(filaDestino, columnaDestino)) {
             notificarObservadores(Notificaciones.IMPRIMIR_TABLERO);
             observers.get(turnoActual % 2).notificar(Notificaciones.MOLINO);
+            return;
         }
 
         cambiarTurno();
@@ -143,8 +145,11 @@ public class Juego extends Observable {
             if (ganador != null) {
                 notificarObservadores(Notificaciones.FIN);
                 finalizarJuego();
+                return;
             }
         }
+
+        cambiarTurno();
     }
 
     private boolean existenFichasOponenteFueraDeMolino(Color colorOponente) {

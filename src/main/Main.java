@@ -4,7 +4,7 @@ import controlador.Controlador;
 import modelo.Juego;
 import modelo.Tablero;
 import vistas.IVista;
-import vistas.VistaTerminal;
+import vistas.terminal.VistaTerminal;
 
 public class Main {
     public static void main(String[] args) {
