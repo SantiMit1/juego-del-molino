@@ -20,6 +20,7 @@ public class Juego extends Observable {
         this.tablero = tablero;
         turnoActual = 0;
         fase = FaseJuego.ESPERA;
+        ganador = null;
     }
 
     private void cambiarTurno() {
@@ -143,6 +144,7 @@ public class Juego extends Observable {
         if (ganador == null) {
             ganador = hayGanador();
             if (ganador != null) {
+                notificarObservadores(Notificaciones.IMPRIMIR_TABLERO);
                 notificarObservadores(Notificaciones.FIN);
                 finalizarJuego();
                 return;
@@ -167,9 +169,11 @@ public class Juego extends Observable {
     }
 
     private Jugador hayGanador() {
-        for (Jugador jugador : jugadores) {
-            if (jugador.contarFichasEnMano() == 0 && jugador.contarFichasEnTablero() < 3) {
-                return ganador;
+        for (int i = 0; i < jugadores.size(); i++) {
+            Jugador jugador = jugadores.get(i);
+            if (jugador.contarFichasEnTablero() < 3 && jugador.contarFichasEnMano() == 0) {
+                // retorna el jugador que no perdio
+                return jugadores.get(Math.abs(i - 1));
             }
         }
         return null;
@@ -179,7 +183,6 @@ public class Juego extends Observable {
         fase = FaseJuego.FINALIZADO;
         turnoActual = 0;
         tablero.limpiarTablero();
-        ganador = null;
     }
 
     public Jugador getGanador() {
