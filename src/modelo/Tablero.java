@@ -25,7 +25,6 @@ public class Tablero {
     }
 
     private void conectarAdyacencias() {
-        // Definición de adyacencias
         conectarPosiciones(0, 0, 0, 3);
         conectarPosiciones(0, 0, 3, 0);
         conectarPosiciones(0, 3, 1, 3);

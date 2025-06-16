@@ -1,19 +1,14 @@
 package vistas.terminal;
 
 import controlador.Controlador;
-import modelo.Ficha;
-import modelo.Posicion;
-import vistas.IVista;
+import vistas.Vista;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-public class VistaTerminal implements IVista {
-    private final Controlador controlador;
-    private final String nombreJugador;
-
+public class VistaTerminal extends Vista {
     // Componentes de la interfaz
     private JFrame frame;
     private JTextArea logArea;
@@ -22,24 +17,25 @@ public class VistaTerminal implements IVista {
 
     // Variables para control del estado de entrada
     private boolean esperandoEntrada = false;
-    private String tipoEntradaActual = "";
+    private Modos tipoEntradaActual = null;
     private int[] valoresEntrada;
     private int valorActual = 0;
 
     public VistaTerminal(Controlador controlador) {
-        this.controlador = controlador;
-        controlador.setVista(this);
+        super(controlador);
 
         inicializarUI();
 
         // Solicitar nombre del jugador
-        nombreJugador = JOptionPane.showInputDialog(frame, "Nombre del jugador:");
-        if (nombreJugador != null && !nombreJugador.trim().isEmpty()) {
-            controlador.crearJugador(nombreJugador);
-            mostrarMensaje("¡Bienvenido " + nombreJugador + "!");
-        } else {
-            mostrarMensaje("Nombre no válido. Usando 'Jugador'");
-            controlador.crearJugador("Jugador");
+        boolean nombreValido = false;
+
+        while (!nombreValido) {
+            setNombreJugador(JOptionPane.showInputDialog(frame, "Nombre del jugador:"));
+            if (nombreJugador != null && !nombreJugador.trim().isEmpty()) {
+                nombreValido = true;
+                controlador.crearJugador(nombreJugador);
+                mostrarMensaje("¡Bienvenido " + nombreJugador + "!");
+            }
         }
     }
 
@@ -65,7 +61,7 @@ public class VistaTerminal implements IVista {
         // Panel inferior con entrada de texto y botón
         JPanel bottomPanel = new JPanel(new BorderLayout());
         inputField = new JTextField();
-        inputField.setEnabled(false); // Deshabilitado inicialmente
+        inputField.setEnabled(false);
 
         inputField.addActionListener(new ActionListener() {
             @Override
@@ -76,7 +72,6 @@ public class VistaTerminal implements IVista {
 
         bottomPanel.add(inputField, BorderLayout.CENTER);
         frame.add(bottomPanel, BorderLayout.SOUTH);
-
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
     }
@@ -93,7 +88,7 @@ public class VistaTerminal implements IVista {
             valorActual++;
 
             switch (tipoEntradaActual) {
-                case "colocar":
+                case Modos.COLOCAR:
                     if (valorActual == 2) {
                         boolean success = controlador.colocarFicha(valoresEntrada[0], valoresEntrada[1]);
                         if (success) {
@@ -109,7 +104,7 @@ public class VistaTerminal implements IVista {
                     }
                     break;
 
-                case "mover":
+                case Modos.MOVER:
                     if (valorActual == 4) {
                         boolean success = controlador.moverFicha(
                                 valoresEntrada[0], valoresEntrada[1],
@@ -133,7 +128,7 @@ public class VistaTerminal implements IVista {
                     }
                     break;
 
-                case "eliminar":
+                case Modos.ELIMINAR:
                     if (valorActual == 2) {
                         boolean success = controlador.eliminarFicha(valoresEntrada[0], valoresEntrada[1]);
                         if (success) {
@@ -163,14 +158,14 @@ public class VistaTerminal implements IVista {
     private void deshabilitarEntrada() {
         esperandoEntrada = false;
         inputField.setEnabled(false);
-        tipoEntradaActual = "";
+        tipoEntradaActual = null;
         valorActual = 0;
     }
 
     @Override
     public void colocarFicha() {
         SwingUtilities.invokeLater(() -> {
-            tipoEntradaActual = "colocar";
+            tipoEntradaActual = Modos.COLOCAR;
             valoresEntrada = new int[2];
             valorActual = 0;
             mostrarMensaje(nombreJugador + ": Colocar ficha:");
@@ -184,7 +179,7 @@ public class VistaTerminal implements IVista {
     @Override
     public void moverFicha() {
         SwingUtilities.invokeLater(() -> {
-            tipoEntradaActual = "mover";
+            tipoEntradaActual = Modos.MOVER;
             valoresEntrada = new int[4];
             valorActual = 0;
             mostrarMensaje(nombreJugador + ": Mover ficha:");
@@ -198,7 +193,7 @@ public class VistaTerminal implements IVista {
     @Override
     public void eliminarFicha() {
         SwingUtilities.invokeLater(() -> {
-            tipoEntradaActual = "eliminar";
+            tipoEntradaActual = Modos.ELIMINAR;
             valoresEntrada = new int[2];
             valorActual = 0;
             mostrarMensaje(nombreJugador + ": Eliminar ficha:");

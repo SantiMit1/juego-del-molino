@@ -7,12 +7,11 @@ import modelo.Tablero;
 import modelo.enums.EstadoFicha;
 import observer.Notificaciones;
 import observer.Observer;
-import vistas.IVista;
-
+import vistas.Vista;
 public class Controlador implements Observer {
     private final Juego juego;
     private final Tablero tablero;
-    private IVista vista;
+    private Vista vista;
 
     public Controlador(Juego juego) {
         this.juego = juego;
@@ -20,7 +19,7 @@ public class Controlador implements Observer {
         juego.agregarObservador(this);
     }
 
-    public void setVista(IVista vista) {
+    public void setVista(Vista vista) {
         this.vista = vista;
     }
 

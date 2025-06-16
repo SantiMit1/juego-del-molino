@@ -3,7 +3,7 @@ package main;
 import controlador.Controlador;
 import modelo.Juego;
 import modelo.Tablero;
-import vistas.IVista;
+import vistas.Vista;
 import vistas.terminal.VistaTerminal;
 
 public class Main {
@@ -11,8 +11,8 @@ public class Main {
         Tablero tablero = new Tablero();
         Juego juego = new Juego(tablero);
         Controlador controlador = new Controlador(juego);
-        IVista jugador1 = new VistaTerminal(controlador);
+        Vista jugador1 = new VistaTerminal(controlador);
         Controlador controlador2 = new Controlador(juego);
-        IVista jugador2 = new VistaTerminal(controlador2);
+        Vista jugador2 = new VistaTerminal(controlador2);
     }
 }
