@@ -60,3 +60,6 @@ El juego del molino es un juego de mesa para dos jugadores. El objetivo es forma
 ---
 
 Este proyecto implementa el juego del molino siguiendo el patrón MVC (Modelo-Vista-Controlador) y el patrón observador para la comunicación entre el modelo y la vista.
+
+## UML
+![uml](uml/uml.png)
