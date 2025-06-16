@@ -17,7 +17,7 @@ public abstract class Observable {
     }
 
     public void notificarObservadores(Notificaciones notificacion) {
-        for (Observer observer : observers) {
+        for (Observer observer : new ArrayList<>(observers)) {
             observer.notificar(notificacion);
         }
     }
