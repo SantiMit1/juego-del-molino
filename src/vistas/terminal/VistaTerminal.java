@@ -216,20 +216,20 @@ public class VistaTerminal extends Vista {
     @Override
     public void mostrarTablero(String posiciones) {
         StringBuilder tablero = new StringBuilder();
-
-        tablero.append(" ").append(posiciones.charAt(0)).append("-----------").append(posiciones.charAt(1)).append("-----------").append(posiciones.charAt(2)).append("\n");
-        tablero.append(" |           |           |\n");
-        tablero.append(" |   ").append(posiciones.charAt(3)).append("-------").append(posiciones.charAt(4)).append("-------").append(posiciones.charAt(5)).append("   |\n");
-        tablero.append(" |   |       |       |   |\n");
-        tablero.append(" |   |   ").append(posiciones.charAt(6)).append("---").append(posiciones.charAt(7)).append("---").append(posiciones.charAt(8)).append("   |   |\n");
-        tablero.append(" |   |   |       |   |   |\n");
-        tablero.append(" ").append(posiciones.charAt(9)).append("---").append(posiciones.charAt(10)).append("---").append(posiciones.charAt(11)).append("       ").append(posiciones.charAt(12)).append("---").append(posiciones.charAt(13)).append("---").append(posiciones.charAt(14)).append("\n");
-        tablero.append(" |   |   |       |   |   |\n");
-        tablero.append(" |   |   ").append(posiciones.charAt(15)).append("---").append(posiciones.charAt(16)).append("---").append(posiciones.charAt(17)).append("   |   |\n");
-        tablero.append(" |   |       |       |   |\n");
-        tablero.append(" |   ").append(posiciones.charAt(18)).append("-------").append(posiciones.charAt(19)).append("-------").append(posiciones.charAt(20)).append("   |\n");
-        tablero.append(" |           |           |\n");
-        tablero.append(" ").append(posiciones.charAt(21)).append("-----------").append(posiciones.charAt(22)).append("-----------").append(posiciones.charAt(23)).append("\n");
+        tablero.append("  0   1   2   3   4   5   6\n");
+        tablero.append("0 ").append(posiciones.charAt(0)).append("-----------").append(posiciones.charAt(1)).append("-----------").append(posiciones.charAt(2)).append("\n");
+        tablero.append("  |           |           |\n");
+        tablero.append("1 |   ").append(posiciones.charAt(3)).append("-------").append(posiciones.charAt(4)).append("-------").append(posiciones.charAt(5)).append("   |\n");
+        tablero.append("  |   |       |       |   |\n");
+        tablero.append("2 |   |   ").append(posiciones.charAt(6)).append("---").append(posiciones.charAt(7)).append("---").append(posiciones.charAt(8)).append("   |   |\n");
+        tablero.append("  |   |   |       |   |   |\n");
+        tablero.append("3 ").append(posiciones.charAt(9)).append("---").append(posiciones.charAt(10)).append("---").append(posiciones.charAt(11)).append("       ").append(posiciones.charAt(12)).append("---").append(posiciones.charAt(13)).append("---").append(posiciones.charAt(14)).append("\n");
+        tablero.append("  |   |   |       |   |   |\n");
+        tablero.append("4 |   |   ").append(posiciones.charAt(15)).append("---").append(posiciones.charAt(16)).append("---").append(posiciones.charAt(17)).append("   |   |\n");
+        tablero.append("  |   |       |       |   |\n");
+        tablero.append("5 |   ").append(posiciones.charAt(18)).append("-------").append(posiciones.charAt(19)).append("-------").append(posiciones.charAt(20)).append("   |\n");
+        tablero.append("  |           |           |\n");
+        tablero.append("6 ").append(posiciones.charAt(21)).append("-----------").append(posiciones.charAt(22)).append("-----------").append(posiciones.charAt(23)).append("\n");
         mostrarMensaje("\n=== TABLERO ACTUAL ===");
         mostrarMensaje(tablero.toString());
     }
