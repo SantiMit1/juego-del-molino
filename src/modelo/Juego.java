@@ -1,6 +1,7 @@
 package modelo;
 
 import modelo.enums.Color;
+import modelo.enums.EstadoFicha;
 import modelo.enums.FaseJuego;
 import observer.Notificaciones;
 import observer.Observable;
@@ -24,6 +25,17 @@ public class Juego extends Observable {
     }
 
     private void cambiarTurno() {
+        // verifica si hay un ganador antes de cambiar el turno
+        if (ganador == null) {
+            ganador = hayGanador();
+            if (ganador != null) {
+                notificarObservadores(Notificaciones.IMPRIMIR_TABLERO);
+                notificarObservadores(Notificaciones.FIN);
+                finalizarJuego();
+                return;
+            }
+        }
+
         turnoActual++;
         notificarObservadores(Notificaciones.IMPRIMIR_TABLERO);
         if (fase == FaseJuego.MOVIENDO) {
@@ -141,16 +153,6 @@ public class Juego extends Observable {
 
         tablero.eliminarFicha(fila, columna);
 
-        if (ganador == null) {
-            ganador = hayGanador();
-            if (ganador != null) {
-                notificarObservadores(Notificaciones.IMPRIMIR_TABLERO);
-                notificarObservadores(Notificaciones.FIN);
-                finalizarJuego();
-                return;
-            }
-        }
-
         cambiarTurno();
     }
 
@@ -169,13 +171,33 @@ public class Juego extends Observable {
     }
 
     private Jugador hayGanador() {
-        for (int i = 0; i < jugadores.size(); i++) {
-            Jugador jugador = jugadores.get(i);
-            if (jugador.contarFichasEnTablero() < 3 && jugador.contarFichasEnMano() == 0) {
-                // retorna el jugador que no perdio
-                return jugadores.get(Math.abs(i - 1));
-            }
+        Jugador jugador = jugadores.get((turnoActual + 1) % 2); // el jugador que no jugo en este turno
+        // si el jugador tiene menos de 3 fichas pierde
+        if (jugador.contarFichasEnTablero() < 3 && jugador.contarFichasEnMano() == 0) {
+            // retorna el jugador que no perdio
+            return jugadores.get(turnoActual % 2);
         }
+
+        // si el jugador no puede saltar fichas y no tiene movimientos legales pierde
+        if (!jugador.puedeSaltarFicha() && fase == FaseJuego.MOVIENDO) {
+            for (Posicion[] fila : tablero.getPosiciones()) {
+                for (Posicion pos : fila) {
+                    if (pos != null) {
+                        Ficha ficha = pos.getFicha();
+                        if (ficha != null && ficha.getColor() == jugador.getColor() && ficha.getEstado() == EstadoFicha.EN_TABLERO) {
+                            for (Posicion adyacente : pos.getAdyacentes()) {
+                                if (adyacente.getFicha() == null) {
+                                    return null;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            // retorna el jugador que no perdio
+            return jugadores.get(turnoActual % 2);
+        }
+
         return null;
     }
 
