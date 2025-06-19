@@ -17,7 +17,6 @@ El juego del molino es un juego de mesa para dos jugadores. El objetivo es forma
 
 ### `Tablero`
 - Representa el tablero del juego.
-- Guarda las fichas y en qué posición está cada una.
 - Revisa al colocar o mover una ficha si el movimiento es valido.
 - Determina si hay un molino formado.
 - Permite colocar, mover y eliminar fichas.
@@ -53,9 +52,13 @@ El juego del molino es un juego de mesa para dos jugadores. El objetivo es forma
 - Implementan el patrón observador para notificar cambios en el modelo.
 - Permiten que la vista y otros componentes reaccionen a eventos del juego.
 
-### `IVista` y `VistaTerminal`
-- Definen la interfaz y la implementación de la vista del juego.
-- Muestran el estado del juego y reciben las acciones del usuario.
+### `Vista`
+- Definen los metodos y atributos que tiene que implementar una vista.
+
+### `VistaTerminal`
+- Implementa los metodos y atributos definidos en la clase abstracta "Vista"
+- Recibe actualizaciones de estado del controlador
+- Toma entradas del jugador cuando es su turno y se las envia al controlador para que actualice el estado del juego
 
 ---
 
