@@ -25,50 +25,48 @@ public class Tablero {
     }
 
     private void conectarAdyacencias() {
-        conectarPosiciones(0, 0, 0, 3);
-        conectarPosiciones(0, 0, 3, 0);
-        conectarPosiciones(0, 3, 1, 3);
-        conectarPosiciones(0, 3, 0, 6);
-        conectarPosiciones(0, 6, 3, 6);
-        conectarPosiciones(1, 1, 3, 1);
-        conectarPosiciones(1, 1, 1, 3);
-        conectarPosiciones(1, 3, 1, 5);
-        conectarPosiciones(1, 3, 2, 3);
-        conectarPosiciones(1, 5, 3, 5);
-        conectarPosiciones(2, 2, 3, 2);
-        conectarPosiciones(2, 2, 2, 3);
-        conectarPosiciones(2, 3, 2, 4);
-        conectarPosiciones(2, 4, 3, 4);
-        conectarPosiciones(3, 0, 6, 0);
-        conectarPosiciones(3, 0, 3, 1);
-        conectarPosiciones(3, 1, 3, 2);
-        conectarPosiciones(3, 1, 5, 1);
-        conectarPosiciones(3, 2, 4, 2);
-        conectarPosiciones(3, 2, 2, 2);
-        conectarPosiciones(3, 4, 4, 4);
-        conectarPosiciones(3, 4, 2, 4);
-        conectarPosiciones(3, 4, 3, 5);
-        conectarPosiciones(3, 5, 5, 5);
-        conectarPosiciones(3, 5, 3, 6);
-        conectarPosiciones(3, 6, 6, 6);
-        conectarPosiciones(4, 2, 4, 3);
-        conectarPosiciones(4, 2, 3, 2);
-        conectarPosiciones(4, 3, 4, 4);
-        conectarPosiciones(4, 3, 5, 3);
-        conectarPosiciones(4, 4, 3, 4);
-        conectarPosiciones(5, 1, 5, 3);
-        conectarPosiciones(5, 1, 3, 1);
-        conectarPosiciones(5, 3, 5, 5);
-        conectarPosiciones(5, 3, 4, 3);
-        conectarPosiciones(5, 3, 6, 3);
-        conectarPosiciones(5, 5, 3, 5);
-        conectarPosiciones(6, 0, 6, 3);
-        conectarPosiciones(6, 3, 6, 6);
+        conectarPosiciones(getPosicion(0, 0), getPosicion(0, 3));
+        conectarPosiciones(getPosicion(0, 0), getPosicion(3, 0));
+        conectarPosiciones(getPosicion(0, 3), getPosicion(1, 3));
+        conectarPosiciones(getPosicion(0, 3), getPosicion(0, 6));
+        conectarPosiciones(getPosicion(0, 6), getPosicion(3, 6));
+        conectarPosiciones(getPosicion(1, 1), getPosicion(3, 1));
+        conectarPosiciones(getPosicion(1, 1), getPosicion(1, 3));
+        conectarPosiciones(getPosicion(1, 3), getPosicion(1, 5));
+        conectarPosiciones(getPosicion(1, 3), getPosicion(2, 3));
+        conectarPosiciones(getPosicion(1, 5), getPosicion(3, 5));
+        conectarPosiciones(getPosicion(2, 2), getPosicion(3, 2));
+        conectarPosiciones(getPosicion(2, 2), getPosicion(2, 3));
+        conectarPosiciones(getPosicion(2, 3), getPosicion(2, 4));
+        conectarPosiciones(getPosicion(2, 4), getPosicion(3, 4));
+        conectarPosiciones(getPosicion(3, 0), getPosicion(6, 0));
+        conectarPosiciones(getPosicion(3, 0), getPosicion(3, 1));
+        conectarPosiciones(getPosicion(3, 1), getPosicion(3, 2));
+        conectarPosiciones(getPosicion(3, 1), getPosicion(5, 1));
+        conectarPosiciones(getPosicion(3, 2), getPosicion(4, 2));
+        conectarPosiciones(getPosicion(3, 2), getPosicion(2, 2));
+        conectarPosiciones(getPosicion(3, 4), getPosicion(4, 4));
+        conectarPosiciones(getPosicion(3, 4), getPosicion(2, 4));
+        conectarPosiciones(getPosicion(3, 4), getPosicion(3, 5));
+        conectarPosiciones(getPosicion(3, 5), getPosicion(5, 5));
+        conectarPosiciones(getPosicion(3, 5), getPosicion(3, 6));
+        conectarPosiciones(getPosicion(3, 6), getPosicion(6, 6));
+        conectarPosiciones(getPosicion(4, 2), getPosicion(4, 3));
+        conectarPosiciones(getPosicion(4, 2), getPosicion(3, 2));
+        conectarPosiciones(getPosicion(4, 3), getPosicion(4, 4));
+        conectarPosiciones(getPosicion(4, 3), getPosicion(5, 3));
+        conectarPosiciones(getPosicion(4, 4), getPosicion(3, 4));
+        conectarPosiciones(getPosicion(5, 1), getPosicion(5, 3));
+        conectarPosiciones(getPosicion(5, 1), getPosicion(3, 1));
+        conectarPosiciones(getPosicion(5, 3), getPosicion(5, 5));
+        conectarPosiciones(getPosicion(5, 3), getPosicion(4, 3));
+        conectarPosiciones(getPosicion(5, 3), getPosicion(6, 3));
+        conectarPosiciones(getPosicion(5, 5), getPosicion(3, 5));
+        conectarPosiciones(getPosicion(6, 0), getPosicion(6, 3));
+        conectarPosiciones(getPosicion(6, 3), getPosicion(6, 6));
     }
 
-    private void conectarPosiciones(int f1, int c1, int f2, int c2) {
-        Posicion n1 = getPosicion(f1, c1);
-        Posicion n2 = getPosicion(f2, c2);
+    private void conectarPosiciones(Posicion n1, Posicion n2) {
         if (n1 != null && n2 != null) {
             n1.agregarAdyacente(n2);
             n2.agregarAdyacente(n1);

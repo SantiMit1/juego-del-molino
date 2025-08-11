@@ -1,3 +1,3 @@
-- [ ] vista consola: pedir fila y columna de una
-- [ ] generar adyacencias con instancias en lugar de ints
+- [x] vista consola: pedir fila y columna de una
+- [x] generar adyacencias con instancias en lugar de ints
 - [ ] que solo en la interfaz grafica que el jugador pueda elegir el color de la ficha
