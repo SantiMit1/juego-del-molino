@@ -18,7 +18,7 @@ public class VistaTerminal extends Vista {
     // Variables para control del estado de entrada
     private boolean esperandoEntrada = false;
     private Modos tipoEntradaActual = null;
-    private int[] valoresEntrada;
+    private String[] entradasPosicion;
     private int valorActual = 0;
 
     public VistaTerminal(Controlador controlador) {
@@ -80,73 +80,124 @@ public class VistaTerminal extends Vista {
         if (!esperandoEntrada) return;
 
         try {
-            int valor = Integer.parseInt(inputField.getText().trim());
+            String entrada = inputField.getText().trim().toUpperCase();
             inputField.setText("");
 
-            valoresEntrada[valorActual] = valor;
-            mostrarMensaje("Valor ingresado: " + valor);
+            if (entrada.length() < 2) {
+                mostrarMensaje("Error: Formato inválido. Ingrese una letra (A-G) seguida de un número (0-6). Ejemplo: A0");
+                return;
+            }
+
+            entradasPosicion[valorActual] = entrada;
+            mostrarMensaje("Posición ingresada: " + entrada);
             valorActual++;
 
             switch (tipoEntradaActual) {
                 case Modos.COLOCAR:
-                    if (valorActual == 2) {
-                        boolean success = controlador.colocarFicha(valoresEntrada[0], valoresEntrada[1]);
-                        if (success) {
-                            deshabilitarEntrada();
-                            valorActual = 0;
+                    if (valorActual == 1) {
+                        int[] coordenadas = convertirPosicionACoordenadas(entrada);
+                        if (coordenadas != null) {
+                            boolean success = controlador.colocarFicha(coordenadas[0], coordenadas[1]);
+                            if (success) {
+                                deshabilitarEntrada();
+                            } else {
+                                valorActual = 0;
+                                mostrarMensaje("Posición inválida. Intente nuevamente:");
+                                mostrarMensaje("Ingrese la posición donde quiere colocar la ficha (ejemplo: A0):");
+                            }
                         } else {
                             valorActual = 0;
-                            mostrarMensaje("Intente nuevamente:");
-                            mostrarMensaje("Ingrese la fila donde quiere colocar la ficha:");
+                            mostrarMensaje("Formato inválido. Intente nuevamente:");
+                            mostrarMensaje("Ingrese la posición donde quiere colocar la ficha (ejemplo: A0):");
                         }
-                    } else {
-                        mostrarMensaje("Ingrese la columna donde quiere colocar la ficha:");
                     }
                     break;
 
                 case Modos.MOVER:
-                    if (valorActual == 4) {
-                        boolean success = controlador.moverFicha(
-                                valoresEntrada[0], valoresEntrada[1],
-                                valoresEntrada[2], valoresEntrada[3]
-                        );
-                        if (success) {
-                            deshabilitarEntrada();
-                            valorActual = 0;
+                    if (valorActual == 1) {
+                        mostrarMensaje("Ingrese la posición de destino (ejemplo: B3):");
+                    } else if (valorActual == 2) {
+                        int[] coordenadasOrigen = convertirPosicionACoordenadas(entradasPosicion[0]);
+                        int[] coordenadasDestino = convertirPosicionACoordenadas(entradasPosicion[1]);
+
+                        if (coordenadasOrigen != null && coordenadasDestino != null) {
+                            boolean success = controlador.moverFicha(
+                                    coordenadasOrigen[0], coordenadasOrigen[1],
+                                    coordenadasDestino[0], coordenadasDestino[1]
+                            );
+                            if (success) {
+                                deshabilitarEntrada();
+                            } else {
+                                valorActual = 0;
+                                mostrarMensaje("Movimiento inválido. Intente nuevamente:");
+                                mostrarMensaje("Ingrese la posición de la ficha a mover (ejemplo: A0):");
+                            }
                         } else {
                             valorActual = 0;
-                            mostrarMensaje("Intente nuevamente:");
-                            mostrarMensaje("Ingrese la fila de la ficha a mover:");
+                            mostrarMensaje("Formato inválido. Intente nuevamente:");
+                            mostrarMensaje("Ingrese la posición de la ficha a mover (ejemplo: A0):");
                         }
-                    } else {
-                        String[] mensajes = {
-                                "Ingrese la columna de la ficha a mover:",
-                                "Ingrese la fila de destino:",
-                                "Ingrese la columna de destino:"
-                        };
-                        mostrarMensaje(mensajes[valorActual - 1]);
                     }
                     break;
 
                 case Modos.ELIMINAR:
-                    if (valorActual == 2) {
-                        boolean success = controlador.eliminarFicha(valoresEntrada[0], valoresEntrada[1]);
-                        if (success) {
-                            deshabilitarEntrada();
-                            valorActual = 0;
+                    if (valorActual == 1) {
+                        int[] coordenadas = convertirPosicionACoordenadas(entrada);
+                        if (coordenadas != null) {
+                            boolean success = controlador.eliminarFicha(coordenadas[0], coordenadas[1]);
+                            if (success) {
+                                deshabilitarEntrada();
+                            } else {
+                                valorActual = 0;
+                                mostrarMensaje("Posición inválida. Intente nuevamente:");
+                                mostrarMensaje("Ingrese la posición de la ficha a eliminar (ejemplo: A0):");
+                            }
                         } else {
                             valorActual = 0;
-                            mostrarMensaje("Intente nuevamente:");
-                            mostrarMensaje("Ingrese la fila de la ficha a eliminar:");
+                            mostrarMensaje("Formato inválido. Intente nuevamente:");
+                            mostrarMensaje("Ingrese la posición de la ficha a eliminar (ejemplo: A0):");
                         }
-                    } else {
-                        mostrarMensaje("Ingrese la columna de la ficha a eliminar:");
                     }
                     break;
             }
-        } catch (NumberFormatException e) {
-            mostrarMensaje("Error: Ingrese un número válido");
+        } catch (Exception e) {
+            mostrarMensaje("Error: Formato inválido. Ingrese una letra (A-G) seguida de un número (0-6). Ejemplo: A0");
         }
+    }
+
+    private int[] convertirPosicionACoordenadas(String posicion) {
+        if (posicion == null || posicion.length() < 2) {
+            return null;
+        }
+
+        char primerCaracter = posicion.charAt(0);
+        char segundoCaracter = posicion.charAt(1);
+
+        char letraColumna;
+        char numeroFila;
+
+        if (Character.isLetter(primerCaracter) && Character.isDigit(segundoCaracter)) {
+            letraColumna = primerCaracter;
+            numeroFila = segundoCaracter;
+        } else if (Character.isDigit(primerCaracter) && Character.isLetter(segundoCaracter)) {
+            numeroFila = primerCaracter;
+            letraColumna = segundoCaracter;
+        } else {
+            return null;
+        }
+
+        if (letraColumna < 'A' || letraColumna > 'G') {
+            return null;
+        }
+
+        if (numeroFila < '0' || numeroFila > '6') {
+            return null;
+        }
+
+        int fila = numeroFila - '0';
+        int columna = letraColumna - 'A';
+
+        return new int[] {fila, columna};
     }
 
     private void habilitarEntrada() {
@@ -166,10 +217,10 @@ public class VistaTerminal extends Vista {
     public void colocarFicha() {
         SwingUtilities.invokeLater(() -> {
             tipoEntradaActual = Modos.COLOCAR;
-            valoresEntrada = new int[2];
+            entradasPosicion = new String[2];
             valorActual = 0;
             mostrarMensaje(nombreJugador + ": Colocar ficha:");
-            mostrarMensaje("Ingrese la fila donde quiere colocar la ficha:");
+            mostrarMensaje("Ingrese la posición donde quiere colocar la ficha (ejemplo: A0):");
 
             habilitarEntrada();
             estadoLabel.setText("Acción: Colocar ficha");
@@ -180,10 +231,10 @@ public class VistaTerminal extends Vista {
     public void moverFicha() {
         SwingUtilities.invokeLater(() -> {
             tipoEntradaActual = Modos.MOVER;
-            valoresEntrada = new int[4];
+            entradasPosicion = new String[2];
             valorActual = 0;
             mostrarMensaje(nombreJugador + ": Mover ficha:");
-            mostrarMensaje("Ingrese la fila de la ficha a mover:");
+            mostrarMensaje("Ingrese la posición de la ficha a mover (ejemplo: A0):");
 
             habilitarEntrada();
             estadoLabel.setText("Acción: Mover ficha");
@@ -194,10 +245,10 @@ public class VistaTerminal extends Vista {
     public void eliminarFicha() {
         SwingUtilities.invokeLater(() -> {
             tipoEntradaActual = Modos.ELIMINAR;
-            valoresEntrada = new int[2];
+            entradasPosicion = new String[2];
             valorActual = 0;
             mostrarMensaje(nombreJugador + ": Eliminar ficha:");
-            mostrarMensaje("Ingrese la fila de la ficha a eliminar:");
+            mostrarMensaje("Ingrese la posición de la ficha a eliminar (ejemplo: A0):");
 
             habilitarEntrada();
             estadoLabel.setText("Acción: Eliminar ficha");
@@ -216,7 +267,7 @@ public class VistaTerminal extends Vista {
     @Override
     public void mostrarTablero(String posiciones) {
         StringBuilder tablero = new StringBuilder();
-        tablero.append("  0   1   2   3   4   5   6\n");
+        tablero.append("  A   B   C   D   E   F   G\n");
         tablero.append("0 ").append(posiciones.charAt(0)).append("-----------").append(posiciones.charAt(1)).append("-----------").append(posiciones.charAt(2)).append("\n");
         tablero.append("  |           |           |\n");
         tablero.append("1 |   ").append(posiciones.charAt(3)).append("-------").append(posiciones.charAt(4)).append("-------").append(posiciones.charAt(5)).append("   |\n");

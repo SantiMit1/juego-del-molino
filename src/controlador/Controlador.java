@@ -55,7 +55,6 @@ public class Controlador implements Observer {
 
     public boolean eliminarFicha(int fila, int columna) {
         try {
-            vista.mostrarMensaje("asbdaskhgdkasds");
             juego.eliminarFicha(fila, columna);
             return true;
         } catch (Exception e) {
