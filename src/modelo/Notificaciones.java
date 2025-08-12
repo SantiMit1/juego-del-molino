@@ -1,4 +1,4 @@
-package observer;
+package modelo;
 
 public enum Notificaciones {
     ESPERA,

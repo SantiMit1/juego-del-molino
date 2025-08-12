@@ -4,7 +4,7 @@ import ar.edu.unlu.rmimvc.cliente.IControladorRemoto;
 import ar.edu.unlu.rmimvc.observer.IObservableRemoto;
 import modelo.*;
 import modelo.enums.EstadoFicha;
-import observer.Notificaciones;
+import modelo.Notificaciones;
 import vistas.Vista;
 
 import java.rmi.RemoteException;
@@ -13,8 +13,9 @@ public class Controlador implements IControladorRemoto {
     private IJuego juego;
     private final Tablero tablero;
     private Vista vista;
+    private String nombreJugador;
 
-    public Controlador(Juego juego) {
+    public Controlador() {
         setModeloRemoto(juego);
         this.tablero = juego.getTablero();
     }
@@ -31,6 +32,7 @@ public class Controlador implements IControladorRemoto {
         Jugador jugador = new Jugador(nombre);
         try {
             juego.agregarJugador(jugador);
+            this.nombreJugador = nombre;
             vista.mostrarMensaje("Jugador " + nombre + " creado y agregado al juego.");
         } catch (RemoteException ex) {
             vista.mostrarMensaje("Error al agregar jugador: " + ex.getMessage());
@@ -96,13 +98,21 @@ public class Controlador implements IControladorRemoto {
                     vista.mostrarMensaje("Esperando otro jugador...");
                     break;
                 case COLOCAR:
-                    vista.colocarFicha();
+                    if (juego.getJugadorActual().getNombre().equals(nombreJugador)) {
+                        vista.colocarFicha();
+                    }
                     break;
                 case MOVER:
-                    vista.moverFicha();
+                    if (juego.getJugadorActual().getNombre().equals(nombreJugador)) {
+                        vista.moverFicha();
+                    }
                     break;
                 case MOLINO:
-                    vista.eliminarFicha();
+                    if (juego.getJugadorActual().getNombre().equals(nombreJugador)) {
+                        vista.eliminarFicha();
+                    } else {
+                        vista.mostrarMensaje("El oponente ha formado un molino. Debe eliminar una de sus fichas.");
+                    }
                     break;
                 case FIN:
                     vista.mostrarMensaje("El ganador es: " + juego.getGanador().getNombre());

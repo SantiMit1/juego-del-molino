@@ -4,7 +4,6 @@ import ar.edu.unlu.rmimvc.observer.ObservableRemoto;
 import modelo.enums.Color;
 import modelo.enums.EstadoFicha;
 import modelo.enums.FaseJuego;
-import observer.Notificaciones;
 
 import java.rmi.RemoteException;
 import java.util.ArrayList;
@@ -40,9 +39,11 @@ public class Juego extends ObservableRemoto implements IJuego {
         turnoActual++;
         notificarObservadores(Notificaciones.IMPRIMIR_TABLERO);
         if (fase == FaseJuego.MOVIENDO) {
-            observers.get(turnoActual % 2).notificar(Notificaciones.MOVER);
+            //observers.get(turnoActual % 2).notificar(Notificaciones.MOVER);
+            notificarObservadores(Notificaciones.MOVER);
         } else if (fase == FaseJuego.COLOCANDO) {
-            observers.get(turnoActual % 2).notificar(Notificaciones.COLOCAR);
+            //observers.get(turnoActual % 2).notificar(Notificaciones.COLOCAR);
+            notificarObservadores(Notificaciones.COLOCAR);
         }
     }
 
@@ -53,6 +54,11 @@ public class Juego extends ObservableRemoto implements IJuego {
         }
         if (jugadores.contains(jugador)) {
             throw new IllegalArgumentException("El jugador ya está en la lista");
+        }
+        for (Jugador j : jugadores) {
+            if (j.getNombre().equals(jugador.getNombre())) {
+                throw new IllegalArgumentException("Ya existe un jugador con el mismo nombre");
+            }
         }
 
         if (jugadores.isEmpty()) {
@@ -70,7 +76,8 @@ public class Juego extends ObservableRemoto implements IJuego {
         if (jugadores.size() == 2) {
             iniciarJuego();
         } else {
-            observers.getFirst().notificar(Notificaciones.ESPERA);
+            //observers.getFirst().notificar(Notificaciones.ESPERA);
+            notificarObservadores(Notificaciones.ESPERA);
         }
 
     }
@@ -84,7 +91,8 @@ public class Juego extends ObservableRemoto implements IJuego {
     public void iniciarJuego() throws RemoteException {
         fase = FaseJuego.COLOCANDO;
         notificarObservadores(Notificaciones.IMPRIMIR_TABLERO);
-        observers.get(turnoActual % 2).notificar(Notificaciones.COLOCAR);
+        //observers.get(turnoActual % 2).notificar(Notificaciones.COLOCAR);
+        notificarObservadores(Notificaciones.COLOCAR);
     }
 
     @Override
@@ -107,7 +115,8 @@ public class Juego extends ObservableRemoto implements IJuego {
 
         if (tablero.hayMolino(fila, columna)) {
             notificarObservadores(Notificaciones.IMPRIMIR_TABLERO);
-            observers.get(turnoActual % 2).notificar(Notificaciones.MOLINO);
+            //observers.get(turnoActual % 2).notificar(Notificaciones.MOLINO);
+            notificarObservadores(Notificaciones.MOLINO);
             return;
         }
 
@@ -136,7 +145,8 @@ public class Juego extends ObservableRemoto implements IJuego {
 
         if (tablero.hayMolino(filaDestino, columnaDestino)) {
             notificarObservadores(Notificaciones.IMPRIMIR_TABLERO);
-            observers.get(turnoActual % 2).notificar(Notificaciones.MOLINO);
+            //observers.get(turnoActual % 2).notificar(Notificaciones.MOLINO);
+            notificarObservadores(Notificaciones.MOLINO);
             return;
         }
 
