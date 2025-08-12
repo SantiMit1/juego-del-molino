@@ -1,22 +1,26 @@
 package controlador;
 
-import modelo.Juego;
-import modelo.Jugador;
-import modelo.Posicion;
-import modelo.Tablero;
+import ar.edu.unlu.rmimvc.cliente.IControladorRemoto;
+import ar.edu.unlu.rmimvc.observer.IObservableRemoto;
+import modelo.*;
 import modelo.enums.EstadoFicha;
 import observer.Notificaciones;
-import observer.Observer;
 import vistas.Vista;
-public class Controlador implements Observer {
-    private final Juego juego;
+
+import java.rmi.RemoteException;
+
+public class Controlador implements IControladorRemoto {
+    private IJuego juego;
     private final Tablero tablero;
     private Vista vista;
 
     public Controlador(Juego juego) {
-        this.juego = juego;
+        setModeloRemoto(juego);
         this.tablero = juego.getTablero();
-        juego.agregarObservador(this);
+    }
+
+    public <T extends IObservableRemoto> void setModeloRemoto(T modeloRemoto) {
+        this.juego = (IJuego) modeloRemoto;
     }
 
     public void setVista(Vista vista) {
@@ -25,12 +29,12 @@ public class Controlador implements Observer {
 
     public void crearJugador(String nombre) {
         Jugador jugador = new Jugador(nombre);
-        vista.mostrarMensaje("Jugador " + nombre + " creado y agregado al juego.");
-        juego.agregarJugador(jugador);
-    }
-
-    private void eliminarObserver() {
-        juego.eliminarObservador(this);
+        try {
+            juego.agregarJugador(jugador);
+            vista.mostrarMensaje("Jugador " + nombre + " creado y agregado al juego.");
+        } catch (RemoteException ex) {
+            vista.mostrarMensaje("Error al agregar jugador: " + ex.getMessage());
+        }
     }
 
     public boolean colocarFicha(int fila, int columna) {
@@ -82,27 +86,52 @@ public class Controlador implements Observer {
     }
 
     @Override
-    public void notificar(Notificaciones notificacion) {
-        switch (notificacion) {
-            case IMPRIMIR_TABLERO:
-                imprimirTablero();
-                break;
-            case ESPERA:
-                vista.mostrarMensaje("Esperando otro jugador...");
-                break;
-            case COLOCAR:
-                vista.colocarFicha();
-                break;
-            case MOVER:
-                vista.moverFicha();
-                break;
-            case MOLINO:
-                vista.eliminarFicha();
-                break;
-            case FIN:
-                vista.mostrarMensaje("El ganador es: " + juego.getGanador().getNombre());
-                eliminarObserver();
-                break;
+    public void actualizar(IObservableRemoto iObservableRemoto, Object notificacion) throws RemoteException {
+        if (notificacion instanceof Notificaciones) {
+            switch ((Notificaciones) notificacion) {
+                case IMPRIMIR_TABLERO:
+                    imprimirTablero();
+                    break;
+                case ESPERA:
+                    vista.mostrarMensaje("Esperando otro jugador...");
+                    break;
+                case COLOCAR:
+                    vista.colocarFicha();
+                    break;
+                case MOVER:
+                    vista.moverFicha();
+                    break;
+                case MOLINO:
+                    vista.eliminarFicha();
+                    break;
+                case FIN:
+                    vista.mostrarMensaje("El ganador es: " + juego.getGanador().getNombre());
+                    break;
+            }
         }
     }
+
+//    @Override
+//    public void notificar(Notificaciones notificacion) {
+//        switch (notificacion) {
+//            case IMPRIMIR_TABLERO:
+//                imprimirTablero();
+//                break;
+//            case ESPERA:
+//                vista.mostrarMensaje("Esperando otro jugador...");
+//                break;
+//            case COLOCAR:
+//                vista.colocarFicha();
+//                break;
+//            case MOVER:
+//                vista.moverFicha();
+//                break;
+//            case MOLINO:
+//                vista.eliminarFicha();
+//                break;
+//            case FIN:
+//                vista.mostrarMensaje("El ganador es: " + juego.getGanador().getNombre());
+//                break;
+//        }
+//    }
 }

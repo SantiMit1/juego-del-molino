@@ -1,15 +1,16 @@
 package modelo;
 
+import ar.edu.unlu.rmimvc.observer.ObservableRemoto;
 import modelo.enums.Color;
 import modelo.enums.EstadoFicha;
 import modelo.enums.FaseJuego;
 import observer.Notificaciones;
-import observer.Observable;
 
+import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Juego extends Observable {
+public class Juego extends ObservableRemoto implements IJuego {
     private final Tablero tablero;
     private static final List<Jugador> jugadores = new ArrayList<>();
     private static int turnoActual;
@@ -24,7 +25,7 @@ public class Juego extends Observable {
         ganador = null;
     }
 
-    private void cambiarTurno() {
+    private void cambiarTurno() throws RemoteException {
         // verifica si hay un ganador antes de cambiar el turno
         if (ganador == null) {
             ganador = hayGanador();
@@ -45,7 +46,8 @@ public class Juego extends Observable {
         }
     }
 
-    public void agregarJugador(Jugador jugador) {
+    @Override
+    public void agregarJugador(Jugador jugador) throws RemoteException {
         if (jugadores.size() >= 2) {
             throw new IllegalStateException("Ya hay dos jugadores en el juego");
         }
@@ -73,17 +75,20 @@ public class Juego extends Observable {
 
     }
 
+    @Override
     public Jugador getJugadorActual() {
         return jugadores.get(turnoActual % 2);
     }
 
-    public void iniciarJuego() {
+    @Override
+    public void iniciarJuego() throws RemoteException {
         fase = FaseJuego.COLOCANDO;
         notificarObservadores(Notificaciones.IMPRIMIR_TABLERO);
         observers.get(turnoActual % 2).notificar(Notificaciones.COLOCAR);
     }
 
-    public void colocarFicha(int fila, int columna, Ficha ficha) {
+    @Override
+    public void colocarFicha(int fila, int columna, Ficha ficha) throws RemoteException {
         if (fase != FaseJuego.COLOCANDO) {
             throw new IllegalStateException("No se puede colocar ficha en esta fase");
         }
@@ -109,7 +114,8 @@ public class Juego extends Observable {
         cambiarTurno();
     }
 
-    public void moverFicha(int filaOrigen, int columnaOrigen, int filaDestino, int columnaDestino) {
+    @Override
+    public void moverFicha(int filaOrigen, int columnaOrigen, int filaDestino, int columnaDestino) throws RemoteException {
         if (fase != FaseJuego.MOVIENDO) {
             throw new IllegalStateException("No se puede mover fichas en esta fase");
         }
@@ -137,7 +143,8 @@ public class Juego extends Observable {
         cambiarTurno();
     }
 
-    public void eliminarFicha(int fila, int columna) {
+    @Override
+    public void eliminarFicha(int fila, int columna) throws RemoteException {
         Ficha ficha = tablero.obtenerFicha(fila, columna);
         if (ficha == null) {
             throw new IllegalArgumentException("No hay ficha en la posición elegida");
@@ -207,10 +214,12 @@ public class Juego extends Observable {
         tablero.limpiarTablero();
     }
 
+    @Override
     public Jugador getGanador() {
         return ganador;
     }
 
+    @Override
     public Tablero getTablero() {
         return tablero;
     }
