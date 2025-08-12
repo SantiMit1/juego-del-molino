@@ -1,6 +1,8 @@
 package modelo.enums;
 
-public enum Color {
+import java.io.Serializable;
+
+public enum Color implements Serializable {
     BLANCO,
     NEGRO
 }

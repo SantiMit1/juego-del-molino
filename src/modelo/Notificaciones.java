@@ -1,6 +1,8 @@
 package modelo;
 
-public enum Notificaciones {
+import java.io.Serializable;
+
+public enum Notificaciones implements Serializable {
     ESPERA,
     IMPRIMIR_TABLERO,
     COLOCAR,

@@ -3,7 +3,9 @@ package modelo;
 import modelo.enums.Color;
 import modelo.enums.EstadoFicha;
 
-public class Ficha {
+import java.io.Serializable;
+
+public class Ficha implements Serializable {
     private final Color color;
     private EstadoFicha estado;
 

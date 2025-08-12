@@ -2,9 +2,10 @@ package modelo;
 
 import modelo.enums.Color;
 
+import java.io.Serializable;
 import java.util.*;
 
-public class Tablero {
+public class Tablero implements Serializable {
     private static final int FILAS = 7;
     private static final int COLUMNAS = 7;
     private final Posicion[][] posiciones = new Posicion[FILAS][COLUMNAS];

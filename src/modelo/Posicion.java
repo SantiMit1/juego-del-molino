@@ -1,9 +1,10 @@
 package modelo;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Posicion {
+public class Posicion implements Serializable {
     private final int fila;
     private final int columna;
     private Ficha ficha;

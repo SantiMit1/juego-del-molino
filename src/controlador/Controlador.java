@@ -11,18 +11,18 @@ import java.rmi.RemoteException;
 
 public class Controlador implements IControladorRemoto {
     private IJuego juego;
-    private final Tablero tablero;
+    private Tablero tablero;
     private Vista vista;
     private String nombreJugador;
 
-    public Controlador() {
-        setModeloRemoto(juego);
-        this.tablero = juego.getTablero();
+public <T extends IObservableRemoto> void setModeloRemoto(T modeloRemoto) {
+    this.juego = (IJuego) modeloRemoto;
+    try {
+        this.tablero = ((IJuego) modeloRemoto).getTablero();
+    } catch (RemoteException e) {
+        e.printStackTrace();
     }
-
-    public <T extends IObservableRemoto> void setModeloRemoto(T modeloRemoto) {
-        this.juego = (IJuego) modeloRemoto;
-    }
+}
 
     public void setVista(Vista vista) {
         this.vista = vista;
@@ -70,7 +70,13 @@ public class Controlador implements IControladorRemoto {
     }
 
     public void imprimirTablero() {
-        Posicion[][] posiciones = tablero.getPosiciones();
+        Tablero tableroActual = null;
+        try {
+            tableroActual = juego.getTablero();
+        } catch (RemoteException e) {
+            e.printStackTrace();
+        }
+        Posicion[][] posiciones = tableroActual.getPosiciones();
         StringBuilder tableroString = new StringBuilder();
         for (Posicion[] fila : posiciones) {
             for (Posicion pos : fila) {
@@ -120,28 +126,4 @@ public class Controlador implements IControladorRemoto {
             }
         }
     }
-
-//    @Override
-//    public void notificar(Notificaciones notificacion) {
-//        switch (notificacion) {
-//            case IMPRIMIR_TABLERO:
-//                imprimirTablero();
-//                break;
-//            case ESPERA:
-//                vista.mostrarMensaje("Esperando otro jugador...");
-//                break;
-//            case COLOCAR:
-//                vista.colocarFicha();
-//                break;
-//            case MOVER:
-//                vista.moverFicha();
-//                break;
-//            case MOLINO:
-//                vista.eliminarFicha();
-//                break;
-//            case FIN:
-//                vista.mostrarMensaje("El ganador es: " + juego.getGanador().getNombre());
-//                break;
-//        }
-//    }
 }

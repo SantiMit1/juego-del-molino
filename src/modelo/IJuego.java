@@ -7,7 +7,7 @@ import java.rmi.RemoteException;
 public interface IJuego extends IObservableRemoto {
     void agregarJugador(Jugador jugador) throws RemoteException;
 
-    Jugador getJugadorActual();
+    Jugador getJugadorActual() throws  RemoteException;
 
     void iniciarJuego() throws RemoteException;
 
@@ -17,7 +17,7 @@ public interface IJuego extends IObservableRemoto {
 
     void eliminarFicha(int fila, int columna) throws RemoteException;
 
-    Jugador getGanador();
+    Jugador getGanador() throws  RemoteException;
 
-    Tablero getTablero();
+    Tablero getTablero() throws   RemoteException;
 }

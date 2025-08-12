@@ -2,12 +2,13 @@ package modelo;
 
 import modelo.enums.Color;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
 import modelo.enums.EstadoFicha;
 
-public class Jugador {
+public class Jugador implements Serializable {
     private String nombre;
     private Color color;
     private final List<Ficha> fichas;
