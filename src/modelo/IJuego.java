@@ -11,7 +11,7 @@ public interface IJuego extends IObservableRemoto {
 
     void iniciarJuego() throws RemoteException;
 
-    void colocarFicha(int fila, int columna, Ficha ficha) throws RemoteException;
+    void colocarFicha(int fila, int columna) throws RemoteException;
 
     void moverFicha(int filaOrigen, int columnaOrigen, int filaDestino, int columnaDestino) throws RemoteException;
 

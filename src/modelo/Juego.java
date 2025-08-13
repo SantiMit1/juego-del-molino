@@ -11,17 +11,17 @@ import java.util.List;
 
 public class Juego extends ObservableRemoto implements IJuego {
     private final Tablero tablero;
-    private static final List<Jugador> jugadores = new ArrayList<>();
-    private static int turnoActual;
-    private static FaseJuego fase;
-    private static Jugador ganador = null;
+    private final List<Jugador> jugadores = new ArrayList<>();
+    private int turnoActual;
+    private FaseJuego fase;
+    private Jugador ganador;
 
     public Juego(Tablero tablero) {
         super();
         this.tablero = tablero;
-        turnoActual = 0;
-        fase = FaseJuego.ESPERA;
-        ganador = null;
+        this.turnoActual = 0;
+        this.fase = FaseJuego.ESPERA;
+        this.ganador = null;
     }
 
     private void cambiarTurno() throws RemoteException {
@@ -96,18 +96,20 @@ public class Juego extends ObservableRemoto implements IJuego {
     }
 
     @Override
-    public void colocarFicha(int fila, int columna, Ficha ficha) throws RemoteException {
+    public void colocarFicha(int fila, int columna) throws RemoteException {
         if (fase != FaseJuego.COLOCANDO) {
             throw new IllegalStateException("No se puede colocar ficha en esta fase");
         }
-        if (!jugadores.get(turnoActual % 2).puedeColocarFicha()) {
+
+        Jugador jugadorActual = jugadores.get(turnoActual % 2);
+
+        if (!jugadorActual.puedeColocarFicha()) {
             throw new IllegalStateException("No hay fichas en la mano del jugador");
         }
-        if (jugadores.get(turnoActual % 2).getColor() != ficha.getColor()) {
-            throw new IllegalArgumentException("El jugador debe colocar una ficha de su color");
-        }
 
-        tablero.colocarFicha(fila, columna, ficha);
+        Ficha fichaAColocar = jugadorActual.obtenerFichasPorEstado(EstadoFicha.EN_MANO).getFirst();
+
+        tablero.colocarFicha(fila, columna, fichaAColocar);
 
         if (jugadores.get(0).contarFichasEnMano() == 0 && jugadores.get(1).contarFichasEnMano() == 0) {
             fase = FaseJuego.MOVIENDO;
@@ -115,7 +117,6 @@ public class Juego extends ObservableRemoto implements IJuego {
 
         if (tablero.hayMolino(fila, columna)) {
             notificarObservadores(Notificaciones.IMPRIMIR_TABLERO);
-            //observers.get(turnoActual % 2).notificar(Notificaciones.MOLINO);
             notificarObservadores(Notificaciones.MOLINO);
             return;
         }
@@ -128,16 +129,23 @@ public class Juego extends ObservableRemoto implements IJuego {
         if (fase != FaseJuego.MOVIENDO) {
             throw new IllegalStateException("No se puede mover fichas en esta fase");
         }
-        if (!jugadores.get(turnoActual % 2).puedeMoverFicha()) {
+
+        Jugador jugadorActual = jugadores.get(turnoActual % 2);
+
+        if (!jugadorActual.puedeMoverFicha()) {
             throw new IllegalStateException("El jugador todavia no puede mover fichas");
         }
 
         Ficha ficha = tablero.obtenerFicha(filaOrigen, columnaOrigen);
-        Jugador jugador = jugadores.get(turnoActual % 2);
-        if (jugador.getColor() != ficha.getColor()) {
+        if (ficha == null) {
+            throw new IllegalArgumentException("No hay ficha en la posición de origen");
+        }
+
+        if (jugadorActual.getColor() != ficha.getColor()) {
             throw new IllegalArgumentException("El jugador debe mover una ficha de su color");
         }
-        if (!jugador.puedeSaltarFicha() && !tablero.sonAdyacentes(filaOrigen, columnaOrigen, filaDestino, columnaDestino)) {
+
+        if (!jugadorActual.puedeSaltarFicha() && !tablero.sonAdyacentes(filaOrigen, columnaOrigen, filaDestino, columnaDestino)) {
             throw new IllegalArgumentException("El jugador solo puede mover a una posición adyacente");
         }
 
@@ -145,7 +153,6 @@ public class Juego extends ObservableRemoto implements IJuego {
 
         if (tablero.hayMolino(filaDestino, columnaDestino)) {
             notificarObservadores(Notificaciones.IMPRIMIR_TABLERO);
-            //observers.get(turnoActual % 2).notificar(Notificaciones.MOLINO);
             notificarObservadores(Notificaciones.MOLINO);
             return;
         }

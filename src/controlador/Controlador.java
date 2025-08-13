@@ -3,7 +3,6 @@ package controlador;
 import ar.edu.unlu.rmimvc.cliente.IControladorRemoto;
 import ar.edu.unlu.rmimvc.observer.IObservableRemoto;
 import modelo.*;
-import modelo.enums.EstadoFicha;
 import modelo.Notificaciones;
 import vistas.Vista;
 
@@ -35,7 +34,7 @@ public class Controlador implements IControladorRemoto {
 
     public boolean colocarFicha(int fila, int columna) {
         try {
-            juego.colocarFicha(fila, columna, juego.getJugadorActual().obtenerFichasPorEstado(EstadoFicha.EN_MANO).getFirst());
+            juego.colocarFicha(fila, columna);
             return true;
         } catch (Exception e) {
             vista.mostrarMensaje("Error al colocar ficha: " + e.getMessage());
