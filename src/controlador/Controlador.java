@@ -11,18 +11,12 @@ import java.rmi.RemoteException;
 
 public class Controlador implements IControladorRemoto {
     private IJuego juego;
-    private Tablero tablero;
     private Vista vista;
     private String nombreJugador;
 
-public <T extends IObservableRemoto> void setModeloRemoto(T modeloRemoto) {
-    this.juego = (IJuego) modeloRemoto;
-    try {
-        this.tablero = ((IJuego) modeloRemoto).getTablero();
-    } catch (RemoteException e) {
-        e.printStackTrace();
+    public <T extends IObservableRemoto> void setModeloRemoto(T modeloRemoto) {
+        this.juego = (IJuego) modeloRemoto;
     }
-}
 
     public void setVista(Vista vista) {
         this.vista = vista;
@@ -76,21 +70,23 @@ public <T extends IObservableRemoto> void setModeloRemoto(T modeloRemoto) {
         } catch (RemoteException e) {
             e.printStackTrace();
         }
-        Posicion[][] posiciones = tableroActual.getPosiciones();
-        StringBuilder tableroString = new StringBuilder();
-        for (Posicion[] fila : posiciones) {
-            for (Posicion pos : fila) {
-                if (pos != null && tablero.esPosicionValida(pos.getFila(), pos.getColumna())) {
-                    if (pos.getFicha() != null) {
-                        tableroString.append(pos.getFicha().getColor().toString().charAt(0));
-                    } else {
-                        tableroString.append("@");
+
+        if (tableroActual != null) {
+            Posicion[][] posiciones = tableroActual.getPosiciones();
+            StringBuilder tableroString = new StringBuilder();
+            for (Posicion[] fila : posiciones) {
+                for (Posicion pos : fila) {
+                    if (pos != null && tableroActual.esPosicionValida(pos.getFila(), pos.getColumna())) {
+                        if (pos.getFicha() != null) {
+                            tableroString.append(pos.getFicha().getColor().toString().charAt(0));
+                        } else {
+                            tableroString.append("@");
+                        }
                     }
                 }
             }
+            vista.mostrarTablero(tableroString.toString());
         }
-
-        vista.mostrarTablero(tableroString.toString());
     }
 
     @Override
