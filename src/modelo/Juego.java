@@ -40,10 +40,8 @@ public class Juego extends ObservableRemoto implements IJuego {
         turnoActual++;
         notificarObservadores(Notificaciones.IMPRIMIR_TABLERO);
         if (fase == FaseJuego.MOVIENDO) {
-            //observers.get(turnoActual % 2).notificar(Notificaciones.MOVER);
             notificarObservadores(Notificaciones.MOVER);
         } else if (fase == FaseJuego.COLOCANDO) {
-            //observers.get(turnoActual % 2).notificar(Notificaciones.COLOCAR);
             notificarObservadores(Notificaciones.COLOCAR);
         }
     }
