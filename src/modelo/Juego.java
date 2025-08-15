@@ -76,7 +76,6 @@ public class Juego extends ObservableRemoto implements IJuego {
         if (jugadores.size() == 2) {
             iniciarJuego();
         } else {
-            //observers.getFirst().notificar(Notificaciones.ESPERA);
             notificarObservadores(Notificaciones.ESPERA);
         }
 
@@ -91,7 +90,6 @@ public class Juego extends ObservableRemoto implements IJuego {
     public void iniciarJuego() throws RemoteException {
         fase = FaseJuego.COLOCANDO;
         notificarObservadores(Notificaciones.IMPRIMIR_TABLERO);
-        //observers.get(turnoActual % 2).notificar(Notificaciones.COLOCAR);
         notificarObservadores(Notificaciones.COLOCAR);
     }
 

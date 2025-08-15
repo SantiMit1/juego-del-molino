@@ -1,4 +1,4 @@
-package vistas.terminal;
+package vistas;
 
 public enum Modos {
     COLOCAR,

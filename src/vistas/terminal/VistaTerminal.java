@@ -1,6 +1,7 @@
 package vistas.terminal;
 
 import controlador.Controlador;
+import vistas.Modos;
 import vistas.Vista;
 
 import javax.swing.*;
