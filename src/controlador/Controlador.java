@@ -3,7 +3,7 @@ package controlador;
 import ar.edu.unlu.rmimvc.cliente.IControladorRemoto;
 import ar.edu.unlu.rmimvc.observer.IObservableRemoto;
 import modelo.*;
-import modelo.Notificaciones;
+import modelo.enums.Notificaciones;
 import vistas.Vista;
 
 import java.rmi.RemoteException;

@@ -4,6 +4,7 @@ import ar.edu.unlu.rmimvc.observer.ObservableRemoto;
 import modelo.enums.Color;
 import modelo.enums.EstadoFicha;
 import modelo.enums.FaseJuego;
+import modelo.enums.Notificaciones;
 
 import java.rmi.RemoteException;
 import java.util.ArrayList;
