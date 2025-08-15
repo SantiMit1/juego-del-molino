@@ -18,7 +18,6 @@ public class VistaTerminal extends Vista {
 
     // Variables para control del estado de entrada
     private boolean esperandoEntrada = false;
-    private Modos tipoEntradaActual = null;
     private String[] entradasPosicion;
     private int valorActual = 0;
 
@@ -93,7 +92,7 @@ public class VistaTerminal extends Vista {
             mostrarMensaje("Posición ingresada: " + entrada);
             valorActual++;
 
-            switch (tipoEntradaActual) {
+            switch (modo) {
                 case Modos.COLOCAR:
                     if (valorActual == 1) {
                         int[] coordenadas = convertirPosicionACoordenadas(entrada);
@@ -210,14 +209,14 @@ public class VistaTerminal extends Vista {
     private void deshabilitarEntrada() {
         esperandoEntrada = false;
         inputField.setEnabled(false);
-        tipoEntradaActual = null;
+        modo = null;
         valorActual = 0;
     }
 
     @Override
     public void colocarFicha() {
         SwingUtilities.invokeLater(() -> {
-            tipoEntradaActual = Modos.COLOCAR;
+            modo = Modos.COLOCAR;
             entradasPosicion = new String[2];
             valorActual = 0;
             mostrarMensaje(nombreJugador + ": Colocar ficha:");
@@ -231,7 +230,7 @@ public class VistaTerminal extends Vista {
     @Override
     public void moverFicha() {
         SwingUtilities.invokeLater(() -> {
-            tipoEntradaActual = Modos.MOVER;
+            modo = Modos.MOVER;
             entradasPosicion = new String[2];
             valorActual = 0;
             mostrarMensaje(nombreJugador + ": Mover ficha:");
@@ -245,7 +244,7 @@ public class VistaTerminal extends Vista {
     @Override
     public void eliminarFicha() {
         SwingUtilities.invokeLater(() -> {
-            tipoEntradaActual = Modos.ELIMINAR;
+            modo = Modos.ELIMINAR;
             entradasPosicion = new String[2];
             valorActual = 0;
             mostrarMensaje(nombreJugador + ": Eliminar ficha:");

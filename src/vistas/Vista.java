@@ -5,6 +5,7 @@ import controlador.Controlador;
 public abstract class Vista {
     protected final Controlador controlador;
     protected String nombreJugador;
+    protected Modos modo;
 
     public Vista(Controlador controlador) {
         this.controlador = controlador;

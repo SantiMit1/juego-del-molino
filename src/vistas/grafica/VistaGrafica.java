@@ -15,7 +15,6 @@ public class VistaGrafica extends Vista {
     private JTextArea mensajesArea;
 
     // Variables para control del estado
-    private Modos modoActual = null;
     private int[] posicionOrigen = null;
     private boolean esperandoAccion = false;
 
@@ -89,11 +88,10 @@ public class VistaGrafica extends Vista {
         return panel;
     }
 
-    // Método llamado por el tablero gráfico cuando se hace clic en una posición
     public void onPosicionClicked(int fila, int columna) {
         if (!esperandoAccion) return;
 
-        switch (modoActual) {
+        switch (modo) {
             case COLOCAR:
                 boolean colocarExito = controlador.colocarFicha(fila, columna);
                 if (colocarExito) {
@@ -137,7 +135,7 @@ public class VistaGrafica extends Vista {
 
     private void finalizarAccion() {
         esperandoAccion = false;
-        modoActual = null;
+        modo = null;
         posicionOrigen = null;
         tableroGrafico.limpiarResaltados();
         accionLabel.setText("Acción: Esperando próximo turno...");
@@ -151,7 +149,7 @@ public class VistaGrafica extends Vista {
     @Override
     public void colocarFicha() {
         SwingUtilities.invokeLater(() -> {
-            modoActual = Modos.COLOCAR;
+            modo = Modos.COLOCAR;
             esperandoAccion = true;
             posicionOrigen = null;
             faseLabel.setText("Fase: Colocando fichas");
@@ -163,7 +161,7 @@ public class VistaGrafica extends Vista {
     @Override
     public void moverFicha() {
         SwingUtilities.invokeLater(() -> {
-            modoActual = Modos.MOVER;
+            modo = Modos.MOVER;
             esperandoAccion = true;
             posicionOrigen = null;
             faseLabel.setText("Fase: Moviendo fichas");
@@ -175,7 +173,7 @@ public class VistaGrafica extends Vista {
     @Override
     public void eliminarFicha() {
         SwingUtilities.invokeLater(() -> {
-            modoActual = Modos.ELIMINAR;
+            modo = Modos.ELIMINAR;
             esperandoAccion = true;
             posicionOrigen = null;
             faseLabel.setText("Fase: Eliminando ficha del oponente");
