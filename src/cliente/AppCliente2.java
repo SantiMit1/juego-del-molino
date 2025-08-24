@@ -3,7 +3,7 @@ package cliente;
 import ar.edu.unlu.rmimvc.cliente.Cliente;
 import controlador.Controlador;
 import vistas.Vista;
-import vistas.grafica.VistaGrafica;
+import vistas.terminal.VistaTerminal;
 
 public class AppCliente2 {
     public static void main(String[] args) {
@@ -16,7 +16,7 @@ public class AppCliente2 {
         Cliente cliente = new Cliente(ip, port, ipServidor, portServidor);
         try {
             cliente.iniciar(controlador);
-            Vista vista = new VistaGrafica(controlador);
+            Vista vista = new VistaTerminal(controlador);
             controlador.setVista(vista);
         } catch (Exception e) {
             e.printStackTrace();

@@ -24,6 +24,8 @@ public class VistaTerminal extends Vista {
     public VistaTerminal(Controlador controlador) {
         super(controlador);
 
+        inicializarUI();
+
         boolean nombreValido = false;
         while (!nombreValido) {
             String nombreJugador = JOptionPane.showInputDialog(frame, "Nombre del jugador:");
@@ -33,7 +35,6 @@ public class VistaTerminal extends Vista {
             }
         }
 
-        inicializarUI();
     }
 
     private void inicializarUI() {
