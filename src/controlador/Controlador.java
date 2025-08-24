@@ -21,14 +21,16 @@ public class Controlador implements IControladorRemoto {
         this.vista = vista;
     }
 
-    public void crearJugador(String nombre) {
+    public boolean crearJugador(String nombre) {
         Jugador jugador = new Jugador(nombre);
         try {
             juego.agregarJugador(jugador);
             this.nombreJugador = nombre;
             vista.mostrarMensaje("Jugador " + nombre + " creado y agregado al juego.");
-        } catch (RemoteException ex) {
+            return true;
+        } catch (Exception ex) {
             vista.mostrarMensaje("Error al agregar jugador: " + ex.getMessage());
+            return false;
         }
     }
 

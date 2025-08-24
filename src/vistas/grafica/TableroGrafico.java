@@ -11,10 +11,10 @@ public class TableroGrafico extends JPanel {
     private static final int MARGEN = 50;
     private static final int RADIO_POSICION = 15;
     private static final Color COLOR_LINEA = Color.BLACK;
-    private static final Color COLOR_JUGADOR_UNO = Color.WHITE;
-    private static final Color COLOR_JUGADOR_DOS = Color.BLACK;
     private static final Color COLOR_VACIO = Color.GRAY;
     private static final Color COLOR_RESALTADO = Color.YELLOW;
+    private final Color COLOR_JUGADOR_UNO = Color.WHITE;
+    private final Color COLOR_JUGADOR_DOS = Color.BLACK;
 
     private final VistaGrafica vista;
     private String posicionesTablero = "";
