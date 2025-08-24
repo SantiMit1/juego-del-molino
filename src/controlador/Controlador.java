@@ -29,7 +29,6 @@ public class Controlador implements IControladorRemoto {
             vista.mostrarMensaje("Jugador " + nombre + " creado y agregado al juego.");
             return true;
         } catch (Exception ex) {
-            vista.mostrarMensaje("Error al agregar jugador: " + ex.getMessage());
             return false;
         }
     }

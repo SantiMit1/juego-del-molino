@@ -13,18 +13,20 @@ public class TableroGrafico extends JPanel {
     private static final Color COLOR_LINEA = Color.BLACK;
     private static final Color COLOR_VACIO = Color.GRAY;
     private static final Color COLOR_RESALTADO = Color.YELLOW;
-    private final Color COLOR_JUGADOR_UNO = Color.WHITE;
-    private final Color COLOR_JUGADOR_DOS = Color.BLACK;
+    private final Color COLOR_JUGADOR_UNO;
+    private final Color COLOR_JUGADOR_DOS;
 
     private final VistaGrafica vista;
     private String posicionesTablero = "";
     private Map<String, Point> coordenadasPosiciones;
     private Map<String, Boolean> posicionesResaltadas;
 
-    public TableroGrafico(VistaGrafica vista) {
+    public TableroGrafico(VistaGrafica vista, Color color1, Color color2) {
         this.vista = vista;
         this.coordenadasPosiciones = new HashMap<>();
         this.posicionesResaltadas = new HashMap<>();
+        this.COLOR_JUGADOR_UNO = color1;
+        this.COLOR_JUGADOR_DOS = color2;
 
         setPreferredSize(new Dimension(500, 500));
         setBackground(Color.LIGHT_GRAY);

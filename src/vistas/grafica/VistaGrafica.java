@@ -21,20 +21,52 @@ public class VistaGrafica extends Vista {
     public VistaGrafica(Controlador controlador) {
         super(controlador);
 
-        inicializarUI();
-
         boolean nombreValido = false;
         while (!nombreValido) {
-            String nombreJugador = JOptionPane.showInputDialog(frame, "Nombre del jugador:");
-            if (nombreJugador != null && !nombreJugador.trim().isEmpty()) {
-                setNombreJugador(nombreJugador);
-                nombreValido = controlador.crearJugador(nombreJugador);
+            String nombreJugadorNuevo = JOptionPane.showInputDialog(frame, "Nombre del jugador:");
+            if (nombreJugadorNuevo != null && !nombreJugadorNuevo.trim().isEmpty()) {
+                setNombreJugador(nombreJugadorNuevo);
+                nombreValido = controlador.crearJugador(nombreJugadorNuevo);
             }
         }
-        mostrarMensaje("¡Bienvenido " + nombreJugador + "!");
+
+        inicializarUI();
+    }
+
+    private Color[] seleccionarColores() {
+        Color[] coloresDisponibles = {Color.WHITE, Color.BLACK, Color.RED, Color.BLUE, Color.GREEN, Color.ORANGE, Color.PINK};
+        String[] nombresColores = {"Blanco", "Negro", "Rojo", "Azul", "Verde", "Naranja", "Rosa"};
+
+        Color color1 = null;
+        Color color2 = null;
+        int indiceColor1 = -1;
+        int indiceColor2 = -1;
+
+        while (color1 == null) {
+            indiceColor1 = JOptionPane.showOptionDialog(null, "Seleccione el color del Jugador 1",
+                    "Color Jugador 1", JOptionPane.DEFAULT_OPTION, JOptionPane.QUESTION_MESSAGE,
+                    null, nombresColores, nombresColores[0]);
+            color1 = (indiceColor1 >= 0) ? coloresDisponibles[indiceColor1] : Color.WHITE;
+        }
+
+        while (color2 == null || indiceColor2 == indiceColor1) {
+            indiceColor2 = JOptionPane.showOptionDialog(null, "Seleccione el color del Jugador 2",
+                    "Color Jugador 2", JOptionPane.DEFAULT_OPTION, JOptionPane.QUESTION_MESSAGE,
+                    null, nombresColores, nombresColores[0]);
+            if (indiceColor2 == indiceColor1) {
+                JOptionPane.showMessageDialog(null, "El color ya está seleccionado. Elija otro color.");
+            } else {
+                color2 = (indiceColor2 >= 0) ? coloresDisponibles[indiceColor2] : Color.BLACK;
+            }
+
+        }
+
+        return new Color[]{color1, color2};
     }
 
     private void inicializarUI() {
+        Color[] colores = seleccionarColores();
+
         frame = new JFrame("Juego del Molino");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setLayout(new BorderLayout());
@@ -45,7 +77,7 @@ public class VistaGrafica extends Vista {
         frame.add(infoPanel, BorderLayout.NORTH);
 
         // Panel central con el tablero
-        tableroGrafico = new TableroGrafico(this);
+        tableroGrafico = new TableroGrafico(this, colores[0], colores[1]);
         frame.add(tableroGrafico, BorderLayout.CENTER);
 
         // Panel inferior con mensajes
