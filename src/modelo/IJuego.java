@@ -1,8 +1,10 @@
 package modelo;
 
 import ar.edu.unlu.rmimvc.observer.IObservableRemoto;
+import modelo.ranking.RegistroRanking;
 
 import java.rmi.RemoteException;
+import java.util.List;
 
 public interface IJuego extends IObservableRemoto {
     void agregarJugador(Jugador jugador) throws RemoteException;
@@ -17,7 +19,9 @@ public interface IJuego extends IObservableRemoto {
 
     void eliminarFicha(int fila, int columna) throws RemoteException;
 
-    Jugador getGanador() throws  RemoteException;
+    List<RegistroRanking> obtenerRanking(int n) throws RemoteException;
 
-    Tablero getTablero() throws   RemoteException;
+    Jugador getGanador() throws RemoteException;
+
+    Tablero getTablero() throws  RemoteException;
 }

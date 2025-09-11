@@ -5,6 +5,8 @@ import modelo.enums.Color;
 import modelo.enums.EstadoFicha;
 import modelo.enums.FaseJuego;
 import modelo.enums.Notificaciones;
+import modelo.ranking.GestorRanking;
+import modelo.ranking.RegistroRanking;
 
 import java.rmi.RemoteException;
 import java.util.ArrayList;
@@ -16,6 +18,7 @@ public class Juego extends ObservableRemoto implements IJuego {
     private int turnoActual;
     private FaseJuego fase;
     private Jugador ganador;
+    private final GestorRanking gestorRanking = new GestorRanking();
 
     public Juego(Tablero tablero) {
         super();
@@ -30,6 +33,7 @@ public class Juego extends ObservableRemoto implements IJuego {
         if (ganador == null) {
             ganador = hayGanador();
             if (ganador != null) {
+                gestorRanking.registrarVictoria(ganador.getNombre());
                 notificarObservadores(Notificaciones.IMPRIMIR_TABLERO);
                 notificarObservadores(Notificaciones.FIN);
                 finalizarJuego();
@@ -88,6 +92,7 @@ public class Juego extends ObservableRemoto implements IJuego {
     @Override
     public void iniciarJuego() throws RemoteException {
         fase = FaseJuego.COLOCANDO;
+        notificarObservadores(Notificaciones.RANKING);
         notificarObservadores(Notificaciones.IMPRIMIR_TABLERO);
         notificarObservadores(Notificaciones.COLOCAR);
     }
@@ -226,6 +231,10 @@ public class Juego extends ObservableRemoto implements IJuego {
         fase = FaseJuego.FINALIZADO;
         turnoActual = 0;
         tablero.limpiarTablero();
+    }
+
+    public List<RegistroRanking> obtenerRanking(int n) throws RemoteException {
+        return gestorRanking.obtenerTop(5);
     }
 
     @Override

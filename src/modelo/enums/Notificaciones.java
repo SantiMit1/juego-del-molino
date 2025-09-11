@@ -4,6 +4,7 @@ import java.io.Serializable;
 
 public enum Notificaciones implements Serializable {
     ESPERA,
+    RANKING,
     IMPRIMIR_TABLERO,
     COLOCAR,
     MOVER,

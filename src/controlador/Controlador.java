@@ -4,9 +4,11 @@ import ar.edu.unlu.rmimvc.cliente.IControladorRemoto;
 import ar.edu.unlu.rmimvc.observer.IObservableRemoto;
 import modelo.*;
 import modelo.enums.Notificaciones;
+import modelo.ranking.RegistroRanking;
 import vistas.Vista;
 
 import java.rmi.RemoteException;
+import java.util.List;
 
 public class Controlador implements IControladorRemoto {
     private IJuego juego;
@@ -90,6 +92,16 @@ public class Controlador implements IControladorRemoto {
         }
     }
 
+    public void mostrarRanking(List<RegistroRanking> ranking) {
+        StringBuilder rankingStr = new StringBuilder("Ranking de Jugadores:\n");
+        for (int i = 0; i < ranking.size(); i++) {
+            RegistroRanking registro = ranking.get(i);
+            rankingStr.append((i + 1)).append(". ").append(registro.getNombreJugador()).append(" - Victorias: ").append(registro.getVictorias()).append("\n");
+        }
+
+        vista.mostrarMensaje(rankingStr.toString());
+    }
+
     @Override
     public void actualizar(IObservableRemoto iObservableRemoto, Object notificacion) throws RemoteException {
         if (notificacion instanceof Notificaciones) {
@@ -100,6 +112,8 @@ public class Controlador implements IControladorRemoto {
                 case ESPERA:
                     vista.mostrarMensaje("Esperando otro jugador...");
                     break;
+                case RANKING:
+                    mostrarRanking(juego.obtenerRanking(5));
                 case COLOCAR:
                     if (juego.getJugadorActual().getNombre().equals(nombreJugador)) {
                         vista.colocarFicha();
