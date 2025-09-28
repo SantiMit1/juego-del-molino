@@ -43,22 +43,15 @@ El juego del molino es un juego de mesa para dos jugadores. El objetivo es forma
 - Administra los jugadores y determina el ganador.
 - Notifica a los observadores sobre los cambios importantes.
 
-### `Controlador`
-- Intermedia entre la vista y el modelo.
-- Recibe acciones de la vista y las traduce en operaciones sobre el modelo.
-- Notifica a la vista sobre los cambios y mensajes relevantes.
+### `GestorRanking`
+- Gestiona el ranking de jugadores, incluyendo el registro de victorias y la obtención de los mejores jugadores.
+- Carga y guarda los datos del ranking en un archivo persistente (`ranking.dat`).
+- Proporciona métodos para registrar victorias y obtener el top de jugadores ordenado por número de victorias.
 
-### `Observable` y `Observer`
-- Implementan el patrón observador para notificar cambios en el modelo.
-- Permiten que la vista y otros componentes reaccionen a eventos del juego.
-
-### `Vista`
-- Definen los metodos y atributos que tiene que implementar una vista.
-
-### `VistaTerminal`
-- Implementa los metodos y atributos definidos en la clase abstracta "Vista"
-- Recibe actualizaciones de estado del controlador
-- Toma entradas del jugador cuando es su turno y se las envia al controlador para que actualice el estado del juego
+### `RegistroRanking`
+- Representa el registro de un jugador en el ranking.
+- Almacena el nombre del jugador y la cantidad de victorias obtenidas.
+- Proporciona métodos para incrementar el número de victorias y obtener información del jugador.
 
 ---
 

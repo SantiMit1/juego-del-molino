@@ -1,5 +1,0 @@
-- [x] vista consola: pedir fila y columna de una
-- [x] generar adyacencias con instancias en lugar de ints
-- [x] que solo en la interfaz grafica que el jugador pueda elegir el color de la ficha
-- [x] TOP 5
-- [ ] Diagrama de Clases
